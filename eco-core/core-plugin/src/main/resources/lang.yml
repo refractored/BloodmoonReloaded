@@ -1,4 +1,5 @@
 messages:
+  # Prefix for all messages
   prefix: "<#A50000>Bloodmoon<White> »<reset> "
 
   reloaded: "<green>Reloaded!"

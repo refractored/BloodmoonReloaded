@@ -1,5 +1,6 @@
 options:
   color: "&#A50000"
+  supports-extensions: true
 environment:
   - name: libreforge version
     value: ${libreforgeVersion}
