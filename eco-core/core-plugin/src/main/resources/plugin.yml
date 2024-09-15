@@ -1,9 +1,9 @@
 name: ${pluginName}
 version: ${version}
-main: com.willfp.libreforgetemplate.LibreforgeTemplatePlugin
-api-version: 1.17
-authors: [ Auxilor ]
-website: willfp.com
+main: net.refractored.bloodmoonreloaded.BloodmoonPlugin
+api-version: 1.21
+authors: [ refractored ]
+website: refractored.net
 load: STARTUP
 depend:
   - eco

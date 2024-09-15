@@ -1,3 +1,5 @@
+# If the world should have bloodmoons enabled.
+enabled: true
 # The effects that will be active when the bloodmoon is active.
 # https://plugins.auxilor.io/effects/configuring-an-effect
 effects:
@@ -23,12 +25,19 @@ effects:
         - ZOMBIE
         - SKELETON
         - PHANTOM
+        - ZOMBIE
     mutators:
       - id: dispatcher_as_victim
     effects:
       - id: damage_multiplier
         args:
           multiplier: "2.0"
+  - triggers:
+      - entity_death
+    effects:
+      - id: smite
+        args:
+          damage: 1
 conditions: [ ]
 # Length of the bloodmoon in seconds.
 Length: 360
@@ -49,7 +58,7 @@ Timed: 0
 UsePrefix: true
 messages:
   activation: "<red>A bloodmoon is upon us."
-  deactivation: "%booster_name% <reset>has expired!"
+  deactivation: "<green>Bloodmoon has ended."
 # What commands to run on activation or deactivation.
 # Do not add a "/" in front of the command.
 commands:

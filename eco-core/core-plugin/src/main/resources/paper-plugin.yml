@@ -1,6 +1,6 @@
 name: ${pluginName}
 version: ${version}
-main: com.willfp.libreforgetemplate.LibreforgeTemplatePlugin
+main: net.refractored.bloodmoonreloaded.BloodmoonPlugin
 api-version: 1.19
 
 dependencies:

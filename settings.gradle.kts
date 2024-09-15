@@ -7,7 +7,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "libreforge-template"
+rootProject.name = "BloodmoonReloaded"
 
 // Core
 include(":eco-core")

@@ -1,7 +1,12 @@
 package net.refractored.bloodmoonreloaded
 
+import com.willfp.libreforge.SimpleProvidedHolder
+import com.willfp.libreforge.conditions.Conditions
 import com.willfp.libreforge.loader.LibreforgePlugin
 import com.willfp.libreforge.loader.configs.ConfigCategory
+import com.willfp.libreforge.registerGenericHolderProvider
+import net.refractored.bloodmoonreloaded.libreforge.IsBloodmoonActive
+import net.refractored.bloodmoonreloaded.worlds.BloodmoonRegistry
 import revxrsal.commands.bukkit.BukkitCommandHandler
 
 class BloodmoonPlugin : LibreforgePlugin() {
@@ -9,7 +14,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
 
     override fun loadConfigCategories(): List<ConfigCategory> =
         listOf(
-            World,
+            BloodmoonRegistry,
         )
 
     override fun handleEnable() {
@@ -25,16 +30,17 @@ class BloodmoonPlugin : LibreforgePlugin() {
 //
 //        handler.registerValueResolver(Booster::class.java, boosterResolver)
 //
-//        handler.registerBrigadier()
-//
-//        Conditions.register(IsBoosterActive)
-//
-//        registerGenericHolderProvider {
-//            RegisteredBoosters.getActiveBoosters().map { SimpleProvidedHolder(it) }
-//        }
+        handler.registerBrigadier()
+
+        Conditions.register(IsBloodmoonActive)
+
+        registerGenericHolderProvider {
+            BloodmoonRegistry.getActiveWorlds().map { SimpleProvidedHolder(it) }
+        }
     }
 
     override fun handleReload() {
+        // idk whawt to do lol
     }
 
     override fun handleDisable() {
