@@ -1,6 +1,18 @@
 messages:
-  prefix: "&a&lPlugin &f» "
-  no-permission: "&cYou don't have permission to do this!"
-  not-player: "&cThis command must be run by a player"
-  invalid-command: "&cUnknown subcommand!"
-  reloaded: "Reloaded!"
+  prefix: "<#A50000>Bloodmoon<White> »<reset> "
+
+  reloaded: "<green>Reloaded!"
+
+  # Not all of these are actually used, but they are here incase they are ever needed.
+  no-permission: "<red>You don't have permission to do this!"
+  not-player: "<red>This command must be run by a player"
+  invalid-command: "<red>Invalid command: %usage%"
+  number-not-in-range: "<red>Number must be between %min% and %max%, but found: %input%"
+  on-cooldown: "<red>You must wait %time% before using this command again."
+  invalid-boolean: "<red>Expected true or false, but found: %input%"
+  invalid-subcommand: "<red>Invalid subcommand: %input%"
+  missing-argument: "<red>You must specify a value for the argument: %parameter%"
+  too-many-arguments: "<red>Too many arguments! Correct usage: /%usage%"
+  no-subcommand-specified: "<red>You must specify a subcommand."
+  invalid-number: "<red>Expected a number, but found ''%input%''."
+  invalid-enum: "<red>Invalid %parameter%: %input%"

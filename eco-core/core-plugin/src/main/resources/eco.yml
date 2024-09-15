@@ -1,5 +1,5 @@
 options:
-  color: "&#FB0808"
+  color: "&#A50000"
 environment:
   - name: libreforge version
     value: ${libreforgeVersion}

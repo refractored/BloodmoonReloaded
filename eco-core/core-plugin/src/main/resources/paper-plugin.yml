@@ -1,7 +1,8 @@
 name: ${pluginName}
 version: ${version}
 main: net.refractored.bloodmoonreloaded.BloodmoonPlugin
-api-version: 1.19
+api-version: 1.21
+authors: [ refractored ]
 
 dependencies:
   - name: eco
