@@ -1,0 +1,57 @@
+# The effects that will be active when the bloodmoon is active.
+# https://plugins.auxilor.io/effects/configuring-an-effect
+effects:
+  # Outgoing Damage (Player -> Entity)
+  - triggers:
+      - melee_attack
+      - bow_attack
+    filters:
+      entities:
+        - PLAYER
+    mutators:
+      - id: dispatcher_as_victim
+    effects:
+      - id: damage_multiplier
+        args:
+          multiplier: "0.2"
+  # Incoming damage (Entity -> Player)
+  - triggers:
+      - melee_attack
+      - bow_attack
+    filters:
+      entities:
+        - ZOMBIE
+        - SKELETON
+        - PHANTOM
+    mutators:
+      - id: dispatcher_as_victim
+    effects:
+      - id: damage_multiplier
+        args:
+          multiplier: "2.0"
+conditions: [ ]
+# Length of the bloodmoon in seconds.
+Length: 360
+# Bossbar settings.
+BossbarEnabled: true
+BossbarColor: RED
+BossbarStyle: SOLID
+# Two options, "days" or "timed".
+# If "days" is selected, the bloodmoon will activate every x days.
+# If "timed" is selected, the bloodmoon will activate after a specific time.
+# If "none", or anything else is selected, the bloodmoon will not activate on its own.
+BloodmoonActivate: Days
+# These two options only apply if BloodmoonActivate is set to their respective values.
+Days: 5
+# The time in seconds until the bloodmoon activates.
+Timed: 0
+# If the prefix should be added to the message.
+UsePrefix: true
+messages:
+  activation: "<red>A bloodmoon is upon us."
+  deactivation: "%booster_name% <reset>has expired!"
+# What commands to run on activation or deactivation.
+# Do not add a "/" in front of the command.
+commands:
+  activation: [ ]
+  expiry: [ ]

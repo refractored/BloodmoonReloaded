@@ -1,0 +1,9 @@
+name: ${pluginName}
+version: ${version}
+main: com.willfp.libreforgetemplate.LibreforgeTemplatePlugin
+api-version: 1.17
+authors: [ Auxilor ]
+website: willfp.com
+load: STARTUP
+depend:
+  - eco
