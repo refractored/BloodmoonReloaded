@@ -15,8 +15,8 @@ class BloodmoonStartEvent(
      * The BloodmoonWorld that the bloodmoon is starting in
      */
     val BloodmoonWorld: BloodmoonWorld,
-): Event(), Cancellable {
-
+) : Event(),
+    Cancellable {
     private var cancelled = false
 
     override fun getHandlers() = getHandlerList()
