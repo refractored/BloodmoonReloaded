@@ -1,4 +1,4 @@
-jdk: openjdk21
+jdk: openjdk22
 before_install:
   - source "$HOME/.sdkman/bin/sdkman-init.sh"
   - sdk update
