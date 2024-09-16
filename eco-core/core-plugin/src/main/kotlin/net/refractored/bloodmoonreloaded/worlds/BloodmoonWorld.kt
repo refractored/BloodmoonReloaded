@@ -7,6 +7,7 @@ import com.willfp.libreforge.ViolationContext
 import com.willfp.libreforge.conditions.Conditions
 import com.willfp.libreforge.effects.Effects
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
+import net.refractored.bloodmoonreloaded.events.BloodmoonStartEvent
 import org.bukkit.NamespacedKey
 import org.bukkit.World
 
@@ -35,6 +36,16 @@ class BloodmoonWorld(
 
     var active: ActiveBloodmoon? = null
         private set
+
+    fun activate() {
+        val event = BloodmoonStartEvent(world, this)
+        event.callEvent()
+        if (event.isCancelled()) {
+            return
+        }
+        active ?: throw IllegalStateException("Bloodmoon is already active.")
+//        active = ActiveBloodmoon(this)
+    }
 
     /**
      * Deactivate the bloodmoon.
