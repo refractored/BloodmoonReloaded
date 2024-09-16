@@ -25,13 +25,14 @@ class BloodmoonPlugin : LibreforgePlugin() {
 
         handler.setExceptionHandler(CommandErrorHandler())
 
-        handler.registerBrigadier()
-
         Conditions.register(IsBloodmoonActive)
 
         registerGenericHolderProvider {
             BloodmoonRegistry.getActiveWorlds().map { SimpleProvidedHolder(it) }
         }
+    }
+
+    override fun handleAfterLoad() {
     }
 
     override fun handleReload() {

@@ -61,6 +61,7 @@ messages:
   deactivation: "<green>Bloodmoon has ended."
 # What commands to run on activation or deactivation.
 # Do not add a "/" in front of the command.
+# %world% will be replaced with the world name.
 commands:
   activation: [ ]
   expiry: [ ]
