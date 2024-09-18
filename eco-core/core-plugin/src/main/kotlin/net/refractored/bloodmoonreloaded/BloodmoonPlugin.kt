@@ -5,6 +5,8 @@ import com.willfp.libreforge.conditions.Conditions
 import com.willfp.libreforge.loader.LibreforgePlugin
 import com.willfp.libreforge.loader.configs.ConfigCategory
 import com.willfp.libreforge.registerGenericHolderProvider
+import net.refractored.bloodmoonreloaded.commands.BloodmoonStartCommand
+import net.refractored.bloodmoonreloaded.commands.BloodmoonStopCommand
 import net.refractored.bloodmoonreloaded.exceptions.CommandErrorHandler
 import net.refractored.bloodmoonreloaded.libreforge.IsBloodmoonActive
 import net.refractored.bloodmoonreloaded.worlds.BloodmoonRegistry
@@ -24,6 +26,9 @@ class BloodmoonPlugin : LibreforgePlugin() {
         handler = BukkitCommandHandler.create(this)
 
         handler.setExceptionHandler(CommandErrorHandler())
+
+        handler.register(BloodmoonStartCommand())
+        handler.register(BloodmoonStopCommand())
 
         Conditions.register(IsBloodmoonActive)
 

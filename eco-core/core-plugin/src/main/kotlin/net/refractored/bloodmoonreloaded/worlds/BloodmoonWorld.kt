@@ -8,6 +8,8 @@ import com.willfp.libreforge.conditions.Conditions
 import com.willfp.libreforge.effects.Effects
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStartEvent
+import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
+import net.refractored.bloodmoonreloaded.events.StopCause
 import org.bukkit.NamespacedKey
 import org.bukkit.World
 
@@ -50,12 +52,17 @@ class BloodmoonWorld(
     /**
      * Deactivate the bloodmoon.
      */
-    fun deactivate() {
+    fun deactivate(reason: StopCause = StopCause.PLUGIN) {
+        val event = BloodmoonStopEvent(world, this, reason)
+        event.callEvent()
+        if (event.isCancelled()) {
+            return
+        }
         active ?: throw IllegalStateException("Bloodmoon is not active.")
         active = null
     }
 
     override fun onRemove() {
-        active?.let { deactivate() }
+        active?.let { deactivate(StopCause.UNLOAD) }
     }
 }
