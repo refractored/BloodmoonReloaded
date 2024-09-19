@@ -10,7 +10,9 @@ class ActiveBloodmoon(
      */
     var length: Long = bloodmoonWorld.length,
 ) {
+    val expiryTime = System.currentTimeMillis() + length
+
     init {
-        TODO()
+        bloodmoonWorld.savedBloodmoonRemainingMillis = length.toDouble()
     }
 }

@@ -11,6 +11,8 @@ import net.refractored.bloodmoonreloaded.exceptions.CommandErrorHandler
 import net.refractored.bloodmoonreloaded.libreforge.IsBloodmoonActive
 import net.refractored.bloodmoonreloaded.listeners.OnWorldLoad
 import net.refractored.bloodmoonreloaded.listeners.OnWorldUnload
+import net.refractored.bloodmoonreloaded.runnables.ExpireBloodmoons
+import net.refractored.bloodmoonreloaded.runnables.UpdateSavedData
 import net.refractored.bloodmoonreloaded.worlds.BloodmoonRegistry
 import revxrsal.commands.bukkit.BukkitCommandHandler
 
@@ -43,6 +45,9 @@ class BloodmoonPlugin : LibreforgePlugin() {
         // Registered after to prevent issues.
         eventManager.registerListener(OnWorldLoad())
         eventManager.registerListener(OnWorldUnload())
+
+        UpdateSavedData.runTimer()
+        ExpireBloodmoons.runTimer()
     }
 
     override fun handleReload() {
@@ -52,6 +57,8 @@ class BloodmoonPlugin : LibreforgePlugin() {
         if (this::handler.isInitialized) {
             handler.unregisterAllCommands()
         }
+        UpdateSavedData.stopTimer()
+        ExpireBloodmoons.stopTimer()
     }
 
     companion object {
