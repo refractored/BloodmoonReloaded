@@ -8,7 +8,7 @@ class ActiveBloodmoon(
     /**
      * The length in milliseconds of the booster.
      */
-    var length: Long,
+    var length: Long = bloodmoonWorld.length,
 ) {
     init {
         TODO()

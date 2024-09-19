@@ -42,9 +42,10 @@ conditions: [ ]
 # Length of the bloodmoon in seconds.
 Length: 360
 # Bossbar settings.
-BossbarEnabled: true
-BossbarColor: RED
-BossbarStyle: SOLID
+Bossbar:
+  Enabled: true
+  Color: RED
+  Style: SOLID
 # Two options, "days" or "timed".
 # If "days" is selected, the bloodmoon will activate every x days.
 # If "timed" is selected, the bloodmoon will activate after a specific time.
@@ -56,10 +57,10 @@ Days: 5
 Timed: 0
 # If the prefix should be added to the message.
 UsePrefix: true
-messages:
-  activation: "<red>A bloodmoon is upon us."
-  deactivation: "<green>Bloodmoon has ended."
-# What commands to run on activation or deactivation.
+Messages:
+  Activation: "<red>A bloodmoon is upon us."
+  Deactivation: "<green>Bloodmoon has ended."
+# Commands to run on activation or deactivation.
 # Do not add a "/" in front of the command.
 # %world% will be replaced with the world name.
 commands:
