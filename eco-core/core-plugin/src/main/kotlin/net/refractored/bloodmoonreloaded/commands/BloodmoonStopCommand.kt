@@ -1,6 +1,7 @@
 package net.refractored.bloodmoonreloaded.commands
 
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
+import net.refractored.bloodmoonreloaded.events.StopCause
 import net.refractored.bloodmoonreloaded.exceptions.CommandErrorException
 import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
@@ -35,7 +36,7 @@ class BloodmoonStopCommand {
                     .miniToComponent(),
             )
         }
-        bloodmoonWorld.activate()
+        bloodmoonWorld.deactivate(StopCause.COMMAND)
         actor.reply(
             BloodmoonPlugin.instance.langYml
                 .getStringPrefixed("messages.bloodmoon-deactivated")

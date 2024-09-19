@@ -39,7 +39,7 @@ class BloodmoonWorld(
     /**
      * The length in milliseconds of the bloodmoon.
      */
-    val length: Long = config.getString("length").toLong() * 1000
+    val length: Long = config.getString("Length").toLong() * 1000
 
     val bossbarEnabled: Boolean = config.getBool("Bossbar.Enabled")
 
@@ -47,7 +47,7 @@ class BloodmoonWorld(
 
     val bossbarStyle = BarStyle.valueOf(config.getString("Bossbar.Style"))
 
-    val bloodmoonActivated = BloodmoonActivation.valueOf(config.getString("activation").uppercase())
+    val bloodmoonActivated = BloodmoonActivation.valueOf(config.getString("BloodmoonActivate").uppercase())
 
     enum class BloodmoonActivation {
         DAYS,
@@ -57,7 +57,7 @@ class BloodmoonWorld(
 
     val activationDays = config.getInt("Days").toLong()
 
-    val activationTime = config.getString("Time").toLong()
+    val activationTime = config.getString("Timed").toLong()
 
     val usePrefix = config.getBool("UsePrefix")
 
@@ -74,13 +74,13 @@ class BloodmoonWorld(
     var active: ActiveBloodmoon? = null
         private set
 
-    fun activate(length: Long) {
+    fun activate(length: Long = this.length) {
         val event = BloodmoonStartEvent(world, this)
         event.callEvent()
         if (event.isCancelled()) {
             return
         }
-        active ?: throw IllegalStateException("Bloodmoon is already active.")
+        active?.run { throw IllegalStateException("Bloodmoon is already active.") }
         active = ActiveBloodmoon(this)
     }
 
