@@ -10,7 +10,7 @@ import net.kyori.adventure.bossbar.BossBar
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStartEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
-import net.refractored.bloodmoonreloaded.events.StopCause
+import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent.StopCause
 import org.bukkit.NamespacedKey
 import org.bukkit.World
 import org.bukkit.boss.BarStyle

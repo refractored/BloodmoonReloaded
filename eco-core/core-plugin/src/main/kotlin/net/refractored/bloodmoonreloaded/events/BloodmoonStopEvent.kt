@@ -41,26 +41,26 @@ class BloodmoonStopEvent(
         @JvmStatic
         fun getHandlerList(): HandlerList = handlerList
     }
-}
 
-enum class StopCause {
-    /**
-     * The bloodmoon was stopped by another plugin
-     */
-    PLUGIN,
+    enum class StopCause {
+        /**
+         * The bloodmoon was stopped by another plugin
+         */
+        PLUGIN,
 
-    /**
-     * The bloodmoon was stopped by a command.
-     */
-    COMMAND,
+        /**
+         * The bloodmoon was stopped by a command.
+         */
+        COMMAND,
 
-    /**
-     * The bloodmoon was because the timer was over.
-     */
-    TIMER,
+        /**
+         * The bloodmoon was because the timer was over.
+         */
+        TIMER,
 
-    /**
-     * The bloodmoon was stopped because the world was unloaded.
-     */
-    UNLOAD,
+        /**
+         * The bloodmoon was stopped because the world was unloaded.
+         */
+        UNLOAD,
+    }
 }
