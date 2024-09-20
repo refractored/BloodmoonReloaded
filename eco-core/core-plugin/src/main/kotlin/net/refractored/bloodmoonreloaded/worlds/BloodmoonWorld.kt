@@ -18,7 +18,6 @@ import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.World
-import org.bukkit.boss.BarStyle
 import org.bukkit.scheduler.BukkitRunnable
 
 /**
@@ -97,9 +96,9 @@ class BloodmoonWorld(
 
     val bossbarEnabled: Boolean = config.getBool("Bossbar.Enabled")
 
-    val bossbarColor = BossBar.Color.valueOf(config.getString("Bossbar.Color"))
+    val bossbarColor = BossBar.Color.NAMES.value(config.getString("Bossbar.Color"))!!
 
-    val bossbarStyle = BarStyle.valueOf(config.getString("Bossbar.Style"))
+    val bossbarStyle = BossBar.Overlay.valueOf(config.getString("Bossbar.Style"))
 
     val activationType = BloodmoonActivation.valueOf(config.getString("BloodmoonActivate").uppercase())
 

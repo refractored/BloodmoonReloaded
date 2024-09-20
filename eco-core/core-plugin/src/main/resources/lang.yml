@@ -29,3 +29,4 @@ messages:
   bloodmoon-info-time: "<reset>%hours%:%minutes%:%seconds%"
   bloodmoon-info: "<reset>The bloodmoon starts in %timeframe%."
   bloodmoon-not-active-world: "<red>A bloodmoon is not active in this world."
+  bossbar-title: "<red>Bloodmoon"

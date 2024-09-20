@@ -9,6 +9,7 @@ import net.refractored.bloodmoonreloaded.commands.BloodmoonStartCommand
 import net.refractored.bloodmoonreloaded.commands.BloodmoonStopCommand
 import net.refractored.bloodmoonreloaded.exceptions.CommandErrorHandler
 import net.refractored.bloodmoonreloaded.libreforge.IsBloodmoonActive
+import net.refractored.bloodmoonreloaded.listeners.OnPlayerTeleport
 import net.refractored.bloodmoonreloaded.listeners.OnWorldLoad
 import net.refractored.bloodmoonreloaded.listeners.OnWorldUnload
 import net.refractored.bloodmoonreloaded.worlds.BloodmoonRegistry
@@ -45,13 +46,14 @@ class BloodmoonPlugin : LibreforgePlugin() {
         // Registered after to prevent issues.
         eventManager.registerListener(OnWorldLoad())
         eventManager.registerListener(OnWorldUnload())
+        eventManager.registerListener(OnPlayerTeleport())
     }
 
     override fun handleReload() {
         val updateSavedData =
             object : Runnable {
                 override fun run() {
-                    for (registeredWorld in BloodmoonRegistry.getRegisteredWorlds()) {
+                    for (registeredWorld in getRegisteredWorlds()) {
                         registeredWorld.active?.let { active ->
                             registeredWorld.savedBloodmoonRemainingMillis = (active.expiryTime - System.currentTimeMillis()).toDouble()
                             return
@@ -77,8 +79,13 @@ class BloodmoonPlugin : LibreforgePlugin() {
                             registeredWorld.deactivate()
                             return
                         }
-                        registeredWorld.world.thunderDuration = 20 * 60 * 2
-                        registeredWorld.world
+                        active.bossbar.progress(
+                            (System.currentTimeMillis() / active.expiryTime.toDouble()).toFloat().coerceIn(
+                                0.0F,
+                                1.0F,
+                            ),
+                        )
+                        registeredWorld.world.setStorm(true)
                         registeredWorld.world.fullTime = registeredWorld.active?.fullTime!!
                     }
                 }
