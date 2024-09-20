@@ -24,3 +24,8 @@ messages:
   bloodmoon-activated: "<green>A bloodmoon has been activated in this world."
   bloodmoon-deactivated: "<green>A bloodmoon has been deactivated in this world."
   bloodmoon-not-active: "<red>A bloodmoon is not active in this world."
+  bloodmoon-remaining: "<green>There are %time% remaining in the bloodmoon."
+  bloodmoon-info-days: "<reset>%days% days"
+  bloodmoon-info-time: "<reset>%hours%:%minutes%:%seconds%"
+  bloodmoon-info: "<reset>The bloodmoon starts in %timeframe%."
+  bloodmoon-not-active-world: "<red>A bloodmoon is not active in this world."

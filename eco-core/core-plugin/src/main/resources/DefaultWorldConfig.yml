@@ -52,6 +52,9 @@ Bossbar:
 # If "none", or anything else is selected, the bloodmoon will not activate on its own.
 BloodmoonActivate: Days
 # These two options only apply if BloodmoonActivate is set to their respective values.
+# There is no built-in spigot method to check if a day has passed.
+# To get around this the plugin checks every 5 ticks if it turned day or night. Then it counts based off that.
+# This may not work correctly if you have a plugin that alters the rate of time.
 Days: 5
 # The time in seconds until the bloodmoon activates.
 Timed: 0

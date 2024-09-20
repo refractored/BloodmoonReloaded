@@ -5,7 +5,6 @@ import com.willfp.eco.core.data.keys.PersistentDataKey
 import com.willfp.eco.core.data.keys.PersistentDataKeyType
 import com.willfp.eco.core.data.profile
 import com.willfp.eco.core.registry.Registrable
-import com.willfp.eco.util.toComponent
 import com.willfp.libreforge.Holder
 import com.willfp.libreforge.ViolationContext
 import com.willfp.libreforge.conditions.Conditions
@@ -15,10 +14,12 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStartEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent.StopCause
+import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.World
 import org.bukkit.boss.BarStyle
+import org.bukkit.scheduler.BukkitRunnable
 
 /**
  * Represents a world and its settings for bloodmoon.
@@ -40,13 +41,13 @@ class BloodmoonWorld(
             ViolationContext(BloodmoonPlugin.instance, "World ${world.name}"),
         )
 
-    override val id: NamespacedKey = NamespacedKey("bloodmoonReloaded", world.name)
+    override val id: NamespacedKey = NamespacedKey("bloodmoonreloaded", world.name)
 
     private val daysUntilKey =
         PersistentDataKey(
             BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_days_until"),
-            PersistentDataKeyType.DOUBLE,
-            0.0,
+            PersistentDataKeyType.INT,
+            0,
         )
 
     private val millisUntilKey =
@@ -72,7 +73,7 @@ class BloodmoonWorld(
      * Before using make sure to check if the [activationType] is [BloodmoonActivation.DAYS].
      * @see activationType
      */
-    var savedDaysUntilActivation: Double
+    var savedDaysUntilActivation: Int
         get() = Bukkit.getServer().profile.read(daysUntilKey)
         set(value) = Bukkit.getServer().profile.write(daysUntilKey, value)
 
@@ -87,7 +88,7 @@ class BloodmoonWorld(
 
     var millisUntilActivation: Double = savedMillisUntilActivation
 
-    val daysUntilActivation: Double = savedDaysUntilActivation
+    var daysUntilActivation: Int = savedDaysUntilActivation
 
     /**
      * The length in milliseconds of the bloodmoon.
@@ -107,6 +108,11 @@ class BloodmoonWorld(
         TIMED,
         NONE,
     }
+
+    /**
+     * The last value of [World.isDayTime] in the last tick.
+     */
+    var lastDaytimeCheck: Boolean = false
 
     val activationDays = config.getInt("Days").toLong()
 
@@ -134,7 +140,15 @@ class BloodmoonWorld(
         }
     }
 
+    /**
+     * Whether the bloodmoon is currently activating.
+     */
+    var activating: Boolean = false
+
     fun activate(
+        /**
+         * The length in milliseconds of the bloodmoon.
+         */
         length: Long = this.length,
         announce: Boolean = true,
     ) {
@@ -143,16 +157,33 @@ class BloodmoonWorld(
         }
         val event = BloodmoonStartEvent(world, this)
         event.callEvent()
+        activating = true
         if (event.isCancelled()) {
             return
         }
+
         activationCommands.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
         if (announce) {
             world.players.forEach { player ->
-                player.sendMessage(activationMessage.toComponent())
+                player.sendMessage(activationMessage.miniToComponent())
             }
         }
-        active = ActiveBloodmoon(this, length)
+        val nightTimeTransition =
+            object : BukkitRunnable() {
+                override fun run() {
+                    if (world.time in 17500..18500) {
+                        cancel()
+                        active = ActiveBloodmoon(this@BloodmoonWorld, length)
+                        activating = false
+                        return
+                    }
+
+                    val timeDifference = world.time - 18000
+
+                    world.time += if (timeDifference < 0) 70 else -70
+                }
+            }
+        nightTimeTransition.runTaskTimer(BloodmoonPlugin.instance, 0, 1)
     }
 
     /**
@@ -171,10 +202,12 @@ class BloodmoonWorld(
         deactivationCommands.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
         if (announce) {
             world.players.forEach { player ->
-                player.sendMessage(deactivationMessage.toComponent())
+                player.sendMessage(deactivationMessage.miniToComponent())
             }
         }
         savedBloodmoonRemainingMillis = 0.0
+        daysUntilActivation = 0
+        world.weatherDuration = 0
         active = null
     }
 

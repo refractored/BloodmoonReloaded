@@ -29,13 +29,11 @@ class BloodmoonStopCommand {
                     .getStringPrefixed("messages.not-a-bloodmoon-world")
                     .miniToComponent(),
             )
-        bloodmoonWorld.active ?: {
-            throw CommandErrorException(
-                BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.bloodmoon-not-active")
-                    .miniToComponent(),
-            )
-        }
+        bloodmoonWorld.active ?: throw CommandErrorException(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.bloodmoon-not-active")
+                .miniToComponent(),
+        )
         bloodmoonWorld.deactivate(StopCause.COMMAND)
         actor.reply(
             BloodmoonPlugin.instance.langYml

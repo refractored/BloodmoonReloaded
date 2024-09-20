@@ -4,6 +4,7 @@ import com.willfp.eco.core.config.interfaces.Config
 import com.willfp.eco.core.registry.Registry
 import com.willfp.libreforge.loader.LibreforgePlugin
 import com.willfp.libreforge.loader.configs.ConfigCategory
+import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import org.bukkit.Bukkit
 import org.bukkit.World.Environment
 import java.nio.file.Files
@@ -43,7 +44,12 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
         config: Config,
     ) {
         if (!config.getBool("enabled")) return
-        val world = Bukkit.getWorld(id) ?: throw IllegalArgumentException("World $id does not exist.")
+        val world =
+            Bukkit.getWorld(id) ?: run {
+                BloodmoonPlugin.instance.logger.warning("World $id does not exist.")
+                return
+            }
+        world.gameRules.clone()
         registry.register(BloodmoonWorld(world, config))
     }
 
