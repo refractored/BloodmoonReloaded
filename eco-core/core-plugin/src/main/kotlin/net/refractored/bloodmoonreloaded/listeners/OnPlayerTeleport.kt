@@ -8,13 +8,13 @@ import org.bukkit.event.player.PlayerTeleportEvent
 class OnPlayerTeleport : Listener {
     @EventHandler
     fun execute(event: PlayerTeleportEvent) {
-        val origin = event.to.world
-        val destination = event.from.world
+        val origin = event.from.world
+        val destination = event.to.world
 
         if (origin == destination) return
 
-        val bloodmoonOrigin = BloodmoonRegistry.getWorld(event.to.world.name)
-        val bloodmoonDestination = BloodmoonRegistry.getWorld(event.from.world.name)
+        val bloodmoonOrigin = BloodmoonRegistry.getWorld(origin.name)
+        val bloodmoonDestination = BloodmoonRegistry.getWorld(destination.name)
 
         if (bloodmoonOrigin == null && bloodmoonDestination == null) return
 
@@ -25,6 +25,7 @@ class OnPlayerTeleport : Listener {
         }
 
         if (bloodmoonDestination?.active != null) {
+            if (!bloodmoonDestination.bossbarEnabled) return
             bloodmoonDestination.active!!.bossbar.addViewer(event.player)
         }
     }

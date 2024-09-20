@@ -44,8 +44,10 @@ Length: 360
 # Bossbar settings.
 Bossbar:
   Enabled: true
-  Color: red
-  Style: progress
+  Color: RED
+  Style: PROGRESS
+  Fog: true
+  DarkenScreen: true
 # Two options, "days" or "timed".
 # If "days" is selected, the bloodmoon will activate every x days.
 # If "timed" is selected, the bloodmoon will activate after a specific time.

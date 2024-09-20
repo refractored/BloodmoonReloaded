@@ -32,9 +32,17 @@ class ActiveBloodmoon(
     val expiryTime = System.currentTimeMillis() + length
 
     init {
-        bloodmoonWorld.world.players.forEach {
-            bossbar.addViewer(it)
-        }
         bloodmoonWorld.savedBloodmoonRemainingMillis = length.toDouble()
+        if (bloodmoonWorld.bossbarEnabled) {
+            bloodmoonWorld.world.players.forEach {
+                bossbar.addViewer(it)
+            }
+            if (bloodmoonWorld.createFog) {
+                bossbar.addFlags(BossBar.Flag.CREATE_WORLD_FOG)
+            }
+            if (bloodmoonWorld.darkenScreen) {
+                bossbar.addFlags(BossBar.Flag.DARKEN_SCREEN)
+            }
+        }
     }
 }

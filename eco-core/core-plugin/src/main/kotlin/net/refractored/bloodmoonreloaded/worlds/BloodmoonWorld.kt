@@ -95,10 +95,16 @@ class BloodmoonWorld(
     val length: Long = config.getString("Length").toLong() * 1000
 
     val bossbarEnabled: Boolean = config.getBool("Bossbar.Enabled")
+    val createFog: Boolean = config.getBool("Bossbar.Fog")
+    val darkenScreen: Boolean = config.getBool("Bossbar.DarkenScreen")
 
-    val bossbarColor = BossBar.Color.NAMES.value(config.getString("Bossbar.Color"))!!
+    val bossbarColor =
+        BossBar.Color.entries.find { it.name == config.getString("Bossbar.Color") }
+            ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("Bossbar.Color")}")
 
-    val bossbarStyle = BossBar.Overlay.valueOf(config.getString("Bossbar.Style"))
+    val bossbarStyle =
+        BossBar.Overlay.entries.find { it.name == config.getString("Bossbar.Style") }
+            ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("Bossbar.Style")}")
 
     val activationType = BloodmoonActivation.valueOf(config.getString("BloodmoonActivate").uppercase())
 
@@ -204,9 +210,14 @@ class BloodmoonWorld(
                 player.sendMessage(deactivationMessage.miniToComponent())
             }
         }
+
         savedBloodmoonRemainingMillis = 0.0
         daysUntilActivation = 0
-        world.weatherDuration = 0
+        world.setStorm(false)
+        world.clearWeatherDuration = 20 * 60 * 20
+        world.players.forEach { player ->
+            active?.bossbar?.removeViewer(player)
+        }
         active = null
     }
 
