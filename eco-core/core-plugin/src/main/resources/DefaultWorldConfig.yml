@@ -43,11 +43,14 @@ conditions: [ ]
 Length: 360
 # Bossbar settings.
 Bossbar:
+  BossbarTitle: "<red>Bloodmoon"
   Enabled: true
   Color: RED
   Style: PROGRESS
   Fog: true
   DarkenScreen: true
+# If bloodmoons should set do daylight cycle to false.
+SetDaylightCycle: false
 # Two options, "days" or "timed".
 # If "days" is selected, the bloodmoon will activate every x days.
 # If "timed" is selected, the bloodmoon will activate after a specific time.

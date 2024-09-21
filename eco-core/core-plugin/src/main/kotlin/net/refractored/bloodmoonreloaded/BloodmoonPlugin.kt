@@ -50,6 +50,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
     }
 
     override fun handleReload() {
+        // All tasks are cancelled on reload.
         val updateSavedData =
             object : Runnable {
                 override fun run() {

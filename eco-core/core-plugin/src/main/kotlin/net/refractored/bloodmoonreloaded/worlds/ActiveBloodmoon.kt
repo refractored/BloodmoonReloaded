@@ -3,6 +3,7 @@ package net.refractored.bloodmoonreloaded.worlds
 import net.kyori.adventure.bossbar.BossBar
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
+import org.bukkit.GameRule
 
 /**
  * Represents an active bloodmoon.
@@ -32,6 +33,12 @@ class ActiveBloodmoon(
     val expiryTime = System.currentTimeMillis() + length
 
     init {
+
+        if (bloodmoonWorld.setDaylightCycle) {
+            bloodmoonWorld.revertDaylightCycle = true
+            bloodmoonWorld.world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false)
+        }
+
         bloodmoonWorld.savedBloodmoonRemainingMillis = length.toDouble()
         if (bloodmoonWorld.bossbarEnabled) {
             bloodmoonWorld.world.players.forEach {

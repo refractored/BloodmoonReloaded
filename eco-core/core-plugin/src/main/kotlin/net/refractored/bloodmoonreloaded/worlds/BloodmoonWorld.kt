@@ -16,8 +16,10 @@ import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent.StopCause
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.Bukkit
+import org.bukkit.GameRule
 import org.bukkit.NamespacedKey
 import org.bukkit.World
+import org.bukkit.persistence.PersistentDataType
 import org.bukkit.scheduler.BukkitRunnable
 
 /**
@@ -90,6 +92,27 @@ class BloodmoonWorld(
     var daysUntilActivation: Int = savedDaysUntilActivation
 
     /**
+     * Represents whether the daylight cycle needs to be reverted.
+     *
+     * This property is `false` whenever the daylight cycle was reverted back to its original state,
+     * and `true` whenever it needs to be reverted back.
+     */
+    var revertDaylightCycle: Boolean
+        get() {
+            return world.persistentDataContainer.get(
+                NamespacedKey(BloodmoonPlugin.instance, "daylightcycle"),
+                PersistentDataType.BOOLEAN,
+            ) ?: false
+        }
+        set(value) {
+            world.persistentDataContainer.set(
+                NamespacedKey(BloodmoonPlugin.instance, "daylightcycle"),
+                PersistentDataType.BOOLEAN,
+                value,
+            )
+        }
+
+    /**
      * The length in milliseconds of the bloodmoon.
      */
     val length: Long = config.getString("Length").toLong() * 1000
@@ -97,6 +120,8 @@ class BloodmoonWorld(
     val bossbarEnabled: Boolean = config.getBool("Bossbar.Enabled")
     val createFog: Boolean = config.getBool("Bossbar.Fog")
     val darkenScreen: Boolean = config.getBool("Bossbar.DarkenScreen")
+
+    val setDaylightCycle: Boolean = config.getBool("SetDaylightCycle")
 
     val bossbarColor =
         BossBar.Color.entries.find { it.name == config.getString("Bossbar.Color") }
@@ -139,6 +164,10 @@ class BloodmoonWorld(
         private set
 
     init {
+
+        if (revertDaylightCycle) {
+            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true)
+        }
 
         if (savedBloodmoonRemainingMillis > 0) {
             active = ActiveBloodmoon(this, savedBloodmoonRemainingMillis.toLong())
@@ -204,6 +233,11 @@ class BloodmoonWorld(
         if (event.isCancelled()) {
             return
         }
+        if (setDaylightCycle) {
+            revertDaylightCycle = true
+            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false)
+        }
+
         deactivationCommands.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
         if (announce) {
             world.players.forEach { player ->
