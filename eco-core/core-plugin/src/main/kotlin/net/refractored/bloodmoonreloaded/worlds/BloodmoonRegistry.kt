@@ -50,7 +50,7 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
                 return
             }
         world.gameRules.clone()
-        registry.register(BloodmoonWorld(world, config))
+        registerWorld(BloodmoonWorld(world, config))
     }
 
     override fun clear(plugin: LibreforgePlugin) {
