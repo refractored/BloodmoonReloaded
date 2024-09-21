@@ -91,7 +91,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
                     }
                 }
             }
-        scheduler.runTimer(updateBloodmoons, 1, 15)
+        scheduler.runTimer(updateBloodmoons, 1, 12)
 
         val dayChecker =
             object : Runnable {

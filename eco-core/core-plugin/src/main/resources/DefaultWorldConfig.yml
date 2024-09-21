@@ -49,7 +49,7 @@ Bossbar:
   Style: PROGRESS
   Fog: true
   DarkenScreen: true
-# If bloodmoons should set do daylight cycle to false.
+# If bloodmoons should set do daylight cycle to false whenever a bloodmoon is active.
 SetDaylightCycle: true
 # Two options, "days" or "timed".
 # If "days" is selected, the bloodmoon will activate every x days.
