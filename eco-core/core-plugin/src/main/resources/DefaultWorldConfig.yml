@@ -50,7 +50,7 @@ Bossbar:
   Fog: true
   DarkenScreen: true
 # If bloodmoons should set do daylight cycle to false.
-SetDaylightCycle: false
+SetDaylightCycle: true
 # Two options, "days" or "timed".
 # If "days" is selected, the bloodmoon will activate every x days.
 # If "timed" is selected, the bloodmoon will activate after a specific time.
