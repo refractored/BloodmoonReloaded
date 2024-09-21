@@ -117,6 +117,7 @@ class BloodmoonWorld(
      */
     val length: Long = config.getString("Length").toLong() * 1000
 
+    val isIncreasing = config.getBool("Increasing")
     val bossbarEnabled: Boolean = config.getBool("Bossbar.Enabled")
     val createFog: Boolean = config.getBool("Bossbar.Fog")
     val darkenScreen: Boolean = config.getBool("Bossbar.DarkenScreen")

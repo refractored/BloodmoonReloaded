@@ -49,6 +49,9 @@ Bossbar:
   Style: PROGRESS
   Fog: true
   DarkenScreen: true
+  # If true, the bossbar will increase with time
+  # If false, the bossbar will decrease with time
+  Increasing: true
 # If bloodmoons should set do daylight cycle to false whenever a bloodmoon is active.
 SetDaylightCycle: true
 # Two options, "days" or "timed".

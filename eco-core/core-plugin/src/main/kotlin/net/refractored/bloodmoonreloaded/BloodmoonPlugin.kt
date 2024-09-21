@@ -9,12 +9,14 @@ import net.refractored.bloodmoonreloaded.commands.BloodmoonStartCommand
 import net.refractored.bloodmoonreloaded.commands.BloodmoonStopCommand
 import net.refractored.bloodmoonreloaded.exceptions.CommandErrorHandler
 import net.refractored.bloodmoonreloaded.libreforge.IsBloodmoonActive
+import net.refractored.bloodmoonreloaded.listeners.OnPlayerJoin
 import net.refractored.bloodmoonreloaded.listeners.OnPlayerTeleport
 import net.refractored.bloodmoonreloaded.listeners.OnWorldLoad
 import net.refractored.bloodmoonreloaded.listeners.OnWorldUnload
 import net.refractored.bloodmoonreloaded.worlds.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.worlds.BloodmoonRegistry.getRegisteredWorlds
 import net.refractored.bloodmoonreloaded.worlds.BloodmoonWorld
+import org.bukkit.scheduler.BukkitRunnable
 import revxrsal.commands.bukkit.BukkitCommandHandler
 
 class BloodmoonPlugin : LibreforgePlugin() {
@@ -47,6 +49,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
         eventManager.registerListener(OnWorldLoad())
         eventManager.registerListener(OnWorldUnload())
         eventManager.registerListener(OnPlayerTeleport())
+        eventManager.registerListener(OnPlayerJoin())
     }
 
     override fun handleReload() {
@@ -80,21 +83,15 @@ class BloodmoonPlugin : LibreforgePlugin() {
                             registeredWorld.deactivate()
                             return
                         }
-                        active.bossbar.progress(
-                            (System.currentTimeMillis() / active.expiryTime.toDouble()).toFloat().coerceIn(
-                                0.0F,
-                                1.0F,
-                            ),
-                        )
                         registeredWorld.world.setStorm(true)
                         registeredWorld.world.fullTime = registeredWorld.active?.fullTime!!
                     }
                 }
             }
-        scheduler.runTimer(updateBloodmoons, 1, 12)
+        scheduler.runTimer(updateBloodmoons, 1, 16)
 
         val dayChecker =
-            object : Runnable {
+            object : BukkitRunnable() {
                 override fun run() {
                     for (registeredWorld in getRegisteredWorlds()) {
                         if (registeredWorld.activationType != BloodmoonWorld.BloodmoonActivation.DAYS) return
@@ -111,7 +108,10 @@ class BloodmoonPlugin : LibreforgePlugin() {
                             continue
                         }
                         registeredWorld.lastDaytimeCheck = false
-                        if (registeredWorld.daysUntilActivation >= registeredWorld.activationDays && !registeredWorld.activating) {
+                        if (registeredWorld.daysUntilActivation >= registeredWorld.activationDays &&
+                            !registeredWorld.activating &&
+                            registeredWorld.active == null
+                        ) {
                             registeredWorld.activate()
                         }
                     }
