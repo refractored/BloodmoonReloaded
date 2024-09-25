@@ -13,9 +13,8 @@ import net.refractored.bloodmoonreloaded.listeners.OnPlayerJoin
 import net.refractored.bloodmoonreloaded.listeners.OnPlayerTeleport
 import net.refractored.bloodmoonreloaded.listeners.OnWorldLoad
 import net.refractored.bloodmoonreloaded.listeners.OnWorldUnload
-import net.refractored.bloodmoonreloaded.worlds.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.worlds.BloodmoonRegistry.getRegisteredWorlds
-import net.refractored.bloodmoonreloaded.worlds.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
+import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getRegisteredWorlds
 import org.bukkit.scheduler.BukkitRunnable
 import revxrsal.commands.bukkit.BukkitCommandHandler
 
@@ -66,13 +65,6 @@ class BloodmoonPlugin : LibreforgePlugin() {
                             registeredWorld.savedBloodmoonRemainingMillis = (active.expiryTime - System.currentTimeMillis()).toDouble()
                             return
                         }
-                        if (registeredWorld.activationType == BloodmoonWorld.BloodmoonActivation.DAYS) {
-                            registeredWorld.savedDaysUntilActivation = registeredWorld.daysUntilActivation
-                            return
-                        }
-                        if (registeredWorld.activationType == BloodmoonWorld.BloodmoonActivation.TIMED) {
-                            registeredWorld.savedMillisUntilActivation = registeredWorld.millisUntilActivation
-                        }
                     }
                 }
             }
@@ -96,46 +88,17 @@ class BloodmoonPlugin : LibreforgePlugin() {
             }
         scheduler.runTimer(updateBloodmoons, 1, 16)
 
-        val timeChecker =
+        val checkBloodmoons =
             object : BukkitRunnable() {
                 override fun run() {
                     for (registeredWorld in getRegisteredWorlds()) {
-                        if (registeredWorld.activationType != BloodmoonWorld.BloodmoonActivation.TIMED) return
-                        if (registeredWorld.millisUntilActivation < System.currentTimeMillis()) return
-                        if (registeredWorld.world.isDayTime) return
-                        if (registeredWorld.active != null && registeredWorld.activating) return
-                    }
-                }
-            }
-
-        val dayChecker =
-            object : BukkitRunnable() {
-                override fun run() {
-                    for (registeredWorld in getRegisteredWorlds()) {
-                        if (registeredWorld.activationType != BloodmoonWorld.BloodmoonActivation.DAYS) return
-                        if (registeredWorld.world.isDayTime) {
-                            if (registeredWorld.active != null) {
-                                registeredWorld.deactivate()
-                                continue
-                            }
-                            if (!registeredWorld.lastDaytimeCheck) {
-                                registeredWorld.daysUntilActivation += 1
-                                registeredWorld.lastDaytimeCheck = true
-                                continue
-                            }
-                            continue
-                        }
-                        registeredWorld.lastDaytimeCheck = false
-                        if (registeredWorld.daysUntilActivation >= registeredWorld.activationDays &&
-                            !registeredWorld.activating &&
-                            registeredWorld.active == null
-                        ) {
+                        if (registeredWorld.shouldActivate() && registeredWorld.active == null && !registeredWorld.activating) {
                             registeredWorld.activate()
                         }
                     }
                 }
             }
-        scheduler.runTimer(dayChecker, 1, 5)
+        scheduler.runTimer(checkBloodmoons, 0, 2)
     }
 
     override fun handleDisable() {

@@ -1,11 +1,13 @@
-package net.refractored.bloodmoonreloaded.worlds
+package net.refractored.bloodmoonreloaded.registry
 
 import com.willfp.eco.core.config.interfaces.Config
-import com.willfp.eco.core.config.interfaces.LoadableConfig
 import com.willfp.eco.core.registry.Registry
 import com.willfp.libreforge.loader.LibreforgePlugin
 import com.willfp.libreforge.loader.configs.ConfigCategory
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
+import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.types.DaysBloodmoon
+import net.refractored.bloodmoonreloaded.types.NoneBloodmoon
 import org.bukkit.Bukkit
 import org.bukkit.World.Environment
 import java.nio.file.Files
@@ -44,15 +46,22 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
         id: String,
         config: Config
     ) {
-        if (!config.getBool("enabled")) return
         val world =
             Bukkit.getWorld(id) ?: run {
                 BloodmoonPlugin.instance.logger.warning("World $id does not exist.")
                 return
             }
-        BloodmoonPlugin.instance.configHandler.addConfig(config as LoadableConfig)
 
-        registerWorld(BloodmoonWorld(world, config))
+        if (!config.getBool("enabled")) return
+
+        when (config.getString("BloodmoonActivate").lowercase()) {
+            "days" -> registerWorld(DaysBloodmoon(world, config))
+            "timed" -> registerWorld(TimedBloodmoon(world, config))
+            "none" -> registerWorld(NoneBloodmoon(world, config))
+        }
+
+        BloodmoonPlugin.instance.logger.warning("Bloodmoon world $id has no valid BloodmoonActivate type.")
+        registerWorld(NoneBloodmoon(world, config))
     }
 
     override fun clear(plugin: LibreforgePlugin) {

@@ -1,7 +1,8 @@
-package net.refractored.bloodmoonreloaded.worlds
+package net.refractored.bloodmoonreloaded.registry
 
 import net.kyori.adventure.bossbar.BossBar
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
+import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.GameRule
 import org.bukkit.scheduler.BukkitRunnable

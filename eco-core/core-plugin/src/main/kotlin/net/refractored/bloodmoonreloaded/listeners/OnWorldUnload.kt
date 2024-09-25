@@ -1,6 +1,6 @@
 package net.refractored.bloodmoonreloaded.listeners
 
-import net.refractored.bloodmoonreloaded.worlds.BloodmoonRegistry
+import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.world.WorldLoadEvent
