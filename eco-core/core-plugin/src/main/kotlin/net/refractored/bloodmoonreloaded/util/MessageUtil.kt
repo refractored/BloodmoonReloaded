@@ -22,7 +22,7 @@ object MessageUtil {
     fun String.replace(
         oldValue: String,
         newValue: Component,
-        ignoreCase: Boolean = false,
+        ignoreCase: Boolean = false
     ): String = this.replace(oldValue, newValue.toMinimessage(), ignoreCase)
 
     /**

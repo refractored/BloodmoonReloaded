@@ -27,42 +27,45 @@ import org.bukkit.scheduler.BukkitRunnable
  */
 class BloodmoonWorld(
     var world: World,
-    var config: Config,
+    var config: Config
 ) : Holder,
     Registrable {
     override val effects =
         Effects.compile(
             config.getSubsections("effects"),
-            ViolationContext(BloodmoonPlugin.instance, "World ${world.name}"),
+            ViolationContext(BloodmoonPlugin.instance, "World ${world.name}")
         )
 
     override val conditions =
         Conditions.compile(
             config.getSubsections("conditions"),
-            ViolationContext(BloodmoonPlugin.instance, "World ${world.name}"),
+            ViolationContext(BloodmoonPlugin.instance, "World ${world.name}")
         )
 
+    // I would set to just bloodmoon, but it will conflict with the old plugin.
     override val id: NamespacedKey = NamespacedKey("bloodmoonreloaded", world.name)
+
+    val balls: BloodmoonActivation = BloodmoonActivation.DAYS
 
     private val daysUntilKey =
         PersistentDataKey(
             BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_days_until"),
             PersistentDataKeyType.INT,
-            0,
+            0
         )
 
     private val millisUntilKey =
         PersistentDataKey(
             BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_millis_until"),
             PersistentDataKeyType.DOUBLE,
-            0.0,
+            0.0
         )
 
     private val bloodmoonRemainingMillis =
         PersistentDataKey(
             BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_bloodmoon_remaining_millis"),
             PersistentDataKeyType.DOUBLE,
-            0.0,
+            0.0
         )
 
     var savedBloodmoonRemainingMillis: Double
@@ -91,6 +94,8 @@ class BloodmoonWorld(
 
     var daysUntilActivation: Int = savedDaysUntilActivation
 
+    var timedActivationTime = millisUntilActivation.toLong() + System.currentTimeMillis()
+
     /**
      * Represents whether the daylight cycle needs to be reverted.
      *
@@ -100,15 +105,15 @@ class BloodmoonWorld(
     var revertDaylightCycle: Boolean
         get() {
             return world.persistentDataContainer.get(
-                NamespacedKey(BloodmoonPlugin.instance, "daylightcycle"),
-                PersistentDataType.BOOLEAN,
+                NamespacedKey(BloodmoonPlugin.instance, "${id.key}_daylightcycle"),
+                PersistentDataType.BOOLEAN
             ) ?: false
         }
         set(value) {
             world.persistentDataContainer.set(
-                NamespacedKey(BloodmoonPlugin.instance, "daylightcycle"),
+                NamespacedKey(BloodmoonPlugin.instance, "${id.key}_daylightcycle"),
                 PersistentDataType.BOOLEAN,
-                value,
+                value
             )
         }
 
@@ -118,11 +123,16 @@ class BloodmoonWorld(
     val length: Long = config.getString("Length").toLong() * 1000
 
     val isIncreasing = config.getBool("Increasing")
+
     val bossbarEnabled: Boolean = config.getBool("Bossbar.Enabled")
+
     val createFog: Boolean = config.getBool("Bossbar.Fog")
+
     val darkenScreen: Boolean = config.getBool("Bossbar.DarkenScreen")
 
     val setDaylightCycle: Boolean = config.getBool("SetDaylightCycle")
+
+    val setThunder: Boolean = config.getBool("SetThunder")
 
     val bossbarColor =
         BossBar.Color.entries.find { it.name == config.getString("Bossbar.Color") }
@@ -137,7 +147,7 @@ class BloodmoonWorld(
     enum class BloodmoonActivation {
         DAYS,
         TIMED,
-        NONE,
+        NONE
     }
 
     /**
@@ -147,7 +157,7 @@ class BloodmoonWorld(
 
     val activationDays = config.getInt("Days").toLong()
 
-    val activationTime = config.getString("Timed").toLong()
+    val activationTime = config.getString("Timed").toLong() * 1000
 
     val usePrefix = config.getBool("UsePrefix")
 
@@ -185,7 +195,7 @@ class BloodmoonWorld(
          * The length in milliseconds of the bloodmoon.
          */
         length: Long = this.length,
-        announce: Boolean = true,
+        announce: Boolean = true
     ) {
         if (active != null) {
             throw IllegalStateException("Bloodmoon is already active.")
@@ -226,7 +236,7 @@ class BloodmoonWorld(
      */
     fun deactivate(
         reason: StopCause = StopCause.PLUGIN,
-        announce: Boolean = true,
+        announce: Boolean = true
     ) {
         active ?: throw IllegalStateException("Bloodmoon is not active.")
         val event = BloodmoonStopEvent(world, this, reason)
@@ -234,11 +244,9 @@ class BloodmoonWorld(
         if (event.isCancelled()) {
             return
         }
-        if (setDaylightCycle) {
-            revertDaylightCycle = true
-            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false)
+        if (revertDaylightCycle) {
+            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true)
         }
-
         deactivationCommands.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
         if (announce) {
             world.players.forEach { player ->
@@ -249,7 +257,9 @@ class BloodmoonWorld(
         savedBloodmoonRemainingMillis = 0.0
         daysUntilActivation = 0
         world.setStorm(false)
-        world.clearWeatherDuration = 20 * 60 * 20
+        if (setThunder) {
+            world.clearWeatherDuration = 20 * 60 * 20
+        }
         world.players.forEach { player ->
             active?.bossbar?.removeViewer(player)
         }

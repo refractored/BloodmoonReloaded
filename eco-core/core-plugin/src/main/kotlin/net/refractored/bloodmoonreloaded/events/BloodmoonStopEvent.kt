@@ -18,7 +18,7 @@ class BloodmoonStopEvent(
     /**
      * The cause of the bloodmoon stopping
      */
-    val cause: StopCause,
+    val cause: StopCause
 ) : Event(),
     Cancellable {
     private var cancelled = false
@@ -62,5 +62,10 @@ class BloodmoonStopEvent(
          * The bloodmoon was stopped because the world was unloaded.
          */
         UNLOAD,
+
+        /**
+         * The bloodmoon was stopped because the plugin was reloaded.
+         */
+        RELOAD
     }
 }

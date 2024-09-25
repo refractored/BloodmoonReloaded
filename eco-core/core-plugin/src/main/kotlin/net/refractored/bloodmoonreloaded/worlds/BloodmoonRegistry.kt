@@ -1,6 +1,7 @@
 package net.refractored.bloodmoonreloaded.worlds
 
 import com.willfp.eco.core.config.interfaces.Config
+import com.willfp.eco.core.config.interfaces.LoadableConfig
 import com.willfp.eco.core.registry.Registry
 import com.willfp.libreforge.loader.LibreforgePlugin
 import com.willfp.libreforge.loader.configs.ConfigCategory
@@ -41,7 +42,7 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
     override fun acceptConfig(
         plugin: LibreforgePlugin,
         id: String,
-        config: Config,
+        config: Config
     ) {
         if (!config.getBool("enabled")) return
         val world =
@@ -49,7 +50,8 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
                 BloodmoonPlugin.instance.logger.warning("World $id does not exist.")
                 return
             }
-        world.gameRules.clone()
+        BloodmoonPlugin.instance.configHandler.addConfig(config as LoadableConfig)
+
         registerWorld(BloodmoonWorld(world, config))
     }
 

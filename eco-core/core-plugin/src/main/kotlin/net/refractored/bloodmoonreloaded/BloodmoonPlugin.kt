@@ -5,8 +5,8 @@ import com.willfp.libreforge.conditions.Conditions
 import com.willfp.libreforge.loader.LibreforgePlugin
 import com.willfp.libreforge.loader.configs.ConfigCategory
 import com.willfp.libreforge.registerGenericHolderProvider
-import net.refractored.bloodmoonreloaded.commands.BloodmoonStartCommand
-import net.refractored.bloodmoonreloaded.commands.BloodmoonStopCommand
+import net.refractored.bloodmoonreloaded.commands.*
+import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
 import net.refractored.bloodmoonreloaded.exceptions.CommandErrorHandler
 import net.refractored.bloodmoonreloaded.libreforge.IsBloodmoonActive
 import net.refractored.bloodmoonreloaded.listeners.OnPlayerJoin
@@ -24,7 +24,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
 
     override fun loadConfigCategories(): List<ConfigCategory> =
         listOf(
-            BloodmoonRegistry,
+            BloodmoonRegistry
         )
 
     override fun handleEnable() {
@@ -36,6 +36,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
 
         handler.register(BloodmoonStartCommand())
         handler.register(BloodmoonStopCommand())
+        handler.register(BloodmoonReloadCommand())
 
         Conditions.register(IsBloodmoonActive)
 
@@ -53,6 +54,9 @@ class BloodmoonPlugin : LibreforgePlugin() {
     }
 
     override fun handleReload() {
+        for (activeWorld in BloodmoonRegistry.getActiveWorlds()) {
+            activeWorld.deactivate(BloodmoonStopEvent.StopCause.RELOAD, false)
+        }
         // All tasks are cancelled on reload.
         val updateSavedData =
             object : Runnable {
@@ -83,12 +87,26 @@ class BloodmoonPlugin : LibreforgePlugin() {
                             registeredWorld.deactivate()
                             return
                         }
-                        registeredWorld.world.setStorm(true)
+                        if (registeredWorld.setThunder) {
+                            registeredWorld.world.setStorm(true)
+                        }
                         registeredWorld.world.fullTime = registeredWorld.active?.fullTime!!
                     }
                 }
             }
         scheduler.runTimer(updateBloodmoons, 1, 16)
+
+        val timeChecker =
+            object : BukkitRunnable() {
+                override fun run() {
+                    for (registeredWorld in getRegisteredWorlds()) {
+                        if (registeredWorld.activationType != BloodmoonWorld.BloodmoonActivation.TIMED) return
+                        if (registeredWorld.millisUntilActivation < System.currentTimeMillis()) return
+                        if (registeredWorld.world.isDayTime) return
+                        if (registeredWorld.active != null && registeredWorld.activating) return
+                    }
+                }
+            }
 
         val dayChecker =
             object : BukkitRunnable() {

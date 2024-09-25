@@ -14,7 +14,7 @@ class ActiveBloodmoon(
     /**
      * The initial length of the bloodmoon.
      */
-    var length: Long = bloodmoonWorld.length,
+    var length: Long = bloodmoonWorld.length
 ) {
     var fullTime: Long = bloodmoonWorld.world.fullTime
 
@@ -25,7 +25,7 @@ class ActiveBloodmoon(
                 .miniToComponent(),
             1.0f,
             bloodmoonWorld.bossbarColor,
-            bloodmoonWorld.bossbarStyle,
+            bloodmoonWorld.bossbarStyle
         )
 
     /**
@@ -53,7 +53,8 @@ class ActiveBloodmoon(
         }
 
         bloodmoonWorld.savedBloodmoonRemainingMillis = length.toDouble()
-        if (bloodmoonWorld.bossbarEnabled) {
+        // Init is weird and doesn't let you return, don't shun me for nesting :c
+        if (!bloodmoonWorld.bossbarEnabled) {
             bloodmoonWorld.world.players.forEach {
                 bossbar.addViewer(it)
             }
@@ -82,7 +83,7 @@ class ActiveBloodmoon(
                     }
                 },
                 1,
-                1,
+                1
             )
         }
     }

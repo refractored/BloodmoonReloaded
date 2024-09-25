@@ -41,6 +41,8 @@ effects:
 conditions: [ ]
 # Length of the bloodmoon in seconds.
 Length: 360
+# If the weather should be set to thunder during a bloodmoon.
+SetThunder: true
 # Bossbar settings.
 Bossbar:
   BossbarTitle: "<red>Bloodmoon"
@@ -55,8 +57,8 @@ Bossbar:
 # If bloodmoons should set do daylight cycle to false whenever a bloodmoon is active.
 SetDaylightCycle: true
 # Two options, "days" or "timed".
-# If "days" is selected, the bloodmoon will activate every x days.
-# If "timed" is selected, the bloodmoon will activate after a specific time.
+# If "days" is selected, the bloodmoon will activate every x days at night.
+# If "timed" is selected, the bloodmoon will activate after a specific time and when the world is night.
 # If "none", or anything else is selected, the bloodmoon will not activate on its own.
 BloodmoonActivate: Days
 # These two options only apply if BloodmoonActivate is set to their respective values.
@@ -65,6 +67,7 @@ BloodmoonActivate: Days
 # This may not work correctly if you have a plugin that alters the rate of time.
 Days: 5
 # The time in seconds until the bloodmoon activates.
+# Once the plugin detects that it is night, and the time has passed, the bloodmoon will activate.
 Timed: 0
 # If the prefix should be added to the message.
 UsePrefix: true

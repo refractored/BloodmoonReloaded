@@ -2,6 +2,7 @@ messages:
   # Prefix for all messages
   prefix: "<#A50000>Bloodmoon<White> »<reset> "
 
+  confirm-reload: "<yellow>Reloading the plugin will STOP all bloodmoons. To continue anyway, use /bloodmoon reload true."
   reloaded: "<green>Reloaded!"
 
   # Not all of these are actually used, but they are here incase they are ever needed.
