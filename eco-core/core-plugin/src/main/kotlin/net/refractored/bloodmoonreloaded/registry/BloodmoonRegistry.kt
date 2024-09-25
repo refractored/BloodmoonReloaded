@@ -8,6 +8,7 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.types.DaysBloodmoon
 import net.refractored.bloodmoonreloaded.types.NoneBloodmoon
+import net.refractored.bloodmoonreloaded.types.TimedBloodmoon
 import org.bukkit.Bukkit
 import org.bukkit.World.Environment
 import java.nio.file.Files

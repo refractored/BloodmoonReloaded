@@ -23,17 +23,17 @@ class DaysBloodmoon(
             0
         )
 
-    var dayCount: Int
+    private var dayCount: Int
         get() = Bukkit.getServer().profile.read(dayCountKey)
         set(value) = Bukkit.getServer().profile.write(dayCountKey, value)
 
-    val daysUntilActivation: Int
+    private val daysUntilActivation: Int
         get() = config.getInt("Days")
 
     /**
      * The last value of [World.isDayTime] in the last tick.
      */
-    var lastDaytimeCheck: Boolean = false
+    private var lastDaytimeCheck: Boolean = false
 
     override fun shouldActivate(): Boolean {
         if (active != null) {

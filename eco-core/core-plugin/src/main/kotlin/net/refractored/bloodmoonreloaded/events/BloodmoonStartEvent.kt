@@ -1,6 +1,6 @@
 package net.refractored.bloodmoonreloaded.events
 
-import net.refractored.bloodmoonreloaded.registry.Bloodmoon
+import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
 import org.bukkit.World
 import org.bukkit.event.Cancellable
 import org.bukkit.event.Event
@@ -14,7 +14,7 @@ class BloodmoonStartEvent(
     /**
      * The BloodmoonWorld that the bloodmoon is starting in
      */
-    val BloodmoonWorld: Bloodmoon
+    val BloodmoonWorld: BloodmoonWorld
 ) : Event(),
     Cancellable {
     private var cancelled = false

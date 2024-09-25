@@ -20,17 +20,17 @@ class TimedBloodmoon(
             0.0
         )
 
-    var remainingTime: Double
+    private var remainingTime: Double
         get() = Bukkit.getServer().profile.read(timeKey)
         set(value) = Bukkit.getServer().profile.write(timeKey, value)
 
-    val millisUntilActivation: Long = if (remainingTime == 0.0) {
+    private val millisUntilActivation: Long = if (remainingTime == 0.0) {
         config.getString("Time").toLong() * 1000
     } else {
         remainingTime.toLong()
     }
 
-    val activationTime = System.currentTimeMillis() + millisUntilActivation
+    private val activationTime = System.currentTimeMillis() + millisUntilActivation
 
     override fun shouldActivate(): Boolean {
         remainingTime = (activationTime - System.currentTimeMillis()).toDouble()
