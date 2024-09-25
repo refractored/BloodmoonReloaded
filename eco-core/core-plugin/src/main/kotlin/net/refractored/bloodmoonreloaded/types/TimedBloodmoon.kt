@@ -9,8 +9,8 @@ import org.bukkit.Bukkit
 import org.bukkit.World
 
 class TimedBloodmoon(
-    override var world: World,
-    override var config: Config
+    world: World,
+    config: Config
 ) : BloodmoonWorld(world, config) {
 
     private val timeKey =

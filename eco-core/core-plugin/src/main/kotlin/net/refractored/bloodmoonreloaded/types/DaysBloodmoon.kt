@@ -12,8 +12,8 @@ import org.bukkit.World
  * Represents a bloodmoon that is activated after a certain amount of time.
  */
 class DaysBloodmoon(
-    override var world: World,
-    override var config: Config
+    world: World,
+    config: Config
 ) : BloodmoonWorld(world, config) {
 
     private val dayCountKey =

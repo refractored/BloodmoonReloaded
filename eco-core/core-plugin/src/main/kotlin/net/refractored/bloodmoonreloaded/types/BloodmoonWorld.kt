@@ -23,13 +23,24 @@ import org.bukkit.World
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.scheduler.BukkitRunnable
 
+/**
+ * Represents the configuration and state of a bloodmoon in a specific world.
+ *
+ * This abstract class provides the common functionality and properties required to manage
+ * a bloodmoon event, including activation and deactivation logic, configuration settings,
+ * and persistent data management.
+ *
+ * @property world The world in which the bloodmoon event occurs.
+ * @property config The configuration settings for the bloodmoon event.
+ */
+
 abstract class BloodmoonWorld(
-    open var world: World,
-    open var config: Config
+    var world: World,
+    var config: Config
 ) : Holder,
     Registrable {
 
-    override val id: NamespacedKey = NamespacedKey("bloodmoonreloaded", world.name)
+    final override val id: NamespacedKey = NamespacedKey("bloodmoonreloaded", world.name)
 
     override val effects =
         Effects.compile(
