@@ -45,7 +45,7 @@ Length: 360
 SetThunder: true
 # Bossbar settings.
 Bossbar:
-  BossbarTitle: "<red>Bloodmoon"
+  Title: "<red>Bloodmoon"
   Enabled: true
   Color: RED
   Style: PROGRESS

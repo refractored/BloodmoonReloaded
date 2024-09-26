@@ -1,6 +1,7 @@
 package net.refractored.bloodmoonreloaded.listeners
 
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
+import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerTeleportEvent
@@ -18,15 +19,15 @@ class OnPlayerTeleport : Listener {
 
         if (bloodmoonOrigin == null && bloodmoonDestination == null) return
 
-        if (bloodmoonOrigin?.active == null && bloodmoonDestination?.active == null) return
+        if (bloodmoonOrigin?.status != BloodmoonWorld.BloodmoonStatus.INACTIVE && bloodmoonDestination?.status != BloodmoonWorld.BloodmoonStatus.INACTIVE) return
 
-        if (bloodmoonOrigin?.active != null) {
-            bloodmoonOrigin.active!!.bossbar.removeViewer(event.player)
+        if (bloodmoonOrigin?.status != BloodmoonWorld.BloodmoonStatus.ACTIVE) {
+            bloodmoonOrigin?.bossbar?.removeViewer(event.player)
         }
 
-        if (bloodmoonDestination?.active != null) {
-            if (!bloodmoonDestination.bossbarEnabled) return
-            bloodmoonDestination.active!!.bossbar.addViewer(event.player)
+        if (bloodmoonDestination?.status != BloodmoonWorld.BloodmoonStatus.ACTIVE) {
+            if (bloodmoonDestination?.bossbarEnabled == false) return
+            bloodmoonDestination?.bossbar?.addViewer(event.player)
         }
     }
 }

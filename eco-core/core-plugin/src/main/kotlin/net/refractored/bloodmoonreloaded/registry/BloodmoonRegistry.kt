@@ -18,7 +18,7 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
 
     fun getRegisteredWorlds() = registry.toList()
 
-    fun getActiveWorlds() = registry.toList().filter { it.active != null }
+    fun getActiveWorlds() = registry.toList().filter { it.status == BloodmoonWorld.BloodmoonStatus.ACTIVE }
 
     fun getWorld(id: String) = registry[id]
 
@@ -53,12 +53,26 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
                 return
             }
 
+        if (registry.find { it.world == world } != null) {
+            BloodmoonPlugin.instance.logger.warning("World $id is already registered.")
+            return
+        }
+
         if (!config.getBool("enabled")) return
 
         when (config.getString("BloodmoonActivate").lowercase()) {
-            "days" -> registerWorld(DaysBloodmoon(world, config))
-            "timed" -> registerWorld(TimedBloodmoon(world, config))
-            "none" -> registerWorld(NoneBloodmoon(world, config))
+            "days" -> {
+                registerWorld(DaysBloodmoon(world, config))
+                return
+            }
+            "timed" -> {
+                registerWorld(TimedBloodmoon(world, config))
+                return
+            }
+            "none" -> {
+                registerWorld(NoneBloodmoon(world, config))
+                return
+            }
         }
 
         BloodmoonPlugin.instance.logger.warning("Bloodmoon world $id has no valid BloodmoonActivate type.")

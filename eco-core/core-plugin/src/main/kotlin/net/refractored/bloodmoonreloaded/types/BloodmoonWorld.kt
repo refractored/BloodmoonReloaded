@@ -14,7 +14,6 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStartEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent.StopCause
-import net.refractored.bloodmoonreloaded.registry.ActiveBloodmoon
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.Bukkit
 import org.bukkit.GameRule
@@ -40,7 +39,18 @@ abstract class BloodmoonWorld(
 ) : Holder,
     Registrable {
 
+    /**
+     * Represents the status of the bloodmoon event.
+     */
+    enum class BloodmoonStatus {
+        ACTIVE,
+        INACTIVE,
+        ACTIVATING
+    }
+
     final override val id: NamespacedKey = NamespacedKey("bloodmoonreloaded", world.name)
+
+    var status = BloodmoonStatus.INACTIVE
 
     override val effects =
         Effects.compile(
@@ -82,9 +92,14 @@ abstract class BloodmoonWorld(
             0.0
         )
 
+    /**
+     * The remaining time in milliseconds of the bloodmoon.
+     */
     var savedBloodmoonRemainingMillis: Double
         get() = Bukkit.getServer().profile.read(bloodmoonRemainingMillis)
         set(value) = Bukkit.getServer().profile.write(bloodmoonRemainingMillis, value)
+
+    var fullTime: Long = 0L
 
     /**
      * The length in milliseconds of the bloodmoon.
@@ -123,13 +138,38 @@ abstract class BloodmoonWorld(
 
     override fun getID(): String = world.name
 
-    var active: ActiveBloodmoon? = null
-        private set
+//    var active: ActiveBloodmoon? = null
+//        private set
 
     /**
      * Whether the bloodmoon is currently activating.
      */
-    var activating: Boolean = false
+    var bossbar =
+        BossBar.bossBar(
+            config
+                .getString("Bossbar.Title")
+                .miniToComponent(),
+            1.0f,
+            bossbarColor,
+            bossbarStyle
+        )
+
+    /**
+     * The time the bloodmoon expires.
+     */
+    var expiryTime = 0L
+
+    /**
+     * @return The remaining bloodmoon time in milliseconds
+     */
+    val remainingTime: Long
+        get() {
+            val time = System.currentTimeMillis()
+            if ((expiryTime - time) <= 0) {
+                return 0
+            }
+            return expiryTime - time
+        }
 
     open fun onActivation() {}
 
@@ -149,16 +189,15 @@ abstract class BloodmoonWorld(
         length: Long = this.length,
         announce: Boolean = true
     ) {
-        if (active != null) {
+        if (status != BloodmoonStatus.INACTIVE) {
             throw IllegalStateException("Bloodmoon is already active.")
         }
         val event = BloodmoonStartEvent(world, this)
         event.callEvent()
-        activating = true
+        status = BloodmoonStatus.ACTIVATING
         if (event.isCancelled()) {
             return
         }
-
         activationCommands.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
         if (announce) {
             world.players.forEach { player ->
@@ -170,9 +209,9 @@ abstract class BloodmoonWorld(
                 override fun run() {
                     if (world.time in 17500..18500) {
                         cancel()
-//                        active = ActiveBloodmoon(this@BloodmoonWorld, length)
+                        activateBloodmoon(length)
+                        status = BloodmoonStatus.ACTIVE
                         onActivation()
-                        activating = false
                         return
                     }
 
@@ -185,13 +224,57 @@ abstract class BloodmoonWorld(
     }
 
     /**
+     * Enables the bloodmoon.
+     */
+    private fun activateBloodmoon(length: Long) {
+        if (setDaylightCycle) {
+            revertDaylightCycle = true
+            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false)
+        }
+
+        expiryTime = System.currentTimeMillis() + length
+        fullTime = world.fullTime
+        savedBloodmoonRemainingMillis = length.toDouble()
+
+        if (!bossbarEnabled) return
+        world.players.forEach {
+            bossbar.addViewer(it)
+        }
+        if (createFog) {
+            bossbar.addFlags(BossBar.Flag.CREATE_WORLD_FOG)
+        }
+        if (darkenScreen) {
+            bossbar.addFlags(BossBar.Flag.DARKEN_SCREEN)
+        }
+
+        object : BukkitRunnable() {
+            override fun run() {
+                val progress =
+                    if (!isIncreasing) {
+                        val elapsedTime = System.currentTimeMillis() - (expiryTime - length)
+                        (elapsedTime.toDouble() / length.toDouble()).coerceIn(0.0, 1.0).toFloat()
+                    } else {
+                        val remainingTime = expiryTime - System.currentTimeMillis()
+                        (remainingTime.toDouble() / length.toDouble()).coerceIn(0.0, 1.0).toFloat()
+                    }
+                bossbar.progress(progress)
+                if (status == BloodmoonStatus.INACTIVE) {
+                    cancel()
+                    BloodmoonPlugin.instance.logger.info(":3")
+                    return
+                }
+            }
+        }.runTaskTimer(BloodmoonPlugin.instance, 1, 1)
+    }
+
+    /**
      * Deactivate the bloodmoon.
      */
     fun deactivate(
         reason: StopCause = StopCause.PLUGIN,
         announce: Boolean = true
     ) {
-        active ?: throw IllegalStateException("Bloodmoon is not active.")
+        if (status == BloodmoonStatus.INACTIVE) throw IllegalStateException("Bloodmoon is not active.")
         val event = BloodmoonStopEvent(world, this, reason)
         event.callEvent()
         if (event.isCancelled()) {
@@ -213,13 +296,15 @@ abstract class BloodmoonWorld(
             world.clearWeatherDuration = 20 * 60 * 20
         }
         world.players.forEach { player ->
-            active?.bossbar?.removeViewer(player)
+            bossbar.removeViewer(player)
         }
-        active = null
+        status = BloodmoonStatus.INACTIVE
         onDeactivation()
     }
 
     override fun onRemove() {
-        active?.let { deactivate(StopCause.UNLOAD) }
+        if (status == BloodmoonStatus.ACTIVE) {
+            deactivate(StopCause.UNLOAD, false)
+        }
     }
 }

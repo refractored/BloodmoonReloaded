@@ -3,6 +3,7 @@ package net.refractored.bloodmoonreloaded.commands
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.exceptions.CommandErrorException
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
+import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.World
@@ -28,7 +29,7 @@ class BloodmoonStartCommand {
                     .getStringPrefixed("messages.not-a-bloodmoon-world")
                     .miniToComponent()
             )
-        bloodmoonWorld.active?.let {
+        if (bloodmoonWorld.status != BloodmoonWorld.BloodmoonStatus.INACTIVE) {
             throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
                     .getStringPrefixed("messages.bloodmoon-already-active")

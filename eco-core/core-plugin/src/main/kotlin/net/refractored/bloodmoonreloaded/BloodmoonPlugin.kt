@@ -14,7 +14,9 @@ import net.refractored.bloodmoonreloaded.listeners.OnPlayerTeleport
 import net.refractored.bloodmoonreloaded.listeners.OnWorldLoad
 import net.refractored.bloodmoonreloaded.listeners.OnWorldUnload
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
+import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getActiveWorlds
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getRegisteredWorlds
+import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
 import org.bukkit.scheduler.BukkitRunnable
 import revxrsal.commands.bukkit.BukkitCommandHandler
 
@@ -60,11 +62,9 @@ class BloodmoonPlugin : LibreforgePlugin() {
         val updateSavedData =
             object : Runnable {
                 override fun run() {
-                    for (registeredWorld in getRegisteredWorlds()) {
-                        registeredWorld.active?.let { active ->
-                            registeredWorld.savedBloodmoonRemainingMillis = (active.expiryTime - System.currentTimeMillis()).toDouble()
-                            return
-                        }
+                    for (registeredWorld in getActiveWorlds()) {
+                        registeredWorld.savedBloodmoonRemainingMillis = (registeredWorld.expiryTime - System.currentTimeMillis()).toDouble()
+                        return
                     }
                 }
             }
@@ -73,16 +73,15 @@ class BloodmoonPlugin : LibreforgePlugin() {
         val updateBloodmoons =
             object : Runnable {
                 override fun run() {
-                    for (registeredWorld in BloodmoonRegistry.getActiveWorlds()) {
-                        val active = registeredWorld.active ?: continue
-                        if (System.currentTimeMillis() >= active.expiryTime) {
+                    for (registeredWorld in getActiveWorlds()) {
+                        if (System.currentTimeMillis() >= registeredWorld.expiryTime) {
                             registeredWorld.deactivate()
                             return
                         }
                         if (registeredWorld.setThunder) {
                             registeredWorld.world.setStorm(true)
                         }
-                        registeredWorld.world.fullTime = registeredWorld.active?.fullTime!!
+                        registeredWorld.world.fullTime = registeredWorld.fullTime
                     }
                 }
             }
@@ -92,7 +91,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
             object : BukkitRunnable() {
                 override fun run() {
                     for (registeredWorld in getRegisteredWorlds()) {
-                        if (registeredWorld.shouldActivate() && registeredWorld.active == null && !registeredWorld.activating) {
+                        if (registeredWorld.shouldActivate() && registeredWorld.status == BloodmoonWorld.BloodmoonStatus.INACTIVE) {
                             registeredWorld.activate()
                         }
                     }

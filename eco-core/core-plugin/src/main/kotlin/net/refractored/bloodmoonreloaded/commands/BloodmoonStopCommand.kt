@@ -4,6 +4,7 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent.StopCause
 import net.refractored.bloodmoonreloaded.exceptions.CommandErrorException
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
+import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.World
@@ -29,11 +30,13 @@ class BloodmoonStopCommand {
                     .getStringPrefixed("messages.not-a-bloodmoon-world")
                     .miniToComponent()
             )
-        bloodmoonWorld.active ?: throw CommandErrorException(
-            BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.bloodmoon-not-active")
-                .miniToComponent()
-        )
+        if (bloodmoonWorld.status == BloodmoonWorld.BloodmoonStatus.INACTIVE) {
+            throw CommandErrorException(
+                BloodmoonPlugin.instance.langYml
+                    .getStringPrefixed("messages.bloodmoon-not-active")
+                    .miniToComponent()
+            )
+        }
         bloodmoonWorld.deactivate(StopCause.COMMAND)
         actor.reply(
             BloodmoonPlugin.instance.langYml

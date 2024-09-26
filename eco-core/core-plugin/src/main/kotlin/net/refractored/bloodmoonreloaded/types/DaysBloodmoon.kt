@@ -36,7 +36,7 @@ class DaysBloodmoon(
     private var lastDaytimeCheck: Boolean = false
 
     override fun shouldActivate(): Boolean {
-        if (active != null) {
+        if (status != BloodmoonStatus.INACTIVE) {
             return false
         }
         if (world.isDayTime && !lastDaytimeCheck) {
