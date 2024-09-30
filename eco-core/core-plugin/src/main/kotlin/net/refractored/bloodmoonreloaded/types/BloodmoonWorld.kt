@@ -14,6 +14,7 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStartEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent.StopCause
+import net.refractored.bloodmoonreloaded.util.MessageUtil.miniPrefix
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.Bukkit
 import org.bukkit.GameRule
@@ -126,11 +127,19 @@ abstract class BloodmoonWorld(
         BossBar.Overlay.entries.find { it.name == config.getString("Bossbar.Style") }
             ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("Bossbar.Style")}")
 
-    val usePrefix = config.getBool("UsePrefix")
+    val usePrefix = config.getBool("Messages.UsePrefix")
 
-    val activationMessage = config.getString("Messages.Activation")
+    val activationMessage = if (usePrefix) {
+        BloodmoonPlugin.instance.langYml.miniPrefix() + config.getString("Messages.Activation")
+    } else {
+        config.getString("Messages.Activation")
+    }
 
-    val deactivationMessage = config.getString("Messages.Deactivation")
+    val deactivationMessage = if (usePrefix) {
+        BloodmoonPlugin.instance.langYml.miniPrefix() + config.getString("Messages.Deactivation")
+    } else {
+        config.getString("Messages.Deactivation")
+    }
 
     val activationCommands = config.getStrings("Commands.Activation").map { it.replace("%world%", world.name) }
 

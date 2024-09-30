@@ -1,3 +1,7 @@
 #
 # Configuration file for the core plugin
 #
+
+# Worlds that should generate or read a config for.
+DisabledWorlds:
+  - ThisWorldIsDisabledFromBloodmoons

@@ -25,8 +25,10 @@ object MessageUtil {
         ignoreCase: Boolean = false
     ): String = this.replace(oldValue, newValue.toMinimessage(), ignoreCase)
 
+    fun LangYml.miniPrefix(): String = this.getString("messages.prefix")
+
     /**
      * Gets a string from the lang.yml and adds a prefix.
      */
-    fun LangYml.getStringPrefixed(key: String): String = this.getString("messages.prefix") + this.getString(key)
+    fun LangYml.getStringPrefixed(key: String): String = this.miniPrefix() + this.getString(key)
 }

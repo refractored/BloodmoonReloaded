@@ -13,11 +13,17 @@ import org.bukkit.Bukkit
 import org.bukkit.World.Environment
 import java.nio.file.Files
 
+/**
+ * Registry for Bloodmoon worlds.
+ */
 object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
     private val registry = Registry<BloodmoonWorld>()
 
     fun getRegisteredWorlds() = registry.toList()
 
+    /**
+     * Get all worlds with the [BloodmoonWorld.BloodmoonStatus.ACTIVE]
+     */
     fun getActiveWorlds() = registry.toList().filter { it.status == BloodmoonWorld.BloodmoonStatus.ACTIVE }
 
     fun getWorld(id: String) = registry[id]
@@ -35,6 +41,9 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
         }
         for (world in Bukkit.getWorlds()) {
             if (world.environment != Environment.NORMAL) continue
+            if (BloodmoonPlugin.instance.configYml.getStrings("DisabledWorlds").contains(world.name)) {
+                return
+            }
             if (plugin.dataFolder.resolve("worlds/${world.name}.yml").exists()) continue
             plugin.getResource("DefaultWorldConfig.yml").use {
                 Files.copy(it!!, plugin.dataFolder.resolve("worlds/${world.name}.yml").toPath())
@@ -58,7 +67,9 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
             return
         }
 
-        if (!config.getBool("enabled")) return
+        if (BloodmoonPlugin.instance.configYml.getStrings("DisabledWorlds").contains(id)) {
+            return
+        }
 
         when (config.getString("BloodmoonActivate").lowercase()) {
             "days" -> {
