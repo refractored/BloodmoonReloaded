@@ -23,6 +23,13 @@ class DaysBloodmoon(
             0
         )
 
+    private val lastDaytimeKey =
+        PersistentDataKey(
+            BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_last_daytime"),
+            PersistentDataKeyType.BOOLEAN,
+            true
+        )
+
     var dayCount: Int
         get() = Bukkit.getServer().profile.read(dayCountKey)
         private set(value) = Bukkit.getServer().profile.write(dayCountKey, value)
@@ -33,7 +40,9 @@ class DaysBloodmoon(
     /**
      * The last value of [World.isDayTime] two ticks ago.
      */
-    private var lastDaytimeCheck: Boolean = false
+    var lastDaytimeCheck: Boolean
+        get() = Bukkit.getServer().profile.read(lastDaytimeKey)
+        private set(value) = Bukkit.getServer().profile.write(lastDaytimeKey, value)
 
     override fun shouldActivate(): Boolean {
         if (status != BloodmoonStatus.INACTIVE) {
