@@ -38,6 +38,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
         handler.register(BloodmoonStartCommand())
         handler.register(BloodmoonStopCommand())
         handler.register(BloodmoonReloadCommand())
+        handler.register(BloodmoonInfoCommand())
 
         Conditions.register(IsBloodmoonActive)
 
@@ -54,7 +55,13 @@ class BloodmoonPlugin : LibreforgePlugin() {
         eventManager.registerListener(OnPlayerJoin())
     }
 
+    private var registeredBrigadier = false
+
     override fun handleReload() {
+        if (!registeredBrigadier) {
+            handler.registerBrigadier()
+            registeredBrigadier = true
+        }
         for (activeWorld in BloodmoonRegistry.getActiveWorlds()) {
             activeWorld.deactivate(BloodmoonStopEvent.StopCause.RELOAD, false)
         }
@@ -91,7 +98,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
             object : BukkitRunnable() {
                 override fun run() {
                     for (registeredWorld in getRegisteredWorlds()) {
-                        if (!registeredWorld.shouldActivate() && registeredWorld.status != BloodmoonWorld.BloodmoonStatus.INACTIVE) return
+                        if (!registeredWorld.shouldActivate() || registeredWorld.status != BloodmoonWorld.BloodmoonStatus.INACTIVE) continue
                         registeredWorld.activate()
                     }
                 }

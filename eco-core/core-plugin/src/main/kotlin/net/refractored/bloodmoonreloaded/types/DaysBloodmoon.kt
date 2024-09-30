@@ -31,7 +31,7 @@ class DaysBloodmoon(
         get() = config.getInt("Days")
 
     /**
-     * The last value of [World.isDayTime] in the last tick.
+     * The last value of [World.isDayTime] two ticks ago.
      */
     private var lastDaytimeCheck: Boolean = false
 
@@ -41,19 +41,19 @@ class DaysBloodmoon(
         }
         if (world.isDayTime && !lastDaytimeCheck) {
             lastDaytimeCheck = true
-            dayCount++
+            dayCount--
             return false
         }
         if (!world.isDayTime) {
             lastDaytimeCheck = false
         }
-        if (dayCount < daysUntilActivation) {
+        if (dayCount >= 0) {
             return false
         }
         return true
     }
 
     override fun onActivation() {
-        dayCount = 0
+        dayCount = daysUntilActivation
     }
 }

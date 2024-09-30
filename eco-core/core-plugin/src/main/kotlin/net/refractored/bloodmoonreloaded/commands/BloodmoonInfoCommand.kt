@@ -3,6 +3,7 @@ package net.refractored.bloodmoonreloaded.commands
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.exceptions.CommandErrorException
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
+import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.types.DaysBloodmoon
 import net.refractored.bloodmoonreloaded.types.NoneBloodmoon
 import net.refractored.bloodmoonreloaded.types.TimedBloodmoon
@@ -20,8 +21,8 @@ import java.time.Duration
 
 class BloodmoonInfoCommand {
     @CommandPermission("bloodmoon.command.info")
-    @Description("Info about a bloodmoon")
-    @Command("bloodmoon stop")
+    @Description("Info about a bloodmoon.")
+    @Command("bloodmoon info")
     @Suppress("UNUSED")
     fun execute(
         actor: BukkitCommandActor,
@@ -33,6 +34,15 @@ class BloodmoonInfoCommand {
                     .getStringPrefixed("messages.not-a-bloodmoon-world")
                     .miniToComponent()
             )
+        if (bloodmoonWorld.status != BloodmoonWorld.BloodmoonStatus.INACTIVE) {
+            actor.reply(
+                BloodmoonPlugin.instance.langYml
+                    .getStringPrefixed("messages.bloodmoon-info-active")
+                    .replace("%world%", world.name)
+                    .miniToComponent()
+            )
+            return
+        }
         when (bloodmoonWorld) {
             is TimedBloodmoon -> {
                 val timeframe = Duration.ofMillis(bloodmoonWorld.millisUntilActivation - System.currentTimeMillis())
@@ -51,7 +61,7 @@ class BloodmoonInfoCommand {
             is DaysBloodmoon -> {
                 actor.reply(
                     BloodmoonPlugin.instance.langYml
-                        .getStringPrefixed("messages.bloodmoon-info")
+                        .getStringPrefixed("messages.bloodmoon-info-days")
                         .replace("%world%", world.name)
                         .replace("%status%", bloodmoonWorld.status.toString())
                         .replace("%days%", bloodmoonWorld.dayCount.toString())
