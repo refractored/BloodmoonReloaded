@@ -91,9 +91,8 @@ class BloodmoonPlugin : LibreforgePlugin() {
             object : BukkitRunnable() {
                 override fun run() {
                     for (registeredWorld in getRegisteredWorlds()) {
-                        if (registeredWorld.shouldActivate() && registeredWorld.status == BloodmoonWorld.BloodmoonStatus.INACTIVE) {
-                            registeredWorld.activate()
-                        }
+                        if (!registeredWorld.shouldActivate() && registeredWorld.status != BloodmoonWorld.BloodmoonStatus.INACTIVE) return
+                        registeredWorld.activate()
                     }
                 }
             }

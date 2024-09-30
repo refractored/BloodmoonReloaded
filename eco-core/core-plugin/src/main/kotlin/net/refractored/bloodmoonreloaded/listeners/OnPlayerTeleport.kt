@@ -17,17 +17,19 @@ class OnPlayerTeleport : Listener {
         val bloodmoonOrigin = BloodmoonRegistry.getWorld(origin.name)
         val bloodmoonDestination = BloodmoonRegistry.getWorld(destination.name)
 
+        // If no config exists for either world, return
         if (bloodmoonOrigin == null && bloodmoonDestination == null) return
 
-        if (bloodmoonOrigin?.status != BloodmoonWorld.BloodmoonStatus.INACTIVE && bloodmoonDestination?.status != BloodmoonWorld.BloodmoonStatus.INACTIVE) return
+        // If the bloodmoon is not active in either world, return
+        if (bloodmoonOrigin?.status != BloodmoonWorld.BloodmoonStatus.ACTIVE && bloodmoonDestination?.status != BloodmoonWorld.BloodmoonStatus.ACTIVE) return
 
-        if (bloodmoonOrigin?.status != BloodmoonWorld.BloodmoonStatus.ACTIVE) {
-            bloodmoonOrigin?.bossbar?.removeViewer(event.player)
+        if (bloodmoonOrigin?.status == BloodmoonWorld.BloodmoonStatus.ACTIVE) {
+            bloodmoonOrigin.bossbar.removeViewer(event.player)
         }
 
-        if (bloodmoonDestination?.status != BloodmoonWorld.BloodmoonStatus.ACTIVE) {
-            if (bloodmoonDestination?.bossbarEnabled == false) return
-            bloodmoonDestination?.bossbar?.addViewer(event.player)
+        if (bloodmoonDestination?.status == BloodmoonWorld.BloodmoonStatus.ACTIVE) {
+            if (!bloodmoonDestination.bossbarEnabled) return
+            bloodmoonDestination.bossbar.addViewer(event.player)
         }
     }
 }

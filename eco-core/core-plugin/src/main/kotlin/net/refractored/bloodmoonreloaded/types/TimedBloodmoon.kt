@@ -8,6 +8,9 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import org.bukkit.Bukkit
 import org.bukkit.World
 
+/**
+ * Represents a bloodmoon that is activated after a certain amount of time.
+ */
 class TimedBloodmoon(
     world: World,
     config: Config
@@ -24,7 +27,7 @@ class TimedBloodmoon(
         get() = Bukkit.getServer().profile.read(timeKey)
         set(value) = Bukkit.getServer().profile.write(timeKey, value)
 
-    private val millisUntilActivation: Long = if (remainingMilis == 0.0) {
+    val millisUntilActivation: Long = if (remainingMilis == 0.0) {
         config.getString("Time").toLong() * 1000
     } else {
         remainingMilis.toLong()

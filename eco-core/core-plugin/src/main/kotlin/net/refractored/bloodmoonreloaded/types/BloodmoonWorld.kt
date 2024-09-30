@@ -138,9 +138,6 @@ abstract class BloodmoonWorld(
 
     override fun getID(): String = world.name
 
-//    var active: ActiveBloodmoon? = null
-//        private set
-
     /**
      * Whether the bloodmoon is currently activating.
      */

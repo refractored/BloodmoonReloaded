@@ -9,7 +9,7 @@ import org.bukkit.Bukkit
 import org.bukkit.World
 
 /**
- * Represents a bloodmoon that is activated after a certain amount of time.
+ * Represents a bloodmoon that is activated after a certain amount of in-game days.
  */
 class DaysBloodmoon(
     world: World,
@@ -23,9 +23,9 @@ class DaysBloodmoon(
             0
         )
 
-    private var dayCount: Int
+    var dayCount: Int
         get() = Bukkit.getServer().profile.read(dayCountKey)
-        set(value) = Bukkit.getServer().profile.write(dayCountKey, value)
+        private set(value) = Bukkit.getServer().profile.write(dayCountKey, value)
 
     private val daysUntilActivation: Int
         get() = config.getInt("Days")
