@@ -47,10 +47,10 @@ class DaysBloodmoon(
         if (!world.isDayTime) {
             lastDaytimeCheck = false
         }
-        if (dayCount >= 0) {
+        if (dayCount > 0) {
             return false
         }
-        return true
+        return !world.isDayTime
     }
 
     override fun onActivation() {
