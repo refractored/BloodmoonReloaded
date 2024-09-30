@@ -43,10 +43,7 @@ class TimedBloodmoon(
         if (activationTime < System.currentTimeMillis()) {
             return false
         }
-        if (world.isDayTime) {
-            return false
-        }
-        return true
+        return !world.isDayTime
     }
 
     override fun onActivation() {
