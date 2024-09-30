@@ -4,6 +4,8 @@ import com.willfp.eco.core.config.interfaces.Config
 import com.willfp.eco.core.data.keys.PersistentDataKey
 import com.willfp.eco.core.data.keys.PersistentDataKeyType
 import com.willfp.eco.core.data.profile
+import com.willfp.eco.core.integrations.placeholder.PlaceholderManager
+import com.willfp.eco.core.placeholder.PlayerlessPlaceholder
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import org.bukkit.Bukkit
 import org.bukkit.World
@@ -15,6 +17,17 @@ class DaysBloodmoon(
     world: World,
     config: Config
 ) : BloodmoonWorld(world, config) {
+
+    init {
+        PlaceholderManager.registerPlaceholder(
+            PlayerlessPlaceholder(
+                BloodmoonPlugin.instance,
+                "${id}_days_remaining"
+            ) {
+                dayCount.toString()
+            }
+        )
+    }
 
     private val dayCountKey =
         PersistentDataKey(

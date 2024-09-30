@@ -32,3 +32,7 @@ messages:
   bloodmoon-info-active: "<reset>The bloodmoon is currently active in %world%."
   bloodmoon-not-active-world: "<red>A bloodmoon is not active in this world."
   bossbar-title: "<red>Bloodmoon"
+bloodmoon-status:
+  active: "<green>Active"
+  inactive: "<gray>Inactive"
+  activating: "<Blue>Activating"

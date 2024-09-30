@@ -4,12 +4,16 @@ import com.willfp.eco.core.config.interfaces.Config
 import com.willfp.eco.core.data.keys.PersistentDataKey
 import com.willfp.eco.core.data.keys.PersistentDataKeyType
 import com.willfp.eco.core.data.profile
+import com.willfp.eco.core.integrations.placeholder.PlaceholderManager
+import com.willfp.eco.core.placeholder.PlayerlessPlaceholder
 import com.willfp.eco.core.registry.Registrable
 import com.willfp.libreforge.Holder
 import com.willfp.libreforge.ViolationContext
 import com.willfp.libreforge.conditions.Conditions
 import com.willfp.libreforge.effects.Effects
 import net.kyori.adventure.bossbar.BossBar
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStartEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
@@ -46,7 +50,31 @@ abstract class BloodmoonWorld(
     enum class BloodmoonStatus {
         ACTIVE,
         INACTIVE,
-        ACTIVATING
+        ACTIVATING;
+
+        fun toComponent() = BloodmoonPlugin.instance.langYml.getMessage("bloodmoon-status.${name.lowercase()}").miniToComponent()
+
+        fun toPlainText() = PlainTextComponentSerializer.plainText().serialize(this.toComponent())
+    }
+
+    init {
+        PlaceholderManager.registerPlaceholder(
+            PlayerlessPlaceholder(
+                BloodmoonPlugin.instance,
+                "${world.name}_status_plain"
+            ) {
+                status.toPlainText()
+            }
+        )
+
+        PlaceholderManager.registerPlaceholder(
+            PlayerlessPlaceholder(
+                BloodmoonPlugin.instance,
+                "${world.name}_status"
+            ) {
+                LegacyComponentSerializer.legacySection().serialize(status.toComponent())
+            }
+        )
     }
 
     final override val id: NamespacedKey = NamespacedKey("bloodmoonreloaded", world.name)
