@@ -88,6 +88,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
                         if (registeredWorld.setThunder) {
                             registeredWorld.world.setStorm(true)
                         }
+                        registeredWorld.runPeriodicTasks()
                         registeredWorld.world.fullTime = registeredWorld.fullTime
                     }
                 }

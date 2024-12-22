@@ -26,6 +26,7 @@ import org.bukkit.NamespacedKey
 import org.bukkit.World
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.scheduler.BukkitRunnable
+import kotlin.random.Random
 
 /**
  * Represents the configuration and state of a bloodmoon in a specific world.
@@ -149,6 +150,10 @@ abstract class BloodmoonWorld(
 
     val setThunder: Boolean = config.getBool("SetThunder")
 
+    val victoryChime: Boolean = config.getBool("VictoryChime")
+
+    val periodicCaveSounds: Boolean = config.getBool("PeriodicCaveSounds")
+
     val bossbarColor =
         BossBar.Color.entries.find { it.name == config.getString("Bossbar.Color") }
             ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("Bossbar.Color")}")
@@ -216,6 +221,17 @@ abstract class BloodmoonWorld(
     open fun onActivation() {}
 
     open fun onDeactivation() {}
+
+    open fun periodicTasks() {}
+
+    fun runPeriodicTasks() {
+        if (periodicCaveSounds && Random.nextBoolean()) {
+            for (player in world.players) {
+                player.playSound(player.location, "ambient.cave", 1.0f, 1.0f)
+            }
+        }
+        this.periodicTasks()
+    }
 
     /**
      * This function should check all conditions and return whether the bloodmoon should activate.
@@ -322,6 +338,9 @@ abstract class BloodmoonWorld(
         if (event.isCancelled()) {
             return
         }
+        //
+        //
+
         if (revertDaylightCycle) {
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true)
         }
@@ -331,7 +350,6 @@ abstract class BloodmoonWorld(
                 player.sendMessage(deactivationMessage.miniToComponent())
             }
         }
-
         savedBloodmoonRemainingMillis = 0.0
         world.setStorm(false)
         if (setThunder) {
@@ -341,6 +359,11 @@ abstract class BloodmoonWorld(
             bossbar.removeViewer(player)
         }
         status = BloodmoonStatus.INACTIVE
+        if (victoryChime) {
+            for (player in world.players) {
+                player.playSound(player.location, "ui.toast.challenge_complete", 1.0f, 1.0f)
+            }
+        }
         onDeactivation()
     }
 
