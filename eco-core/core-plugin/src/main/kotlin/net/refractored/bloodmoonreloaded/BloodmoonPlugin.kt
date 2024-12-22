@@ -82,7 +82,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
                 override fun run() {
                     for (registeredWorld in getActiveWorlds()) {
                         if (System.currentTimeMillis() >= registeredWorld.expiryTime) {
-                            registeredWorld.deactivate()
+                            registeredWorld.deactivate(BloodmoonStopEvent.StopCause.TIMER)
                             return
                         }
                         if (registeredWorld.setThunder) {
