@@ -1,9 +1,0 @@
-name: ${pluginName}
-version: ${version}
-main: net.refractored.bloodmoonreloaded.BloodmoonPlugin
-api-version: "1.20"
-authors: [ refractored ]
-website: refractored.net
-load: STARTUP
-depend:
-  - eco

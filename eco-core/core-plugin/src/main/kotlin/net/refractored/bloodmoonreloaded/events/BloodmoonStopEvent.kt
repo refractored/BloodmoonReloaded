@@ -54,7 +54,7 @@ class BloodmoonStopEvent(
         COMMAND,
 
         /**
-         * The bloodmoon was because the timer was over.
+         * The bloodmoon was stopped because the timer was over.
          */
         TIMER,
 

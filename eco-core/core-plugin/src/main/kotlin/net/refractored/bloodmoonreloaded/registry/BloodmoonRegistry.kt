@@ -21,9 +21,7 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
 
     fun getRegisteredWorlds() = registry.toList()
 
-    /**
-     * Get all worlds with the [BloodmoonWorld.BloodmoonStatus.ACTIVE]
-     */
+    // Get all worlds with the status of active
     fun getActiveWorlds() = registry.toList().filter { it.status == BloodmoonWorld.BloodmoonStatus.ACTIVE }
 
     fun getWorld(id: String) = registry[id]
@@ -32,10 +30,8 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
 
     fun registerWorld(world: BloodmoonWorld) = registry.register(world)
 
-    /**
-     * Check for worlds that don't have a config and create one.
-     */
     override fun beforeReload(plugin: LibreforgePlugin) {
+        // Check for worlds that don't have a config and create one.
         if (!plugin.dataFolder.resolve("worlds").exists()) {
             plugin.dataFolder.resolve("worlds").mkdir()
         }

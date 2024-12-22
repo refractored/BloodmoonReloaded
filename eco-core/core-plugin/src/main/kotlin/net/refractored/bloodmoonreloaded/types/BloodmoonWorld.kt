@@ -137,6 +137,8 @@ abstract class BloodmoonWorld(
 
     val isIncreasing = config.getBool("Increasing")
 
+    val bedDisabled = config.getBool("BedDisabled")
+
     val bossbarEnabled: Boolean = config.getBool("Bossbar.Enabled")
 
     val createFog: Boolean = config.getBool("Bossbar.Fog")
@@ -167,6 +169,12 @@ abstract class BloodmoonWorld(
         BloodmoonPlugin.instance.langYml.miniPrefix() + config.getString("Messages.Deactivation")
     } else {
         config.getString("Messages.Deactivation")
+    }
+
+    val bedDenyMessage = if (usePrefix) {
+        BloodmoonPlugin.instance.langYml.miniPrefix() + config.getString("Messages.BedDenyMessage")
+    } else {
+        config.getString("Messages.BedDenyMessage")
     }
 
     val activationCommands = config.getStrings("Commands.Activation").map { it.replace("%world%", world.name) }
@@ -228,10 +236,10 @@ abstract class BloodmoonWorld(
         }
         val event = BloodmoonStartEvent(world, this)
         event.callEvent()
-        status = BloodmoonStatus.ACTIVATING
         if (event.isCancelled()) {
             return
         }
+        status = BloodmoonStatus.ACTIVATING
         activationCommands.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
         if (announce) {
             world.players.forEach { player ->

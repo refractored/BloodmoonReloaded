@@ -39,6 +39,8 @@ effects:
 conditions: [ ]
 # Length of the bloodmoon in seconds.
 Length: 360
+# Players may be able to skip the night by sleeping in a bed, if this is not enabled.
+BedDisabled: true
 # If the weather should be set to thunder during a bloodmoon.
 SetThunder: true
 # Bossbar settings.
@@ -53,6 +55,7 @@ Bossbar:
   # If false, the bossbar will decrease with time
   Increasing: true
 # If bloodmoons should set do daylight cycle to false whenever a bloodmoon is active.
+# If this is not enabled, the day may shift during the bloodmoon.
 SetDaylightCycle: true
 # Two options, "days" or "timed".
 # If "days" is selected, the bloodmoon will activate every x days at night.
@@ -71,7 +74,8 @@ Messages:
   # If the prefix should be added to the message.
   UsePrefix: false
   Activation: "<red>A bloodmoon is upon us."
-  Deactivation: "<green>Bloodmoon has ended."
+  Deactivation: "<green>The Bloodmoon has ended."
+  BedDenyMessage: "<red>You cannot sleep during a bloodmoon."
 # Commands to run on activation or deactivation.
 # Do not add a "/" in front of the command.
 # %world% will be replaced with the world name.

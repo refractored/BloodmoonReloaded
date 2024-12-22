@@ -9,10 +9,7 @@ import net.refractored.bloodmoonreloaded.commands.*
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
 import net.refractored.bloodmoonreloaded.exceptions.CommandErrorHandler
 import net.refractored.bloodmoonreloaded.libreforge.IsBloodmoonActive
-import net.refractored.bloodmoonreloaded.listeners.OnPlayerJoin
-import net.refractored.bloodmoonreloaded.listeners.OnPlayerTeleport
-import net.refractored.bloodmoonreloaded.listeners.OnWorldLoad
-import net.refractored.bloodmoonreloaded.listeners.OnWorldUnload
+import net.refractored.bloodmoonreloaded.listeners.*
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getActiveWorlds
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getRegisteredWorlds
@@ -43,26 +40,29 @@ class BloodmoonPlugin : LibreforgePlugin() {
         Conditions.register(IsBloodmoonActive)
 
         registerGenericHolderProvider {
-            BloodmoonRegistry.getActiveWorlds().map { SimpleProvidedHolder(it) }
+            getActiveWorlds().map { SimpleProvidedHolder(it) }
         }
     }
 
     override fun handleAfterLoad() {
-        // Registered after to prevent issues.
+        // Registered after to prevent issues. I should've probably mentioned what issues, but I forgot ngl.
         eventManager.registerListener(OnWorldLoad())
         eventManager.registerListener(OnWorldUnload())
         eventManager.registerListener(OnPlayerTeleport())
         eventManager.registerListener(OnPlayerJoin())
+        eventManager.registerListener(OnPlayerSleep())
+        eventManager.registerListener(OnPlayerRespawn())
     }
 
     private var registeredBrigadier = false
 
     override fun handleReload() {
+        // stupid workaround to register commands.
         if (!registeredBrigadier) {
             handler.registerBrigadier()
             registeredBrigadier = true
         }
-        for (activeWorld in BloodmoonRegistry.getActiveWorlds()) {
+        for (activeWorld in getActiveWorlds()) {
             activeWorld.deactivate(BloodmoonStopEvent.StopCause.RELOAD, false)
         }
         // All tasks are cancelled on reload.
