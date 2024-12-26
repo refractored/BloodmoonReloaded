@@ -5,6 +5,7 @@ import com.willfp.eco.core.registry.Registry
 import com.willfp.libreforge.loader.LibreforgePlugin
 import com.willfp.libreforge.loader.configs.ConfigCategory
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
+import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
 import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.types.DaysBloodmoon
 import net.refractored.bloodmoonreloaded.types.NoneBloodmoon
@@ -22,11 +23,18 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
     fun getRegisteredWorlds() = registry.toList()
 
     // Get all worlds with the status of active
-    fun getActiveWorlds() = registry.toList().filter { it.status == BloodmoonWorld.BloodmoonStatus.ACTIVE }
+    fun getActiveWorlds() = registry.toList().filter { it.status == BloodmoonWorld.Status.ACTIVE }
 
     fun getWorld(id: String) = registry[id]
 
-    fun unregisterWorld(id: String) = registry.remove(id)
+    fun unregisterWorld(id: String){
+        getWorld(id)?.let { world ->
+            if (world.status == BloodmoonWorld.Status.ACTIVE) {
+                world.deactivate(BloodmoonStopEvent.StopCause.UNLOAD)
+            }
+        }
+        registry.remove(id)
+    }
 
     fun registerWorld(world: BloodmoonWorld) = registry.register(world)
 

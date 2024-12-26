@@ -12,7 +12,7 @@ class OnPlayerSleep : Listener {
     fun execute(event: PlayerBedEnterEvent) {
         val bloodmoonWorld = BloodmoonRegistry.getWorld(event.player.world.name) ?: return
 
-        if (bloodmoonWorld.status == BloodmoonWorld.BloodmoonStatus.INACTIVE) return
+        if (bloodmoonWorld.status == BloodmoonWorld.Status.INACTIVE) return
 
         if (!bloodmoonWorld.bedDisabled) return
 

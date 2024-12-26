@@ -9,7 +9,6 @@ import net.refractored.bloodmoonreloaded.types.NoneBloodmoon
 import net.refractored.bloodmoonreloaded.types.TimedBloodmoon
 import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
-import net.refractored.bloodmoonreloaded.util.MessageUtil.replace
 import org.bukkit.World
 import revxrsal.commands.annotation.Command
 import revxrsal.commands.annotation.Description
@@ -34,7 +33,7 @@ class BloodmoonInfoCommand {
                     .getStringPrefixed("messages.not-a-bloodmoon-world")
                     .miniToComponent()
             )
-        if (bloodmoonWorld.status != BloodmoonWorld.BloodmoonStatus.INACTIVE) {
+        if (bloodmoonWorld.status != BloodmoonWorld.Status.INACTIVE) {
             actor.reply(
                 BloodmoonPlugin.instance.langYml
                     .getStringPrefixed("messages.bloodmoon-info-active")

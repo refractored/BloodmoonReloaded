@@ -30,7 +30,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
 
         handler = BukkitCommandHandler.create(this)
 
-        handler.setExceptionHandler(CommandErrorHandler())
+        handler.exceptionHandler = CommandErrorHandler()
 
         handler.register(BloodmoonStartCommand())
         handler.register(BloodmoonStopCommand())
@@ -45,7 +45,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
     }
 
     override fun handleAfterLoad() {
-        // Registered after to prevent issues. I should've probably mentioned what issues, but I forgot ngl.
+        // Registered after to prevent issues with extensions.
         eventManager.registerListener(OnWorldLoad())
         eventManager.registerListener(OnWorldUnload())
         eventManager.registerListener(OnPlayerTeleport())
@@ -57,7 +57,9 @@ class BloodmoonPlugin : LibreforgePlugin() {
     private var registeredBrigadier = false
 
     override fun handleReload() {
-        // stupid workaround to register commands.
+        // Lamp does not allow (or just breaks) whenever commands are registered after bridgadier.
+        // Since extensions also register their own commands, and we want brigadier support, we want to
+        // register ALL commands before brigadier. Auxilor has this function ran after all extensions are loaded.
         if (!registeredBrigadier) {
             handler.registerBrigadier()
             registeredBrigadier = true
@@ -65,7 +67,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
         for (activeWorld in getActiveWorlds()) {
             activeWorld.deactivate(BloodmoonStopEvent.StopCause.RELOAD, false)
         }
-        // All tasks are cancelled on reload.
+        // All tasks are cancelled on reload, so we don't need to worry about having duplicate tasks.
         val updateSavedData =
             object : Runnable {
                 override fun run() {
@@ -76,7 +78,6 @@ class BloodmoonPlugin : LibreforgePlugin() {
                 }
             }
         scheduler.runTimer(updateSavedData, 1, 20)
-
         val updateBloodmoons =
             object : Runnable {
                 override fun run() {
@@ -99,7 +100,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
             object : BukkitRunnable() {
                 override fun run() {
                     for (registeredWorld in getRegisteredWorlds()) {
-                        if (!registeredWorld.shouldActivate() || registeredWorld.status != BloodmoonWorld.BloodmoonStatus.INACTIVE) continue
+                        if (!registeredWorld.shouldActivate() || registeredWorld.status != BloodmoonWorld.Status.INACTIVE) continue
                         registeredWorld.activate()
                     }
                 }

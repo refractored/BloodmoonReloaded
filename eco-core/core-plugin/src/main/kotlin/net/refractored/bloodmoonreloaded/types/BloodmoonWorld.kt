@@ -48,14 +48,20 @@ abstract class BloodmoonWorld(
     /**
      * Represents the status of the bloodmoon event.
      */
-    enum class BloodmoonStatus {
+    enum class Status {
         ACTIVE,
         INACTIVE,
         ACTIVATING;
 
-        fun toComponent() = BloodmoonPlugin.instance.langYml.getMessage("bloodmoon-status.${name.lowercase()}").miniToComponent()
+        /**
+         * @return The component from the lang.yml
+         */
+        fun component() = BloodmoonPlugin.instance.langYml.getMessage("bloodmoon-status.${name.lowercase()}").miniToComponent()
 
-        fun toPlainText() = PlainTextComponentSerializer.plainText().serialize(this.toComponent())
+        /**
+         * @return The plaintext from the lang.yml
+         */
+        fun plaintext() = PlainTextComponentSerializer.plainText().serialize(this.component())
     }
 
     init {
@@ -64,7 +70,7 @@ abstract class BloodmoonWorld(
                 BloodmoonPlugin.instance,
                 "${world.name}_status_plain"
             ) {
-                status.toPlainText()
+                status.plaintext()
             }
         )
 
@@ -73,14 +79,14 @@ abstract class BloodmoonWorld(
                 BloodmoonPlugin.instance,
                 "${world.name}_status"
             ) {
-                LegacyComponentSerializer.legacySection().serialize(status.toComponent())
+                LegacyComponentSerializer.legacySection().serialize(status.component())
             }
         )
     }
 
     final override val id: NamespacedKey = NamespacedKey("bloodmoonreloaded", world.name)
 
-    var status = BloodmoonStatus.INACTIVE
+    var status = Status.INACTIVE
 
     override val effects =
         Effects.compile(
@@ -247,7 +253,7 @@ abstract class BloodmoonWorld(
         length: Long = this.length,
         announce: Boolean = true
     ) {
-        if (status != BloodmoonStatus.INACTIVE) {
+        if (status != Status.INACTIVE) {
             throw IllegalStateException("Bloodmoon is already active.")
         }
         val event = BloodmoonStartEvent(world, this)
@@ -255,7 +261,7 @@ abstract class BloodmoonWorld(
         if (event.isCancelled()) {
             return
         }
-        status = BloodmoonStatus.ACTIVATING
+        status = Status.ACTIVATING
         activationCommands.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
         if (announce) {
             world.players.forEach { player ->
@@ -268,7 +274,7 @@ abstract class BloodmoonWorld(
                     if (world.time in 17500..18500) {
                         cancel()
                         activateBloodmoon(length)
-                        status = BloodmoonStatus.ACTIVE
+                        status = Status.ACTIVE
                         onActivation()
                         return
                     }
@@ -295,6 +301,7 @@ abstract class BloodmoonWorld(
         savedBloodmoonRemainingMillis = length.toDouble()
 
         if (!bossbarEnabled) return
+
         world.players.forEach {
             bossbar.addViewer(it)
         }
@@ -305,6 +312,7 @@ abstract class BloodmoonWorld(
             bossbar.addFlags(BossBar.Flag.DARKEN_SCREEN)
         }
 
+        // Runnable to update bossbar.
         object : BukkitRunnable() {
             override fun run() {
                 val progress =
@@ -316,7 +324,7 @@ abstract class BloodmoonWorld(
                         (remainingTime.toDouble() / length.toDouble()).coerceIn(0.0, 1.0).toFloat()
                     }
                 bossbar.progress(progress)
-                if (status == BloodmoonStatus.INACTIVE) {
+                if (status == Status.INACTIVE) {
                     cancel()
                     BloodmoonPlugin.instance.logger.info(":3")
                     return
@@ -332,14 +340,14 @@ abstract class BloodmoonWorld(
         reason: StopCause = StopCause.PLUGIN,
         announce: Boolean = true
     ) {
-        if (status == BloodmoonStatus.INACTIVE) throw IllegalStateException("Bloodmoon is not active.")
+        if (status == Status.INACTIVE) throw IllegalStateException("Bloodmoon is not active.")
         val event = BloodmoonStopEvent(world, this, reason)
         event.callEvent()
         if (event.isCancelled()) {
             return
         }
-        //
-        //
+        // Run if event is not cancelled
+        // This is here so i remember to not be stupid and add stuff before the event is called
 
         if (revertDaylightCycle) {
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true)
@@ -358,17 +366,17 @@ abstract class BloodmoonWorld(
         world.players.forEach { player ->
             bossbar.removeViewer(player)
         }
-        status = BloodmoonStatus.INACTIVE
+        status = Status.INACTIVE
         if (victoryChime) {
             for (player in world.players) {
                 player.playSound(player.location, "ui.toast.challenge_complete", 1.0f, 1.0f)
             }
         }
-        onDeactivation()
+        this.onDeactivation()
     }
 
     override fun onRemove() {
-        if (status == BloodmoonStatus.ACTIVE) {
+        if (status == Status.ACTIVE) {
             deactivate(StopCause.UNLOAD, false)
         }
     }

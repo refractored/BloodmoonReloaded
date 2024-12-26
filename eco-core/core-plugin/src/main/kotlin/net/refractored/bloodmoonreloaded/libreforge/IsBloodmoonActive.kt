@@ -20,5 +20,5 @@ object IsBloodmoonActive : Condition<NoCompileData>("is_bloodmoon_active") {
         config: Config,
         holder: ProvidedHolder,
         compileData: NoCompileData
-    ): Boolean = BloodmoonRegistry.getWorld(config.getString("world"))?.status == BloodmoonWorld.BloodmoonStatus.ACTIVE
+    ): Boolean = BloodmoonRegistry.getWorld(config.getString("world"))?.status == BloodmoonWorld.Status.ACTIVE
 }

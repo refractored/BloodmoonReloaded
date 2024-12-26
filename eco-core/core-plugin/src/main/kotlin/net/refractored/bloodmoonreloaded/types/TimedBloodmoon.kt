@@ -36,7 +36,7 @@ class TimedBloodmoon(
     private val activationTime = System.currentTimeMillis() + millisUntilActivation
 
     override fun shouldActivate(): Boolean {
-        if (status != BloodmoonStatus.INACTIVE) {
+        if (status != Status.INACTIVE) {
             return false
         }
         remainingMilis = (activationTime - System.currentTimeMillis()).toDouble()

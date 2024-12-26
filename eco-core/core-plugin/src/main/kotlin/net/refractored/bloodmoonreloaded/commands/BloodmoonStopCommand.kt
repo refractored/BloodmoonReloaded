@@ -30,7 +30,7 @@ class BloodmoonStopCommand {
                     .getStringPrefixed("messages.not-a-bloodmoon-world")
                     .miniToComponent()
             )
-        if (bloodmoonWorld.status == BloodmoonWorld.BloodmoonStatus.INACTIVE) {
+        if (bloodmoonWorld.status == BloodmoonWorld.Status.INACTIVE) {
             throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
                     .getStringPrefixed("messages.bloodmoon-not-active")

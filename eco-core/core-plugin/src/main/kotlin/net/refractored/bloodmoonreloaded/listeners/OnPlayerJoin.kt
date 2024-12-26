@@ -11,7 +11,7 @@ class OnPlayerJoin : Listener {
     fun execute(event: PlayerJoinEvent) {
         val bloodmoonDestination = BloodmoonRegistry.getWorld(event.player.world.name) ?: return
 
-        if (bloodmoonDestination.status != BloodmoonWorld.BloodmoonStatus.ACTIVE) return
+        if (bloodmoonDestination.status != BloodmoonWorld.Status.ACTIVE) return
 
         if (!bloodmoonDestination.bossbarEnabled) return
 

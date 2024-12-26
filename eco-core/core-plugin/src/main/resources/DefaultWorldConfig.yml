@@ -64,17 +64,17 @@ SetDaylightCycle: true
 BloodmoonActivate: Days
 # These two options only apply if BloodmoonActivate is set to their respective values.
 # There is no built-in spigot method to check if a day has passed.
-# To get around this the plugin checks every 5 ticks if it turned day or night. Then it counts based off that.
+# To get around this the plugin checks every 5 ticks if it turned day or night, then it counts based off that.
 # This may not work correctly if you have a plugin that alters the rate of time.
 # If BloodmoonActivate isn't set to "Days", this will be ignored.
 Days: 5
 # The time in seconds until the bloodmoon activates.
 # Once the plugin detects that it is night, and the time has passed, the bloodmoon will activate.
 # If BloodmoonActivate isn't set to "Timed", this will be ignored.
-Timed: 0
+Timed: 7200
 # Should the plugin play a victory chime when the bloodmoon ends?
 VictoryChime: true
-# Should the plugin play a sound every 30 seconds during the bloodmoon?
+# Should the plugin have a chance to play a sound every 30 seconds during the bloodmoon?
 PeriodicCaveSounds: true
 Messages:
   # If the prefix should be added to the message.

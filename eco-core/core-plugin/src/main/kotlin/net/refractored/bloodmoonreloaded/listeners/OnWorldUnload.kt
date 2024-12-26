@@ -8,6 +8,7 @@ import org.bukkit.event.world.WorldLoadEvent
 class OnWorldUnload : Listener {
     @EventHandler
     fun execute(event: WorldLoadEvent) {
+        BloodmoonRegistry.getWorld(event.world.name) ?: return
         BloodmoonRegistry.unregisterWorld(event.world.name)
     }
 }
