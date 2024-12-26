@@ -160,6 +160,12 @@ abstract class BloodmoonWorld(
 
     val periodicCaveSounds: Boolean = config.getBool("PeriodicCaveSounds")
 
+    val clearInventory: Boolean = config.getBool("PlayerDeath.ClearInventory")
+
+    val clearEXP: Boolean = config.getBool("PlayerDeath.ClearEXP")
+
+    val useCustomDeathMessage: Boolean = config.getBool("PlayerDeath.CustomDeathMessage")
+
     val bossbarColor =
         BossBar.Color.entries.find { it.name == config.getString("Bossbar.Color") }
             ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("Bossbar.Color")}")
@@ -167,6 +173,8 @@ abstract class BloodmoonWorld(
     val bossbarStyle =
         BossBar.Overlay.entries.find { it.name == config.getString("Bossbar.Style") }
             ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("Bossbar.Style")}")
+
+    val customDeathMessage = config.getString("Messages.DeathMessage")
 
     val usePrefix = config.getBool("Messages.UsePrefix")
 

@@ -52,6 +52,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
         eventManager.registerListener(OnPlayerJoin())
         eventManager.registerListener(OnPlayerSleep())
         eventManager.registerListener(OnPlayerRespawn())
+        eventManager.registerListener(OnPlayerDeath())
     }
 
     private var registeredBrigadier = false

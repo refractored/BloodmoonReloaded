@@ -76,12 +76,20 @@ Timed: 7200
 VictoryChime: true
 # Should the plugin have a chance to play a sound every 30 seconds during the bloodmoon?
 PeriodicCaveSounds: true
+PlayerDeath:
+  ClearInventory: false
+  ClearEXP: false
+  CustomDeathMessage: false
 Messages:
   # If the prefix should be added to the message.
   UsePrefix: false
   Activation: "<red>A bloodmoon is upon us."
   Deactivation: "<green>The Bloodmoon has ended."
   BedDenyMessage: "<red>You cannot sleep during a bloodmoon."
+  # Death messages won't have a prefix added to them, even if UsePrefix is true.
+  # %player% = Player's name
+  # %player_displayname% = Player's display name
+  DeathMessage: "%player% couldn't handle the wrath of the bloodmoon"
 # Commands to run on activation or deactivation.
 # Do not add a "/" in front of the command.
 # %world% will be replaced with the world name.
