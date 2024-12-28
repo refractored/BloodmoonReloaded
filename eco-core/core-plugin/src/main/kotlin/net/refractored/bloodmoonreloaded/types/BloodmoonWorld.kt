@@ -51,6 +51,11 @@ abstract class BloodmoonWorld(
     enum class Status {
         ACTIVE,
         INACTIVE,
+
+        /**
+         * The bloodmoon is currently activating.
+         * This usually means the time is being transitioned to night.
+         */
         ACTIVATING;
 
         /**
