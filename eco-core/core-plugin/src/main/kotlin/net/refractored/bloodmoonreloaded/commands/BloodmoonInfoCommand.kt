@@ -3,10 +3,7 @@ package net.refractored.bloodmoonreloaded.commands
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.exceptions.CommandErrorException
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
-import net.refractored.bloodmoonreloaded.types.DaysBloodmoon
-import net.refractored.bloodmoonreloaded.types.NoneBloodmoon
-import net.refractored.bloodmoonreloaded.types.TimedBloodmoon
+import net.refractored.bloodmoonreloaded.types.*
 import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.World
@@ -74,6 +71,28 @@ class BloodmoonInfoCommand {
                         .getStringPrefixed("messages.bloodmoon-info-none")
                         .replace("%world%", world.name)
                         .replace("%status%", bloodmoonWorld.status.toString())
+                        .miniToComponent()
+                )
+                return
+            }
+            is ChanceBloodmoon -> {
+                actor.reply(
+                    BloodmoonPlugin.instance.langYml
+                        .getStringPrefixed("messages.bloodmoon-info-chance")
+                        .replace("%world%", world.name)
+                        .replace("%status%", bloodmoonWorld.status.toString())
+                        .replace("%chance%", (bloodmoonWorld.chance * 100).toString())
+                        .miniToComponent()
+                )
+                return
+            }
+            is IncrementChanceBloodmoon -> {
+                actor.reply(
+                    BloodmoonPlugin.instance.langYml
+                        .getStringPrefixed("messages.bloodmoon-info-chance")
+                        .replace("%world%", world.name)
+                        .replace("%status%", bloodmoonWorld.status.toString())
+                        .replace("%chance%", (bloodmoonWorld.chance * 100).toString())
                         .miniToComponent()
                 )
                 return

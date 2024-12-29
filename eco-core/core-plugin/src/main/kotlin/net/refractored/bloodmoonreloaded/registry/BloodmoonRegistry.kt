@@ -6,10 +6,7 @@ import com.willfp.libreforge.loader.LibreforgePlugin
 import com.willfp.libreforge.loader.configs.ConfigCategory
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
-import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
-import net.refractored.bloodmoonreloaded.types.DaysBloodmoon
-import net.refractored.bloodmoonreloaded.types.NoneBloodmoon
-import net.refractored.bloodmoonreloaded.types.TimedBloodmoon
+import net.refractored.bloodmoonreloaded.types.*
 import org.bukkit.Bukkit
 import org.bukkit.World.Environment
 import java.nio.file.Files
@@ -27,7 +24,7 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
 
     fun getWorld(id: String) = registry[id]
 
-    fun unregisterWorld(id: String){
+    fun unregisterWorld(id: String) {
         getWorld(id)?.let { world ->
             if (world.status == BloodmoonWorld.Status.ACTIVE) {
                 world.deactivate(BloodmoonStopEvent.StopCause.UNLOAD)
@@ -86,6 +83,14 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
             }
             "none" -> {
                 registerWorld(NoneBloodmoon(world, config))
+                return
+            }
+            "chance" -> {
+                registerWorld(ChanceBloodmoon(world, config))
+                return
+            }
+            "incrementchance" -> {
+                registerWorld(IncrementChanceBloodmoon(world, config))
                 return
             }
         }

@@ -58,20 +58,20 @@ class DaysBloodmoon(
         private set(value) = Bukkit.getServer().profile.write(lastDaytimeKey, value)
 
     override fun shouldActivate(): Boolean {
-        if (status != Status.INACTIVE) {
+        if (status != Status.INACTIVE) return false
+
+        if (world.isDayTime) {
+            if (!lastDaytimeCheck) {
+                lastDaytimeCheck = true
+                dayCount--
+            }
             return false
-        }
-        if (world.isDayTime && !lastDaytimeCheck) {
-            lastDaytimeCheck = true
-            dayCount--
-            return false
-        }
-        if (!world.isDayTime) {
+        } else {
             lastDaytimeCheck = false
         }
-        if (dayCount > 0) {
-            return false
-        }
+
+        if (dayCount > 0) return false
+
         return !world.isDayTime
     }
 

@@ -241,8 +241,15 @@ abstract class BloodmoonWorld(
 
     open fun onDeactivation() {}
 
+    /**
+     * Run periodic tasks.
+     */
     open fun periodicTasks() {}
 
+    /**
+     * Run periodic tasks.
+     * This is randomly ran every 320L to 520L ticks.
+     */
     fun runPeriodicTasks() {
         if (periodicCaveSounds && Random.nextBoolean()) {
             for (player in world.players) {
@@ -339,7 +346,6 @@ abstract class BloodmoonWorld(
                 bossbar.progress(progress)
                 if (status == Status.INACTIVE) {
                     cancel()
-                    BloodmoonPlugin.instance.logger.info(":3")
                     return
                 }
             }

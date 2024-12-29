@@ -16,6 +16,7 @@ import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getRegistere
 import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
 import org.bukkit.scheduler.BukkitRunnable
 import revxrsal.commands.bukkit.BukkitCommandHandler
+import kotlin.random.Random
 
 class BloodmoonPlugin : LibreforgePlugin() {
     lateinit var handler: BukkitCommandHandler
@@ -80,7 +81,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
             }
         scheduler.runTimer(updateSavedData, 1, 20)
         val updateBloodmoons =
-            object : Runnable {
+            object : BukkitRunnable() {
                 override fun run() {
                     for (registeredWorld in getActiveWorlds()) {
                         if (System.currentTimeMillis() >= registeredWorld.expiryTime) {
@@ -90,12 +91,22 @@ class BloodmoonPlugin : LibreforgePlugin() {
                         if (registeredWorld.setThunder) {
                             registeredWorld.world.setStorm(true)
                         }
-                        registeredWorld.runPeriodicTasks()
                         registeredWorld.world.fullTime = registeredWorld.fullTime
                     }
                 }
             }
         scheduler.runTimer(updateBloodmoons, 1, 16)
+
+        val periodicTasks =
+            object : BukkitRunnable() {
+                override fun run() {
+                    for (registeredWorld in getActiveWorlds()) {
+                        registeredWorld.runPeriodicTasks()
+                    }
+                    scheduler.runLater(this, (Random.nextLong(75) + 250L))
+                }
+            }
+        scheduler.runLater(periodicTasks, 60)
 
         val checkBloodmoons =
             object : BukkitRunnable() {

@@ -2,6 +2,7 @@
 # Configuration file for the core plugin
 #
 
-# Worlds that should generate or read a config for.
+# Worlds that won't have bloodmoons.
+# This will also disable config generation for these worlds.
 DisabledWorlds:
   - ThisWorldIsDisabledFromBloodmoons
