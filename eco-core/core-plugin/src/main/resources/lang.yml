@@ -21,6 +21,7 @@ messages:
 
   # Command messages
   not-a-bloodmoon-world: "<red>This world is not setup to have bloodmoons."
+  cannot-stop-permanent: "<red>You cannot stop a permanent bloodmoon."
   bloodmoon-already-active: "<red>A bloodmoon is already active in this world."
   bloodmoon-activated: "<green>A bloodmoon has been activated in this world."
   bloodmoon-deactivated: "<green>A bloodmoon has been deactivated in this world."

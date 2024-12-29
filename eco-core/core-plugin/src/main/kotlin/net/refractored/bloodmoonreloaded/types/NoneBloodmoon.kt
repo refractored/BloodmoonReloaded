@@ -10,5 +10,20 @@ class NoneBloodmoon(
     world: World,
     config: Config
 ) : BloodmoonWorld(world, config) {
-    override fun shouldActivate(): Boolean = false
+
+    val permanentBloodmoon: Boolean
+        get() = config.getBool("NoneStatus")
+
+    override fun shouldActivate(): Boolean {
+        if (status != Status.INACTIVE) {
+            return false
+        }
+        return permanentBloodmoon
+    }
+
+    override fun onActivation() {
+        if (!permanentBloodmoon) return
+
+        expiryTime = -1
+    }
 }

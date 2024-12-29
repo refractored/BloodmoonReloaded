@@ -5,6 +5,7 @@ import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent.StopCause
 import net.refractored.bloodmoonreloaded.exceptions.CommandErrorException
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.types.NoneBloodmoon
 import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.World
@@ -34,6 +35,13 @@ class BloodmoonStopCommand {
             throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
                     .getStringPrefixed("messages.bloodmoon-not-active")
+                    .miniToComponent()
+            )
+        }
+        if (bloodmoonWorld is NoneBloodmoon && bloodmoonWorld.permanentBloodmoon) {
+            throw CommandErrorException(
+                BloodmoonPlugin.instance.langYml
+                    .getStringPrefixed("messages.cannot-stop-permanent")
                     .miniToComponent()
             )
         }

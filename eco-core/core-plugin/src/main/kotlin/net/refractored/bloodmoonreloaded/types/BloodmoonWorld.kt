@@ -366,7 +366,7 @@ abstract class BloodmoonWorld(
             return
         }
         // Run if event is not cancelled
-        // This is here so i remember to not be stupid and add stuff before the event is called
+        // This is here so I remember to not be stupid and add stuff before the event is called
 
         if (revertDaylightCycle) {
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true)
