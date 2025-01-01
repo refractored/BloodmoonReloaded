@@ -81,14 +81,15 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
                 registerWorld(TimedBloodmoon(world, config))
                 return
             }
-            "none" -> {
-                registerWorld(NoneBloodmoon(world, config))
-                return
-            }
             "chance" -> {
                 registerWorld(ChanceBloodmoon(world, config))
                 return
             }
+            "none" -> {
+                registerWorld(NoneBloodmoon(world, config))
+                return
+            }
+
         }
 
         BloodmoonPlugin.instance.logger.warning("Bloodmoon world $id has no valid BloodmoonActivate type.")

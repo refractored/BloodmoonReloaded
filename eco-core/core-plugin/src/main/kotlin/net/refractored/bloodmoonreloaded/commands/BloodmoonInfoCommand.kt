@@ -81,18 +81,7 @@ class BloodmoonInfoCommand {
                         .getStringPrefixed("messages.bloodmoon-info-chance")
                         .replace("%world%", world.name)
                         .replace("%status%", bloodmoonWorld.status.toString())
-                        .replace("%chance%", (bloodmoonWorld.chance * 100).toString())
-                        .miniToComponent()
-                )
-                return
-            }
-            is ChanceBloodmoon -> {
-                actor.reply(
-                    BloodmoonPlugin.instance.langYml
-                        .getStringPrefixed("messages.bloodmoon-info-chance")
-                        .replace("%world%", world.name)
-                        .replace("%status%", bloodmoonWorld.status.toString())
-                        .replace("%chance%", (bloodmoonWorld.chance * 100).toString())
+                        .replace("%chance%", (bloodmoonWorld.fancyChance))
                         .miniToComponent()
                 )
                 return

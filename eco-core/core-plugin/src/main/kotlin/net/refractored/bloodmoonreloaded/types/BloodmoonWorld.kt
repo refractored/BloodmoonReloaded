@@ -256,6 +256,7 @@ abstract class BloodmoonWorld(
                 player.playSound(player.location, "ambient.cave", 1.0f, 1.0f)
             }
         }
+
         this.periodicTasks()
     }
 

@@ -82,7 +82,7 @@ commands:
   activation: [ ]
   expiry: [ ]
 
-
+# The method of activating the bloodmoon.
 # If "days" is selected, the bloodmoon will activate every x days at night.
 # If "timed" is selected, the bloodmoon will activate after a specific time and when the world is night.
 # If "chance" is selected, the bloodmoon will activate after a random chance every night.
@@ -111,11 +111,13 @@ TimedNightOnly: true
 
 # The max value is 1.0, which is 100%.
 # The initial chance of the bloodmoon activating.
+#   0.05 = 5%,   0.1 = 10%,   1.0 = 100%, etc.
 # If BloodmoonActivate isn't set to "Chance", this will be ignored.
 Chance: 0.05
 # Set true to increment the chance every night the bloodmoon doesn't activate.
 ChanceIncrementEnabled: true
-# The max and min increment values. The plugin grabs a random value between these two numbers.
+# The max and min increment values. The plugin grabs a random value between these two numbers and adds it to the chance.
+# If BloodmoonActivate isn't set to "Chance" and ChanceIncrementEnabled isn't true, this will be ignored.
 ChanceIncrementMin: 0.05
 ChanceIncrementMax: 0.1
 
