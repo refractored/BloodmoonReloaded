@@ -86,7 +86,7 @@ class BloodmoonInfoCommand {
                 )
                 return
             }
-            is IncrementChanceBloodmoon -> {
+            is ChanceBloodmoon -> {
                 actor.reply(
                     BloodmoonPlugin.instance.langYml
                         .getStringPrefixed("messages.bloodmoon-info-chance")

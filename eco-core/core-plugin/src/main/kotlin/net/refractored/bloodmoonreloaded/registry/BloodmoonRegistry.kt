@@ -89,10 +89,6 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
                 registerWorld(ChanceBloodmoon(world, config))
                 return
             }
-            "incrementchance" -> {
-                registerWorld(IncrementChanceBloodmoon(world, config))
-                return
-            }
         }
 
         BloodmoonPlugin.instance.logger.warning("Bloodmoon world $id has no valid BloodmoonActivate type.")

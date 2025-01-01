@@ -86,7 +86,6 @@ commands:
 # If "days" is selected, the bloodmoon will activate every x days at night.
 # If "timed" is selected, the bloodmoon will activate after a specific time and when the world is night.
 # If "chance" is selected, the bloodmoon will activate after a random chance every night.
-# If "IncrementChance" is selected, the bloodmoon will activate after a random chance every night, and the chance will increase every night it doesn't activate.
 # If "none", or anything else is selected, the bloodmoon will not activate on its own, and must be activated manually.
 BloodmoonActivate: Days
 
@@ -95,7 +94,7 @@ BloodmoonActivate: Days
 #######################################################################################
 
 # There is no built-in paper method to check if a day has passed.
-# To get around this the plugin checks every 5 ticks if it turned day or night, then it counts based off that.
+# To get around this the plugin checks every 5 ticks if the time jumped from day to night, then it counts based off that.
 # This may not work correctly if you have a plugin that alters the rate of time.
 # If BloodmoonActivate isn't set to "Days", this will be ignored.
 Days: 5
@@ -110,17 +109,15 @@ Timed: 7200
 # If BloodmoonActivate isn't set to "Timed", this will be ignored.
 TimedNightOnly: true
 
-# Chance every night for a bloodmoon to activate.
 # The max value is 1.0, which is 100%.
+# The initial chance of the bloodmoon activating.
 # If BloodmoonActivate isn't set to "Chance", this will be ignored.
 Chance: 0.05
-
-# Chance every night for a bloodmoon to activate.
-# The max value is 1.0, which is 100%.
-# If BloodmoonActivate isn't set to "Chance", this will be ignored.
-IncrementChanceMin: 0.05
-IncrementChanceMax: 0.1
-IncrementChanceStart: 0.05
+# Set true to increment the chance every night the bloodmoon doesn't activate.
+ChanceIncrementEnabled: true
+# The max and min increment values. The plugin grabs a random value between these two numbers.
+ChanceIncrementMin: 0.05
+ChanceIncrementMax: 0.1
 
 # Should the bloodmoon ALWAYS be active?
 # If this is true the bloodmoon will always be active.

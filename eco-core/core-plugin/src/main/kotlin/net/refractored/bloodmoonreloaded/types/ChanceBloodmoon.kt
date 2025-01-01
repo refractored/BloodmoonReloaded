@@ -4,6 +4,8 @@ import com.willfp.eco.core.config.interfaces.Config
 import com.willfp.eco.core.data.keys.PersistentDataKey
 import com.willfp.eco.core.data.keys.PersistentDataKeyType
 import com.willfp.eco.core.data.profile
+import com.willfp.eco.core.integrations.placeholder.PlaceholderManager
+import com.willfp.eco.core.placeholder.PlayerlessPlaceholder
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import org.bukkit.Bukkit
 import org.bukkit.World
@@ -24,8 +26,31 @@ class ChanceBloodmoon(
             true
         )
 
-    val chance: Double
-        get() = config.getDouble("chance").coerceAtMost(1.0)
+    private val chanceKey =
+        PersistentDataKey(
+            BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_chance"),
+            PersistentDataKeyType.DOUBLE,
+            config.getDouble("IncrementChanceStart").coerceAtMost(1.0)
+        )
+
+    var chance: Double
+        get() = Bukkit.getServer().profile.read(chanceKey)
+        private set(value) = Bukkit.getServer().profile.write(chanceKey, value)
+
+    var fancyChance: String
+        get() = (chance * 100).toString()
+        private set(_) {}
+
+    init {
+        PlaceholderManager.registerPlaceholder(
+            PlayerlessPlaceholder(
+                BloodmoonPlugin.instance,
+                "${id}_chance"
+            ) {
+                "${fancyChance}%"
+            }
+        )
+    }
 
     /**
      * @return false
@@ -51,7 +76,15 @@ class ChanceBloodmoon(
             return true
         }
 
+        if (config.getBool("ChanceIncrementEnabled")) {
+                chance += Random.nextDouble(config.getDouble("ChanceIncrementMin"), config.getDouble("ChanceIncrementMax"))
+        }
+
         lastDaytimeCheck = false
         return false
+    }
+
+    override fun onActivation() {
+        chance = config.getDouble("Chance").coerceAtMost(1.0)
     }
 }
