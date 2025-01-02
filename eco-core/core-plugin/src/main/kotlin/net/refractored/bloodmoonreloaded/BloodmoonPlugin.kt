@@ -100,7 +100,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
         val periodicTasks =
             object : BukkitRunnable() {
                 override fun run() {
-                    for (registeredWorld in getActiveWorlds()) {
+                    for (registeredWorld in getRegisteredWorlds()) {
                         registeredWorld.runPeriodicTasks()
                     }
                     scheduler.runLater(this, (Random.nextLong(75) + 250L))

@@ -245,6 +245,7 @@ abstract class BloodmoonWorld(
 
     /**
      * Run periodic tasks.
+     * This is run every 320L to 520L ticks.
      */
     open fun periodicTasks() {}
 
@@ -253,9 +254,12 @@ abstract class BloodmoonWorld(
      * This is randomly ran every 320L to 520L ticks.
      */
     fun runPeriodicTasks() {
-        if (periodicCaveSounds && Random.nextBoolean()) {
-            for (player in world.players) {
-                player.playSound(player.location, "ambient.cave", 1.0f, 1.0f)
+        if (status == Status.ACTIVE) {
+            // TODO: Have the sounds play as a chance based thing instead of randomizing the entire function.
+            if (periodicCaveSounds && Random.nextBoolean()) {
+                for (player in world.players) {
+                    player.playSound(player.location, "ambient.cave", 1.0f, 1.0f)
+                }
             }
         }
 
