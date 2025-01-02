@@ -171,6 +171,8 @@ abstract class BloodmoonWorld(
 
     val useCustomDeathMessage: Boolean = config.getBool("PlayerDeath.CustomDeathMessage")
 
+    val disableChangeTime: Boolean = config.getBool("DisableChangeTime")
+
     val bossbarColor =
         BossBar.Color.entries.find { it.name == config.getString("Bossbar.Color") }
             ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("Bossbar.Color")}")
@@ -288,6 +290,12 @@ abstract class BloodmoonWorld(
             world.players.forEach { player ->
                 player.sendMessage(activationMessage.miniToComponent())
             }
+        }
+        if (disableChangeTime) {
+            activateBloodmoon(length)
+            status = Status.ACTIVE
+            onActivation()
+            return
         }
         val nightTimeTransition =
             object : BukkitRunnable() {

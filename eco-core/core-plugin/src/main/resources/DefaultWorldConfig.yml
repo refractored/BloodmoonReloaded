@@ -61,6 +61,11 @@ SetDaylightCycle: true
 VictoryChime: true
 # Should the plugin have a chance to play a sound every 30 seconds during the bloodmoon?
 PeriodicCaveSounds: true
+# If the bloodmoon shouldn't change the time of the world.
+# This may break some BloodmoonActivate methods.
+# This is useful if you have a plugin that changes the time of the world, or
+# The bloodmoon is active in a dimension where time doesn't matter.
+DisableChangeTime: false
 PlayerDeath:
   ClearInventory: false
   ClearEXP: false
