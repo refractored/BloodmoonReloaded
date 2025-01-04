@@ -1,6 +1,7 @@
 options:
   color: "&#A50000"
   supports-extensions: true
+  bstats-id: 24355
 environment:
   - name: libreforge version
     value: ${libreforgeVersion}
