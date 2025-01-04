@@ -37,6 +37,9 @@ class ChanceBloodmoon(
         get() = Bukkit.getServer().profile.read(chanceKey)
         private set(value) = Bukkit.getServer().profile.write(chanceKey, value)
 
+    /**
+     * @return The chance as a percentage out of 100.
+     */
     var fancyChance: String
         get() = (chance * 100).toString()
         private set(_) {}
@@ -47,7 +50,7 @@ class ChanceBloodmoon(
                 BloodmoonPlugin.instance,
                 "${id}_chance"
             ) {
-                "${fancyChance}%"
+                fancyChance
             }
         )
     }

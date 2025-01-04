@@ -39,6 +39,7 @@ class BloodmoonInfoCommand {
             )
             return
         }
+        // TODO: Have BloodmoonWorld implement a method to get the info message.
         when (bloodmoonWorld) {
             is TimedBloodmoon -> {
                 val timeframe = Duration.ofMillis(bloodmoonWorld.millisUntilActivation - System.currentTimeMillis())
