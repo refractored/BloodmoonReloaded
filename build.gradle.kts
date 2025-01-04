@@ -11,6 +11,38 @@ group = "net.refractored"
 version = findProperty("version")!!
 val libreforgeVersion = findProperty("libreforge-version")
 
+fun getGitHash(): String {
+    var gitCommitHash = "unknown"
+    try {
+        val workingDir = File("${project.projectDir}")
+        val process = ProcessBuilder("git", "rev-parse", "--short", "HEAD")
+            .directory(workingDir)
+            .start()
+        process.waitFor()
+        if (process.exitValue() == 0) {
+            gitCommitHash = process.inputStream.bufferedReader().readText().trim()
+        }
+    } catch (e: Exception) {
+    }
+    return gitCommitHash
+}
+
+fun getCurrentGitBranch(): String {
+    var gitBranch = "unknown"
+    try {
+        val workingDir = File("${project.projectDir}")
+        val process = ProcessBuilder("git", "rev-parse", "--abbrev-ref", "HEAD")
+            .directory(workingDir)
+            .start()
+        process.waitFor()
+        if (process.exitValue() == 0) {
+            gitBranch = process.inputStream.bufferedReader().readText().trim()
+        }
+    } catch (e: Exception) {
+    }
+    return gitBranch
+}
+
 base {
     archivesName.set(project.name)
 }
@@ -64,6 +96,7 @@ allprojects {
 //            }
 //        }
 
+
         compileJava {
             options.isDeprecation = true
             options.encoding = "UTF-8"
@@ -72,6 +105,9 @@ allprojects {
         }
 
         processResources {
+            if (getCurrentGitBranch() != "main" && getCurrentGitBranch() != "master" && getCurrentGitBranch() != "HEAD") {
+                version = "${version}-${getCurrentGitBranch()}-${getGitHash()}"
+            }
             filesMatching(listOf("**plugin.yml", "**eco.yml")) {
                 expand(
                     "version" to project.version,

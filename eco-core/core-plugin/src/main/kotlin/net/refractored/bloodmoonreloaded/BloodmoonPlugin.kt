@@ -66,6 +66,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
             handler.registerBrigadier()
             registeredBrigadier = true
         }
+        // I'm not really sure if this is necessary.
         for (activeWorld in getActiveWorlds()) {
             activeWorld.deactivate(BloodmoonStopEvent.StopCause.RELOAD, false)
         }
@@ -118,6 +119,11 @@ class BloodmoonPlugin : LibreforgePlugin() {
                 }
             }
         scheduler.runTimer(checkBloodmoons, 0, 2)
+        for (world in getRegisteredWorlds()) {
+            if (world.status != BloodmoonWorld.Status.ACTIVE) continue
+            if (world.savedBloodmoonRemainingMillis > 0) continue
+            world.activate(world.savedBloodmoonRemainingMillis.toLong(), false)
+        }
     }
 
     override fun handleDisable() {
