@@ -30,6 +30,7 @@ messages:
   bloodmoon-info-time: "<reset>The bloodmoon is currently inactive in %world%. It will start in <reset>%hours%:%minutes%:%seconds%."
   bloodmoon-info-days: "<reset>The bloodmoon is currently inactive in %world%. It will start in <reset>%days% days."
   bloodmoon-info-chance: "<reset>The bloodmoon is currently inactive in %world%. it has a <reset>%chance%% chance to start tonight."
+  bloodmoon-info-mirror: "<reset>The bloodmoon is currently inactive in %world%. it will activate when %mirror_world% activates."
   bloodmoon-info-none: "<reset>The bloodmoon is currently inactive in %world%."
   bloodmoon-info-active: "<reset>The bloodmoon is currently active in %world%."
   bloodmoon-not-active-world: "<red>A bloodmoon is not active in this world."

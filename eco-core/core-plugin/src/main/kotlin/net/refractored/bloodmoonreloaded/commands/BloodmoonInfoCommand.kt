@@ -39,54 +39,6 @@ class BloodmoonInfoCommand {
             )
             return
         }
-        // TODO: Have BloodmoonWorld implement a method to get the info message.
-        when (bloodmoonWorld) {
-            is TimedBloodmoon -> {
-                val timeframe = Duration.ofMillis(bloodmoonWorld.millisUntilActivation - System.currentTimeMillis())
-                actor.reply(
-                    BloodmoonPlugin.instance.langYml
-                        .getStringPrefixed("messages.bloodmoon-info-time")
-                        .replace("%world%", world.name)
-                        .replace("%status%", bloodmoonWorld.status.toString())
-                        .replace("%hours%", timeframe.toHours().toString())
-                        .replace("%minutes%", timeframe.toMinutesPart().toString())
-                        .replace("%seconds%", timeframe.toSecondsPart().toString())
-                        .miniToComponent()
-                )
-                return
-            }
-            is DaysBloodmoon -> {
-                actor.reply(
-                    BloodmoonPlugin.instance.langYml
-                        .getStringPrefixed("messages.bloodmoon-info-days")
-                        .replace("%world%", world.name)
-                        .replace("%status%", bloodmoonWorld.status.toString())
-                        .replace("%days%", bloodmoonWorld.dayCount.toString())
-                        .miniToComponent()
-                )
-                return
-            }
-            is NoneBloodmoon -> {
-                actor.reply(
-                    BloodmoonPlugin.instance.langYml
-                        .getStringPrefixed("messages.bloodmoon-info-none")
-                        .replace("%world%", world.name)
-                        .replace("%status%", bloodmoonWorld.status.toString())
-                        .miniToComponent()
-                )
-                return
-            }
-            is ChanceBloodmoon -> {
-                actor.reply(
-                    BloodmoonPlugin.instance.langYml
-                        .getStringPrefixed("messages.bloodmoon-info-chance")
-                        .replace("%world%", world.name)
-                        .replace("%status%", bloodmoonWorld.status.toString())
-                        .replace("%chance%", (bloodmoonWorld.fancyChance))
-                        .miniToComponent()
-                )
-                return
-            }
-        }
+        actor.reply(bloodmoonWorld.info)
     }
 }

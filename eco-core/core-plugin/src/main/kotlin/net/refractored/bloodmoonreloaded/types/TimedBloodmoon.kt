@@ -4,9 +4,13 @@ import com.willfp.eco.core.config.interfaces.Config
 import com.willfp.eco.core.data.keys.PersistentDataKey
 import com.willfp.eco.core.data.keys.PersistentDataKeyType
 import com.willfp.eco.core.data.profile
+import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
+import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
+import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.Bukkit
 import org.bukkit.World
+import java.time.Duration
 
 /**
  * Represents a bloodmoon that is activated after a certain amount of time.
@@ -15,6 +19,18 @@ class TimedBloodmoon(
     world: World,
     config: Config
 ) : BloodmoonWorld(world, config) {
+
+    private val timeframe: Duration = Duration.ofMillis(remainingTime)
+
+
+    override var info: ComponentLike = BloodmoonPlugin.instance.langYml
+        .getStringPrefixed("messages.bloodmoon-info-time")
+        .replace("%world%", world.name)
+        .replace("%status%", this.status.toString())
+        .replace("%hours%", timeframe.toHours().toString())
+        .replace("%minutes%", timeframe.toMinutesPart().toString())
+        .replace("%seconds%", timeframe.toSecondsPart().toString())
+        .miniToComponent()
 
     private val timeKey =
         PersistentDataKey(

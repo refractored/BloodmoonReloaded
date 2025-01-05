@@ -12,6 +12,8 @@ import com.willfp.libreforge.ViolationContext
 import com.willfp.libreforge.conditions.Conditions
 import com.willfp.libreforge.effects.Effects
 import net.kyori.adventure.bossbar.BossBar
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.ComponentLike
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
@@ -94,6 +96,8 @@ abstract class BloodmoonWorld(
     final override val id: NamespacedKey = NamespacedKey("bloodmoonreloaded", world.name)
 
     var status = Status.INACTIVE
+
+    abstract var info: ComponentLike
 
     override val effects =
         Effects.compile(

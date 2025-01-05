@@ -7,6 +7,8 @@ import com.willfp.eco.core.data.profile
 import com.willfp.eco.core.integrations.placeholder.PlaceholderManager
 import com.willfp.eco.core.placeholder.PlayerlessPlaceholder
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
+import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
+import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.Bukkit
 import org.bukkit.World
 
@@ -28,6 +30,13 @@ class DaysBloodmoon(
             }
         )
     }
+
+    override var info = BloodmoonPlugin.instance.langYml
+        .getStringPrefixed("messages.bloodmoon-info-days")
+        .replace("%world%", world.name)
+        .replace("%status%", this.status.toString())
+        .replace("%days%", this.dayCount.toString())
+        .miniToComponent()
 
     private val dayCountKey =
         PersistentDataKey(

@@ -91,6 +91,7 @@ commands:
 # If "days" is selected, the bloodmoon will activate every x days at night.
 # If "timed" is selected, the bloodmoon will activate after a specific time and when the world is night.
 # If "chance" is selected, the bloodmoon will activate after a random chance every night.
+# If "mirror" is selected, the bloodmoon will activate shortly after another world's bloodmoon activates.
 # If "none", or anything else is selected, the bloodmoon will not activate on its own, and must be activated manually.
 BloodmoonActivate: Days
 
@@ -125,6 +126,12 @@ ChanceIncrementEnabled: true
 # If BloodmoonActivate isn't set to "Chance" and ChanceIncrementEnabled isn't true, this will be ignored.
 ChanceIncrementMin: 0.05
 ChanceIncrementMax: 0.1
+
+# The world to mirror the bloodmoon from.
+# Reminder: THIS DOES NOT MIRROR THE CONFIG FILES OR THE LENGTH OF THE BLOODMOON.
+# Just copy and paste the config above the BloodmoonActivate line to do that.
+# If BloodmoonActivate isn't set to "mirror", this will be ignored.
+MirrorWorld: "bloodmoonworld"
 
 # Should the bloodmoon ALWAYS be active?
 # If this is true the bloodmoon will always be active.

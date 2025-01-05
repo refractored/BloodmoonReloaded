@@ -3,37 +3,36 @@ package net.refractored.bloodmoonreloaded.types
 import com.willfp.eco.core.config.interfaces.Config
 import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
+import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.World
 
 /**
- * Represents a world that will never start a bloodmoon on its own.
+ * Represents a world that will start after another bloodmoon starts.
+ * The "Mirrored" bloodmoon will not have the same settings.
  */
-class NoneBloodmoon(
+class MirrorBloodmoon(
     world: World,
     config: Config
 ) : BloodmoonWorld(world, config) {
 
     override var info: ComponentLike = BloodmoonPlugin.instance.langYml
-        .getStringPrefixed("messages.bloodmoon-info-none")
+        .getStringPrefixed("messages.bloodmoon-info-mirror")
         .replace("%world%", world.name)
+        .replace("%mirror_world%", world.name)
         .replace("%status%", this.status.toString())
         .miniToComponent()
 
-    val permanentBloodmoon: Boolean
-        get() = config.getBool("NoneStatus")
+    val bloodmoonWorld = BloodmoonRegistry.getWorld(config.getString("MirrorWorld"))
 
     override fun shouldActivate(): Boolean {
         if (status != Status.INACTIVE) {
             return false
         }
-        return permanentBloodmoon
-    }
-
-    override fun onActivation() {
-        if (!permanentBloodmoon) return
-
-        expiryTime = -1
+        if (bloodmoonWorld == null) {
+            throw IllegalArgumentException("Mirror world not found")
+        }
+        return bloodmoonWorld.status == Status.ACTIVE
     }
 }

@@ -33,7 +33,7 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
     // Get all worlds with the status of active
     fun getActiveWorlds() = registry.toList().filter { it.status == BloodmoonWorld.Status.ACTIVE }
 
-    fun getWorld(id: String) = registry[id]
+    fun getWorld(id: String) = registry.get(id)
 
     fun unregisterWorld(id: String) {
         getWorld(id)?.let { world ->
