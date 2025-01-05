@@ -380,6 +380,19 @@ abstract class BloodmoonWorld(
         }.runTaskTimer(BloodmoonPlugin.instance, 1, 1)
     }
 
+    private fun revertSettings() {
+        if (revertDaylightCycle) {
+            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true)
+        }
+        if (setThunder) {
+            world.clearWeatherDuration = 20 * 60 * 20
+            world.setStorm(false)
+        }
+        world.players.forEach { player ->
+            bossbar.removeViewer(player)
+        }
+    }
+
     /**
      * Deactivate the bloodmoon.
      */
@@ -396,9 +409,6 @@ abstract class BloodmoonWorld(
         // Run if event is not cancelled
         // This is here so I remember to not be stupid and add stuff before the event is fired.
 
-        if (revertDaylightCycle) {
-            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true)
-        }
         deactivationCommands.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
         if (announce && config.getBool("Messages.DeactivationEnabled")) {
             if (config.getBool("Messages.DeactivationAnnounceGlobal")) {
@@ -409,15 +419,9 @@ abstract class BloodmoonWorld(
                 }
             }
         }
+        revertSettings()
         if (reason != StopCause.TIMER) return
         savedBloodmoonRemainingMillis = 0.0
-        world.setStorm(false)
-        if (setThunder) {
-            world.clearWeatherDuration = 20 * 60 * 20
-        }
-        world.players.forEach { player ->
-            bossbar.removeViewer(player)
-        }
         status = Status.INACTIVE
         if (victoryChime) {
             for (player in world.players) {
