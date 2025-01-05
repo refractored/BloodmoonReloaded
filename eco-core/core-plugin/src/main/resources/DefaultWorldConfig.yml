@@ -73,8 +73,15 @@ PlayerDeath:
 Messages:
   # If the prefix should be added to the message.
   UsePrefix: false
+  ActivationEnabled: true
+  ActivationAnnounceGlobal: true
+  # %world% = World name
   Activation: "<red>A bloodmoon is upon us."
+  DeactivationEnabled: true
+  DeactivationAnnounceGlobal: true
+  # %world% = World name
   Deactivation: "<green>The Bloodmoon has ended."
+  BedDenyMessageEnabled: true
   BedDenyMessage: "<red>You cannot sleep during a bloodmoon."
   # Death messages won't have a prefix added to them, even if UsePrefix is true.
   # %player% = Player's name

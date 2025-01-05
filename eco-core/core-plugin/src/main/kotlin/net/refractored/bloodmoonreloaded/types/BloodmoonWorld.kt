@@ -284,6 +284,11 @@ abstract class BloodmoonWorld(
          * The length in milliseconds of the bloodmoon.
          */
         length: Long = this.length,
+        /**
+         * Whether to announce the activation.
+         * This is true by default.
+         * The message won't be sent if the config disables the message.
+         */
         announce: Boolean = true
     ) {
         if (status != Status.INACTIVE) {
@@ -296,9 +301,13 @@ abstract class BloodmoonWorld(
         }
         status = Status.ACTIVATING
         activationCommands.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
-        if (announce) {
-            world.players.forEach { player ->
-                player.sendMessage(activationMessage.miniToComponent())
+        if (announce && config.getBool("Messages.DeactivationEnabled")) {
+            if (config.getBool("Messages.ActivationAnnounceGlobal")) {
+                Bukkit.broadcast(activationMessage.miniToComponent())
+            } else {
+                world.players.forEach { player ->
+                    player.sendMessage(activationMessage.miniToComponent())
+                }
             }
         }
         if (disableChangeTime) {
@@ -391,9 +400,13 @@ abstract class BloodmoonWorld(
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true)
         }
         deactivationCommands.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
-        if (announce) {
-            world.players.forEach { player ->
-                player.sendMessage(deactivationMessage.miniToComponent())
+        if (announce && config.getBool("Messages.DeactivationEnabled")) {
+            if (config.getBool("Messages.DeactivationAnnounceGlobal")) {
+                Bukkit.broadcast(deactivationMessage.miniToComponent())
+            } else {
+                world.players.forEach { player ->
+                    player.sendMessage(deactivationMessage.miniToComponent())
+                }
             }
         }
         if (reason != StopCause.TIMER) return
