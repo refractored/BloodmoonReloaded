@@ -22,7 +22,7 @@ class DaysBloodmoon(
         PlaceholderManager.registerPlaceholder(
             PlayerlessPlaceholder(
                 BloodmoonPlugin.instance,
-                "${id}_days_remaining"
+                "${world.name}_days_remaining"
             ) {
                 dayCount.toString()
             }

@@ -18,7 +18,7 @@ class TimedBloodmoon(
 
     private val timeKey =
         PersistentDataKey(
-            BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_remaining_time"),
+            BloodmoonPlugin.instance.namespacedKeyFactory.create("${world.name}_remaining_time"),
             PersistentDataKeyType.DOUBLE,
             0.0
         )

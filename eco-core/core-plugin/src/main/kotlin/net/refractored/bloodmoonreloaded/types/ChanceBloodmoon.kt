@@ -48,7 +48,7 @@ class ChanceBloodmoon(
         PlaceholderManager.registerPlaceholder(
             PlayerlessPlaceholder(
                 BloodmoonPlugin.instance,
-                "${id}_chance"
+                "${world.name}_chance"
             ) {
                 fancyChance
             }

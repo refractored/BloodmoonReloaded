@@ -66,6 +66,8 @@ class BloodmoonStopEvent(
         /**
          * The bloodmoon was stopped because the plugin was reloaded.
          */
-        RELOAD
+        RELOAD,
+
+
     }
 }

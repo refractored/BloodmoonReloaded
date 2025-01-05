@@ -105,12 +105,13 @@ allprojects {
         }
 
         processResources {
-            if (getCurrentGitBranch() != "main" && getCurrentGitBranch() != "master" && getCurrentGitBranch() != "HEAD") {
+            val nonReleaseBranches = setOf("main", "master", "HEAD")
+            if (getCurrentGitBranch() !in nonReleaseBranches) {
                 version = "${version}-${getCurrentGitBranch()}-${getGitHash()}"
             }
             filesMatching(listOf("**plugin.yml", "**eco.yml")) {
                 expand(
-                    "version" to project.version,
+                    "version" to version,
                     "libreforgeVersion" to libreforgeVersion,
                     "pluginName" to rootProject.name
                 )

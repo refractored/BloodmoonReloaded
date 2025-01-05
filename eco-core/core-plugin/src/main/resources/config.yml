@@ -2,7 +2,11 @@
 # Configuration file for the core plugin
 #
 
-# Worlds that won't have bloodmoons.
-# This will also disable config generation for these worlds.
-DisabledWorlds:
-  - ThisWorldIsDisabledFromBloodmoons
+# Worlds that have bloodmoons enabled.
+# Reload the plugin, and a config file should generate for said worlds.
+WorldsList:
+  - world
+# If true, the WorldsList will be used as a whitelist.
+# If false, the WorldsList will be used as a blacklist.
+# If used as a blacklist, all other worlds will have a bloodmoon config.
+Whitelist: true

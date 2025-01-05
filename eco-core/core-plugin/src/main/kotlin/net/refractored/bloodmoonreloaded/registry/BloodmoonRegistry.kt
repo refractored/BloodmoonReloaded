@@ -8,6 +8,7 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
 import net.refractored.bloodmoonreloaded.types.*
 import org.bukkit.Bukkit
+import org.bukkit.World
 import org.bukkit.World.Environment
 import java.nio.file.Files
 
@@ -15,7 +16,17 @@ import java.nio.file.Files
  * Registry for Bloodmoon worlds.
  */
 object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
+
     private val registry = Registry<BloodmoonWorld>()
+
+    fun isWorldEnabled(world: String): Boolean {
+        val worldsList = BloodmoonPlugin.instance.configYml.getStrings("WorldsList")
+        return if (BloodmoonPlugin.instance.configYml.getBool("Whitelist")) {
+            worldsList.contains(world)
+        } else {
+            !worldsList.contains(world)
+        }
+    }
 
     fun getRegisteredWorlds() = registry.toList()
 
@@ -42,7 +53,7 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
         }
         for (world in Bukkit.getWorlds()) {
             if (world.environment != Environment.NORMAL) continue
-            if (BloodmoonPlugin.instance.configYml.getStrings("DisabledWorlds").contains(world.name)) {
+            if (!isWorldEnabled(world.name)) {
                 return
             }
             if (plugin.dataFolder.resolve("worlds/${world.name}.yml").exists()) continue
@@ -68,7 +79,7 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
             return
         }
 
-        if (BloodmoonPlugin.instance.configYml.getStrings("DisabledWorlds").contains(id)) {
+        if (!isWorldEnabled(id)) {
             return
         }
 

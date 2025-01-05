@@ -45,6 +45,8 @@ abstract class BloodmoonWorld(
 ) : Holder,
     Registrable {
 
+
+
     /**
      * Represents the status of the bloodmoon event.
      */
@@ -61,7 +63,7 @@ abstract class BloodmoonWorld(
         /**
          * @return The component from the lang.yml
          */
-        fun component() = BloodmoonPlugin.instance.langYml.getMessage("bloodmoon-status.${name.lowercase()}").miniToComponent()
+        fun component() = BloodmoonPlugin.instance.langYml.getString("bloodmoon-status.${name.lowercase()}").miniToComponent()
 
         /**
          * @return The plaintext from the lang.yml
@@ -143,7 +145,7 @@ abstract class BloodmoonWorld(
     var fullTime: Long = 0L
 
     /**
-     * The length in milliseconds of the bloodmoon.
+     * The length in milliseconds of the bloodmoon set in the config.
      */
     val length: Long = config.getString("Length").toLong() * 1000
 
@@ -379,7 +381,7 @@ abstract class BloodmoonWorld(
             return
         }
         // Run if event is not cancelled
-        // This is here so I remember to not be stupid and add stuff before the event is called
+        // This is here so I remember to not be stupid and add stuff before the event is fired.
 
         if (revertDaylightCycle) {
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true)
@@ -390,6 +392,7 @@ abstract class BloodmoonWorld(
                 player.sendMessage(deactivationMessage.miniToComponent())
             }
         }
+        if (reason != StopCause.TIMER) return
         savedBloodmoonRemainingMillis = 0.0
         world.setStorm(false)
         if (setThunder) {

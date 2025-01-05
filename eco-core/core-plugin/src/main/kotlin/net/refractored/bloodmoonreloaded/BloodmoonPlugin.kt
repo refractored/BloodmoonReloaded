@@ -121,7 +121,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
         scheduler.runTimer(checkBloodmoons, 0, 2)
         for (world in getRegisteredWorlds()) {
             if (world.status != BloodmoonWorld.Status.ACTIVE) continue
-            if (world.savedBloodmoonRemainingMillis < 0) continue
+            if (world.savedBloodmoonRemainingMillis <= 0) continue
             world.activate(world.savedBloodmoonRemainingMillis.toLong(), false)
         }
     }
