@@ -134,7 +134,7 @@ ChanceIncrementEnabled: true
 ChanceIncrementMin: 0.05
 ChanceIncrementMax: 0.1
 
-# The world to mirror the bloodmoon from.
+# The world to mirror the bloodmoon from, meaning if the bloodmoon is active in this world, it will activate in the mirrored world.
 # Reminder: THIS DOES NOT MIRROR THE CONFIG FILES OR THE LENGTH OF THE BLOODMOON.
 # Just copy and paste the config above the BloodmoonActivate line to do that.
 # If BloodmoonActivate isn't set to "mirror", this will be ignored.
