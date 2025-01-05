@@ -20,6 +20,7 @@ class TimedBloodmoon(
     config: Config
 ) : BloodmoonWorld(world, config) {
 
+    // TODO: This may cause milliseconds of time to be lost
     private val timeframe: Duration = Duration.ofMillis(remainingTime)
 
 

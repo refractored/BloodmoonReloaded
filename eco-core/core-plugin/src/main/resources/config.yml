@@ -8,5 +8,5 @@ WorldsList:
   - world
 # If true, the WorldsList will be used as a whitelist.
 # If false, the WorldsList will be used as a blacklist.
-# If used as a blacklist, all other worlds will have a bloodmoon config.
+# If used as a blacklist, all other worlds will have a bloodmoon config created and read.
 Whitelist: true
