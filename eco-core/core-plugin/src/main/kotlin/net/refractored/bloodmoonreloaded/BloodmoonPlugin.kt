@@ -115,7 +115,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
                             return
                         }
                         // If either the bloodmoon shouldn't activate, or the status isn't active, return.
-                        // (Written here cause my dyslexia has messed with me trying to read this for some reason)
+                        // (Written here cause my dyslexic-ass has messed with me trying to read this for some reason)
                         if (!registeredWorld.shouldActivate() || registeredWorld.status != BloodmoonWorld.Status.INACTIVE) continue
                         registeredWorld.activate()
                     }

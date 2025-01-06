@@ -10,11 +10,11 @@ class BloodmoonStartEvent(
     /**
      * The world that the bloodmoon is starting in
      */
-    val World: World,
+    val world: World,
     /**
      * The BloodmoonWorld that the bloodmoon is starting in
      */
-    val BloodmoonWorld: BloodmoonWorld
+    val bloodmoonWorld: BloodmoonWorld
 ) : Event(),
     Cancellable {
     private var cancelled = false

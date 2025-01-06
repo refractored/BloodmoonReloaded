@@ -75,6 +75,7 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
         id: String,
         config: Config
     ) {
+        // This should never happen, if it does, I cry to sleep.
         val world =
             Bukkit.getWorld(id) ?: run {
                 BloodmoonPlugin.instance.logger.warning("World $id does not exist.")

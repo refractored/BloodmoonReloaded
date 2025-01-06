@@ -12,6 +12,7 @@ class OnPlayerSleep : Listener {
     fun execute(event: PlayerBedEnterEvent) {
         val bloodmoonWorld = BloodmoonRegistry.getWorld(event.player.world.name) ?: return
 
+        // It'd make sense to deny beds during the transition as well.
         if (bloodmoonWorld.status == BloodmoonWorld.Status.INACTIVE) return
 
         if (!bloodmoonWorld.bedDisabled) return

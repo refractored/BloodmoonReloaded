@@ -251,13 +251,13 @@ abstract class BloodmoonWorld(
 
     /**
      * Run periodic tasks.
-     * This is run every 320L to 520L ticks.
+     * This is run every 20 ticks.
      */
     open fun periodicTasks() {}
 
     /**
      * Run periodic tasks.
-     * This is randomly ran every 320L to 520L ticks.
+     * This is run every 20 ticks.
      */
     fun runPeriodicTasks() {
         if (status == Status.ACTIVE) {
