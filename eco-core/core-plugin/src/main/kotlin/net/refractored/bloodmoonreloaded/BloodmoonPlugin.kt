@@ -93,50 +93,29 @@ class BloodmoonPlugin : LibreforgePlugin() {
 
     override fun createTasks() {
         // All tasks are cancelled on reload, so we don't need to worry about having duplicate tasks.
-        val updateSavedData =
-            object : Runnable {
-                override fun run() {
-                    for (registeredWorld in getActiveWorlds()) {
-                        registeredWorld.savedBloodmoonRemainingMillis = (registeredWorld.expiryTime - System.currentTimeMillis()).toDouble()
-                        return
-                    }
-                }
-            }
-        scheduler.runTimer(updateSavedData, 1, 20)
-        val updateBloodmoons =
-            object : BukkitRunnable() {
-                override fun run() {
-                    for (registeredWorld in getActiveWorlds()) {
-                        if (System.currentTimeMillis() >= registeredWorld.expiryTime && registeredWorld.expiryTime >= 0) {
-                            registeredWorld.deactivate(BloodmoonStopEvent.StopCause.TIMER)
-                            return
-                        }
-                        // TODO: Move to periodic tasks.
-                        if (registeredWorld.setThunder) {
-                            registeredWorld.world.setStorm(true)
-                        }
-                        registeredWorld.world.fullTime = registeredWorld.fullTime
-                    }
-                }
-            }
-        scheduler.runTimer(updateBloodmoons, 1, 16)
-
         val periodicTasks =
             object : BukkitRunnable() {
                 override fun run() {
                     for (registeredWorld in getWorlds()) {
                         registeredWorld.runPeriodicTasks()
                     }
-                    scheduler.runLater(this, (Random.nextLong(75) + 250L))
                 }
             }
-        scheduler.runLater(periodicTasks, 60)
+        scheduler.runAsyncTimer(periodicTasks, 1 , 20)
 
-        // Checks
+        // Checks if a bloodmoon should be activated or deactivated.
         val checkBloodmoons =
             object : BukkitRunnable() {
                 override fun run() {
                     for (registeredWorld in getWorlds()) {
+                        if (registeredWorld.status != BloodmoonWorld.Status.ACTIVE
+                            &&
+                            (System.currentTimeMillis() >= registeredWorld.expiryTime && registeredWorld.expiryTime >= 0)) {
+                            registeredWorld.deactivate(BloodmoonStopEvent.StopCause.TIMER)
+                            return
+                        }
+                        // If either the bloodmoon shouldn't activate, or the status isn't active, return.
+                        // (Written here cause my dyslexia has messed with me trying to read this for some reason)
                         if (!registeredWorld.shouldActivate() || registeredWorld.status != BloodmoonWorld.Status.INACTIVE) continue
                         registeredWorld.activate()
                     }

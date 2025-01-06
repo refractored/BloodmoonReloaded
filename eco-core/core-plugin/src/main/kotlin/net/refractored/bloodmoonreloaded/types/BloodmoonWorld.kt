@@ -20,6 +20,7 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStartEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent.StopCause
+import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getActiveWorlds
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniPrefix
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.Bukkit
@@ -168,7 +169,7 @@ abstract class BloodmoonWorld(
 
     val victoryChime: Boolean = config.getBool("VictoryChime")
 
-    val periodicCaveSounds: Boolean = config.getBool("PeriodicCaveSounds")
+    val periodicCaveSounds: Boolean = config.getBool("PeriodicCaveSounds.Enabled")
 
     val clearInventory: Boolean = config.getBool("PlayerDeath.ClearInventory")
 
@@ -260,14 +261,21 @@ abstract class BloodmoonWorld(
      */
     fun runPeriodicTasks() {
         if (status == Status.ACTIVE) {
-            // TODO: Have the sounds play as a chance based thing instead of randomizing the entire function.
-            if (periodicCaveSounds && Random.nextBoolean()) {
+            if (periodicCaveSounds && (Random.nextDouble(1.0) < config.getDouble("PeriodicCaveSounds.Chance"))) {
                 for (player in world.players) {
                     player.playSound(player.location, "ambient.cave", 1.0f, 1.0f)
                 }
             }
+
+            savedBloodmoonRemainingMillis = (expiryTime - System.currentTimeMillis()).toDouble()
+
+            if (setThunder) {
+                world.setStorm(true)
+            }
+            world.fullTime = fullTime
         }
 
+        // In case, a bloodmoon wants to do some special stuff im not sure.
         this.periodicTasks()
     }
 
