@@ -10,6 +10,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
 
 class OnPlayerDeath : Listener {
+    // Priority is set to lowest to be the first to modify item drops.
     @EventHandler(priority = EventPriority.LOW)
     fun execute(event: PlayerDeathEvent) {
         val world = BloodmoonRegistry.getWorld(event.player.world.name) ?: return
@@ -21,6 +22,7 @@ class OnPlayerDeath : Listener {
         }
 
         if (world.clearEXP) {
+            event.setShouldDropExperience(false)
             event.droppedExp = 0
             event.player.exp = 0f
         }

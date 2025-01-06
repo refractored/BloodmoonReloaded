@@ -119,14 +119,13 @@ abstract class BloodmoonWorld(
      */
     var revertDaylightCycle: Boolean
         get() {
-            return world.persistentDataContainer.get(
-                NamespacedKey(BloodmoonPlugin.instance, "${id.key}_daylightcycle"),
+            return world.persistentDataContainer.get(BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_daylightcycle"),
                 PersistentDataType.BOOLEAN
             ) ?: false
         }
         set(value) {
             world.persistentDataContainer.set(
-                NamespacedKey(BloodmoonPlugin.instance, "${id.key}_daylightcycle"),
+                BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_daylightcycle"),
                 PersistentDataType.BOOLEAN,
                 value
             )
@@ -406,8 +405,8 @@ abstract class BloodmoonWorld(
         if (event.isCancelled()) {
             return
         }
-        // Run if event is not cancelled
-        // This is here so I remember to not be stupid and add stuff before the event is fired.
+        // Run, if event is not cancelled
+        // This comment is here so I remember to not be stupid and add stuff before the event is fired.
 
         deactivationCommands.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
         if (announce && config.getBool("Messages.DeactivationEnabled")) {

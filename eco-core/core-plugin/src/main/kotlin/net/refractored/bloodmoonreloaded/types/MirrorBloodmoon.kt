@@ -24,14 +24,16 @@ class MirrorBloodmoon(
         .replace("%status%", this.status.toString())
         .miniToComponent()
 
-    val bloodmoonWorld = BloodmoonRegistry.getWorld(config.getString("MirrorWorld"))
+    val bloodmoonWorld: BloodmoonWorld
+
+    init {
+        val mirrorWorld = config.getString("MirrorWorld")
+        bloodmoonWorld = BloodmoonRegistry.getWorld(mirrorWorld) ?: throw IllegalArgumentException("Mirror world not found")
+    }
 
     override fun shouldActivate(): Boolean {
         if (status != Status.INACTIVE) {
             return false
-        }
-        if (bloodmoonWorld == null) {
-            throw IllegalArgumentException("Mirror world not found")
         }
         return bloodmoonWorld.status == Status.ACTIVE
     }

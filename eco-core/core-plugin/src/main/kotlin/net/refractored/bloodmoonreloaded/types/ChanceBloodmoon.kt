@@ -42,7 +42,7 @@ class ChanceBloodmoon(
         PersistentDataKey(
             BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_chance"),
             PersistentDataKeyType.DOUBLE,
-            config.getDouble("IncrementChanceStart").coerceAtMost(1.0)
+            config.getDouble("Chance").coerceAtMost(1.0)
         )
 
     var chance: Double
@@ -52,9 +52,8 @@ class ChanceBloodmoon(
     /**
      * @return The chance as a percentage out of 100.
      */
-    var fancyChance: String
+    val fancyChance: String
         get() = (chance * 100).toString()
-        private set(_) {}
 
     init {
         PlaceholderManager.registerPlaceholder(

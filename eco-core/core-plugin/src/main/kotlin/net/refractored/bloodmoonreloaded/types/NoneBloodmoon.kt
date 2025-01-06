@@ -21,8 +21,7 @@ class NoneBloodmoon(
         .replace("%status%", this.status.toString())
         .miniToComponent()
 
-    val permanentBloodmoon: Boolean
-        get() = config.getBool("NoneStatus")
+    val permanentBloodmoon: Boolean = config.getBool("NoneStatus")
 
     override fun shouldActivate(): Boolean {
         if (status != Status.INACTIVE) {

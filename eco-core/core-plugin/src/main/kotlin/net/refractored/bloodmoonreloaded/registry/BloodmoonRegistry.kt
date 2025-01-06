@@ -8,7 +8,6 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
 import net.refractored.bloodmoonreloaded.types.*
 import org.bukkit.Bukkit
-import org.bukkit.World
 import org.bukkit.World.Environment
 import java.nio.file.Files
 
@@ -19,22 +18,32 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
 
     private val registry = Registry<BloodmoonWorld>()
 
+    /**
+     * This method automatically checks if the world is blacklisted, or whitelisted.
+     * @return True if the world is whitelisted/not blacklisted, or false if the world isn't whitelisted/is blacklisted
+     */
     fun isWorldEnabled(world: String): Boolean {
         val worldsList = BloodmoonPlugin.instance.configYml.getStrings("WorldsList")
         return if (BloodmoonPlugin.instance.configYml.getBool("Whitelist")) {
+            if (worldsList.isEmpty()) {
+                BloodmoonPlugin.instance.logger.warning("WorldsList is empty. No worlds will be enabled!")
+            }
             worldsList.contains(world)
         } else {
             !worldsList.contains(world)
         }
     }
 
-    fun getRegisteredWorlds() = registry.toList()
+    fun getWorlds() = registry.toList()
 
     // Get all worlds with the status of active
-    fun getActiveWorlds() = registry.toList().filter { it.status == BloodmoonWorld.Status.ACTIVE }
+    fun getActiveWorlds() = registry.filter { it.status == BloodmoonWorld.Status.ACTIVE }
 
     fun getWorld(id: String) = registry.get(id)
 
+    /**
+     * This method automatically
+     */
     fun unregisterWorld(id: String) {
         getWorld(id)?.let { world ->
             if (world.status == BloodmoonWorld.Status.ACTIVE) {
@@ -53,9 +62,7 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
         }
         for (world in Bukkit.getWorlds()) {
             if (world.environment != Environment.NORMAL) continue
-            if (!isWorldEnabled(world.name)) {
-                return
-            }
+            if (!isWorldEnabled(world.name)) continue
             if (plugin.dataFolder.resolve("worlds/${world.name}.yml").exists()) continue
             plugin.getResource("DefaultWorldConfig.yml").use {
                 Files.copy(it!!, plugin.dataFolder.resolve("worlds/${world.name}.yml").toPath())
@@ -94,6 +101,10 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
             }
             "chance" -> {
                 registerWorld(ChanceBloodmoon(world, config))
+                return
+            }
+            "mirror" -> {
+                registerWorld(MirrorBloodmoon(world, config))
                 return
             }
             "none" -> {

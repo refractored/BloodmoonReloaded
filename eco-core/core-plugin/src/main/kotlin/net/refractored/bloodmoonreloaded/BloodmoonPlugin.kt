@@ -12,7 +12,7 @@ import net.refractored.bloodmoonreloaded.libreforge.IsBloodmoonActive
 import net.refractored.bloodmoonreloaded.listeners.*
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getActiveWorlds
-import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getRegisteredWorlds
+import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getWorlds
 import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
 import org.bukkit.scheduler.BukkitRunnable
 import revxrsal.commands.bukkit.BukkitCommandHandler
@@ -26,6 +26,12 @@ class BloodmoonPlugin : LibreforgePlugin() {
             BloodmoonRegistry
         )
 
+
+    // Libreforge Plugin Load Order
+    // Enable (Extensions) -> OnEnable (Plugin) -> Reload (See Below)
+    //
+    // Reload:
+    // handleReload -> createTasks -> Reload (Extensions)
     override fun handleEnable() {
         instance = this
 
@@ -43,6 +49,8 @@ class BloodmoonPlugin : LibreforgePlugin() {
         registerGenericHolderProvider {
             getActiveWorlds().map { SimpleProvidedHolder(it) }
         }
+
+
     }
 
     override fun handleAfterLoad() {
@@ -59,7 +67,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
     private var registeredBrigadier = false
 
     override fun handleReload() {
-        // Lamp does not allow (or just breaks) whenever commands are registered after bridgadier.
+        // Lamp does not allow (or just breaks) whenever commands are registered after brigadier.
         // Since extensions also register their own commands, and we want brigadier support, we want to
         // register ALL commands before brigadier. Auxilor has this function ran after all extensions are loaded.
         if (!registeredBrigadier) {
@@ -70,6 +78,20 @@ class BloodmoonPlugin : LibreforgePlugin() {
         for (activeWorld in getActiveWorlds()) {
             activeWorld.deactivate(BloodmoonStopEvent.StopCause.RELOAD, false)
         }
+        for (world in getWorlds()) {
+            if (world.status != BloodmoonWorld.Status.ACTIVE) continue
+            if (world.savedBloodmoonRemainingMillis <= 0) continue
+            world.activate(world.savedBloodmoonRemainingMillis.toLong(), false)
+        }
+    }
+
+    override fun handleDisable() {
+        if (this::handler.isInitialized) {
+            handler.unregisterAllCommands()
+        }
+    }
+
+    override fun createTasks() {
         // All tasks are cancelled on reload, so we don't need to worry about having duplicate tasks.
         val updateSavedData =
             object : Runnable {
@@ -89,6 +111,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
                             registeredWorld.deactivate(BloodmoonStopEvent.StopCause.TIMER)
                             return
                         }
+                        // TODO: Move to periodic tasks.
                         if (registeredWorld.setThunder) {
                             registeredWorld.world.setStorm(true)
                         }
@@ -101,7 +124,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
         val periodicTasks =
             object : BukkitRunnable() {
                 override fun run() {
-                    for (registeredWorld in getRegisteredWorlds()) {
+                    for (registeredWorld in getWorlds()) {
                         registeredWorld.runPeriodicTasks()
                     }
                     scheduler.runLater(this, (Random.nextLong(75) + 250L))
@@ -109,28 +132,19 @@ class BloodmoonPlugin : LibreforgePlugin() {
             }
         scheduler.runLater(periodicTasks, 60)
 
+        // Checks
         val checkBloodmoons =
             object : BukkitRunnable() {
                 override fun run() {
-                    for (registeredWorld in getRegisteredWorlds()) {
+                    for (registeredWorld in getWorlds()) {
                         if (!registeredWorld.shouldActivate() || registeredWorld.status != BloodmoonWorld.Status.INACTIVE) continue
                         registeredWorld.activate()
                     }
                 }
             }
         scheduler.runTimer(checkBloodmoons, 0, 2)
-        for (world in getRegisteredWorlds()) {
-            if (world.status != BloodmoonWorld.Status.ACTIVE) continue
-            if (world.savedBloodmoonRemainingMillis <= 0) continue
-            world.activate(world.savedBloodmoonRemainingMillis.toLong(), false)
-        }
     }
 
-    override fun handleDisable() {
-        if (this::handler.isInitialized) {
-            handler.unregisterAllCommands()
-        }
-    }
 
     companion object {
         @JvmStatic
