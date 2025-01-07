@@ -16,7 +16,6 @@ import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getWorlds
 import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
 import org.bukkit.scheduler.BukkitRunnable
 import revxrsal.commands.bukkit.BukkitCommandHandler
-import kotlin.random.Random
 
 class BloodmoonPlugin : LibreforgePlugin() {
     lateinit var handler: BukkitCommandHandler

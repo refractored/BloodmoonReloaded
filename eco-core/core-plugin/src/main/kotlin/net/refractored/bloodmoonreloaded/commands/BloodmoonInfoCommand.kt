@@ -13,7 +13,6 @@ import revxrsal.commands.annotation.Optional
 import revxrsal.commands.bukkit.BukkitCommandActor
 import revxrsal.commands.bukkit.annotation.CommandPermission
 import revxrsal.commands.bukkit.player
-import java.time.Duration
 
 class BloodmoonInfoCommand {
     @CommandPermission("bloodmoon.command.info")

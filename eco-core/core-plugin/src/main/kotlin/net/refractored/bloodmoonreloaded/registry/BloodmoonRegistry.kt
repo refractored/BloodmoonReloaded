@@ -8,7 +8,6 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
 import net.refractored.bloodmoonreloaded.types.*
 import org.bukkit.Bukkit
-import org.bukkit.World.Environment
 import java.nio.file.Files
 
 /**
@@ -61,7 +60,6 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
             plugin.dataFolder.resolve("worlds").mkdir()
         }
         for (world in Bukkit.getWorlds()) {
-//            if (world.environment != Environment.NORMAL) continue
             if (!isWorldEnabled(world.name)) continue
             if (plugin.dataFolder.resolve("worlds/${world.name}.yml").exists()) continue
             plugin.getResource("DefaultWorldConfig.yml").use {
