@@ -26,12 +26,11 @@ class BloodmoonPlugin : LibreforgePlugin() {
             BloodmoonRegistry
         )
 
-
     // Libreforge Plugin Load Order
-    // Enable (Extensions) -> OnEnable (Plugin) -> Reload (See Below)
+    // onEnable (Extensions) -> OnEnable (Plugin) -> Reload (See Below)
     //
     // Reload:
-    // handleReload -> createTasks -> Reload (Extensions)
+    // handleReload -> createTasks -> onReload (Extensions)
     override fun handleEnable() {
         instance = this
 

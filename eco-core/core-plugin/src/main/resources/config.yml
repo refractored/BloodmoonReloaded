@@ -10,9 +10,6 @@
 # Worlds that have bloodmoons enabled.
 # Reload the plugin, and a config file should generate for said worlds
 #
-# If you want to use this as a blacklist, set Whitelist false, and
-# Replace WorldsList with commented.
-#
 # WorldsList: []
 WorldsList:
   - world
