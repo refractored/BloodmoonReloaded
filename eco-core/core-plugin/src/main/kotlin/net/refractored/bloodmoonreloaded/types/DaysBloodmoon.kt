@@ -41,14 +41,14 @@ class DaysBloodmoon(
 
     private val dayCountKey =
         PersistentDataKey(
-            BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_day_count"),
+            BloodmoonPlugin.instance.namespacedKeyFactory.create("${world.name}_day_count"),
             PersistentDataKeyType.INT,
             0
         )
 
     private val lastDaytimeKey =
         PersistentDataKey(
-            BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_last_daytime"),
+            BloodmoonPlugin.instance.namespacedKeyFactory.create("${world.name}_last_daytime"),
             PersistentDataKeyType.BOOLEAN,
             true
         )

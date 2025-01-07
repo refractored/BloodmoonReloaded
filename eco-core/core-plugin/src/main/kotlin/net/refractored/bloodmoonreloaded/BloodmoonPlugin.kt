@@ -99,14 +99,14 @@ class BloodmoonPlugin : LibreforgePlugin() {
                     }
                 }
             }
-        scheduler.runAsyncTimer(periodicTasks, 1 , 20)
+        scheduler.runTimer(periodicTasks, 1 , 20)
 
         // Checks if a bloodmoon should be activated or deactivated.
         val checkBloodmoons =
             object : BukkitRunnable() {
                 override fun run() {
                     for (registeredWorld in getWorlds()) {
-                        if (registeredWorld.status != BloodmoonWorld.Status.ACTIVE
+                        if (registeredWorld.status == BloodmoonWorld.Status.ACTIVE
                             &&
                             (System.currentTimeMillis() >= registeredWorld.expiryTime && registeredWorld.expiryTime >= 0)) {
                             registeredWorld.deactivate(BloodmoonStopEvent.StopCause.TIMER)

@@ -56,9 +56,11 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
 
     override fun beforeReload(plugin: LibreforgePlugin) {
         // Check for worlds that don't have a config and create one.
-        if (!plugin.dataFolder.resolve("worlds").exists()) {
-            plugin.dataFolder.resolve("worlds").mkdir()
+        val worldsDir = plugin.dataFolder.resolve("worlds")
+        if (!worldsDir.exists()) {
+            worldsDir.mkdir()
         }
+
         for (world in Bukkit.getWorlds()) {
             if (!isWorldEnabled(world.name)) continue
             if (plugin.dataFolder.resolve("worlds/${world.name}.yml").exists()) continue
