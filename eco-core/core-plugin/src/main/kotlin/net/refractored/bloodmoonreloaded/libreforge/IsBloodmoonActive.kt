@@ -7,7 +7,7 @@ import com.willfp.libreforge.ProvidedHolder
 import com.willfp.libreforge.arguments
 import com.willfp.libreforge.conditions.Condition
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.types.abstract.BloodmoonWorld
 
 object IsBloodmoonActive : Condition<NoCompileData>("is_bloodmoon_active") {
     override val arguments =

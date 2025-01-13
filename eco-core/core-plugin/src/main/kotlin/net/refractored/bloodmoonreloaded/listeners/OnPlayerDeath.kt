@@ -2,7 +2,7 @@ package net.refractored.bloodmoonreloaded.listeners
 
 import com.willfp.eco.util.toComponent
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.types.abstract.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.util.MessageUtil.replace
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority

@@ -1,7 +1,7 @@
 package net.refractored.bloodmoonreloaded.listeners
 
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.types.abstract.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -20,6 +20,5 @@ class OnPlayerSleep : Listener {
         event.isCancelled = true
 
         if (bloodmoonWorld.config.getBool("Messages.BedDenyMessageEnabled"))
-        event.player.sendMessage(bloodmoonWorld.bedDenyMessage.miniToComponent())
-    }
+            event.player.sendMessage(bloodmoonWorld.bedDenyMessage.miniToComponent())    }
 }

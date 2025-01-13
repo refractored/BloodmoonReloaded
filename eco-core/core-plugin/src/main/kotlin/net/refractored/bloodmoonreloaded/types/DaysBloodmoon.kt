@@ -8,6 +8,7 @@ import com.willfp.eco.core.integrations.placeholder.PlaceholderManager
 import com.willfp.eco.core.placeholder.PlayerlessPlaceholder
 import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
+import net.refractored.bloodmoonreloaded.types.abstract.DaysWorld
 import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.Bukkit
@@ -19,7 +20,7 @@ import org.bukkit.World
 class DaysBloodmoon(
     world: World,
     config: Config
-) : BloodmoonWorld(world, config) {
+) : DaysWorld(world, config) {
 
     init {
         PlaceholderManager.registerPlaceholder(
@@ -60,32 +61,16 @@ class DaysBloodmoon(
     private val daysUntilActivation: Int
         get() = config.getInt("Days")
 
-    /**
-     * The last value of [World.isDayTime] two ticks ago.
-     */
-    var lastDaytimeCheck: Boolean
-        get() = Bukkit.getServer().profile.read(lastDaytimeKey)
-        private set(value) = Bukkit.getServer().profile.write(lastDaytimeKey, value)
-
-    override fun shouldActivate(): Boolean {
-        if (status != Status.INACTIVE) return false
-
-        if (world.isDayTime) {
-            if (!lastDaytimeCheck) {
-                lastDaytimeCheck = true
-                dayCount--
-            }
-            return false
-        } else {
-            lastDaytimeCheck = false
-        }
-
-        if (dayCount > 0) return false
-
-        return !world.isDayTime
-    }
 
     override fun onActivation() {
         dayCount = daysUntilActivation
+    }
+
+    override fun onDaytime() {
+        dayCount--
+    }
+
+    override fun checkConditions(): Boolean {
+        return (dayCount > 0)
     }
 }

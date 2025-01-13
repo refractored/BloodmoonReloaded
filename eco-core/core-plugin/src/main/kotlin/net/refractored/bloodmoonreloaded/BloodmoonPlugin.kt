@@ -13,7 +13,7 @@ import net.refractored.bloodmoonreloaded.listeners.*
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getActiveWorlds
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getWorlds
-import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.types.abstract.BloodmoonWorld
 import org.bukkit.scheduler.BukkitRunnable
 import revxrsal.commands.bukkit.BukkitCommandHandler
 
@@ -119,7 +119,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
                     }
                 }
             }
-        scheduler.runTimer(checkBloodmoons, 0, 2)
+        scheduler.runTimer(checkBloodmoons,40, 2)
     }
 
 

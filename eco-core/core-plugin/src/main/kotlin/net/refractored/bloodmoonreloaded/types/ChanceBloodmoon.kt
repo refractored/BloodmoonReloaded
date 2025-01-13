@@ -8,6 +8,8 @@ import com.willfp.eco.core.integrations.placeholder.PlaceholderManager
 import com.willfp.eco.core.placeholder.PlayerlessPlaceholder
 import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
+import net.refractored.bloodmoonreloaded.types.abstract.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.types.abstract.DaysWorld
 import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.Bukkit
@@ -20,7 +22,7 @@ import kotlin.random.Random
 class ChanceBloodmoon(
     world: World,
     config: Config
-) : BloodmoonWorld(world, config) {
+) : DaysWorld(world, config) {
 
     override var info: ComponentLike =
         BloodmoonPlugin.instance.langYml
@@ -66,39 +68,21 @@ class ChanceBloodmoon(
         )
     }
 
-    /**
-     * @return false
-     */
-    var lastDaytimeCheck: Boolean
-        get() = Bukkit.getServer().profile.read(lastDaytimeKey)
-        private set(value) = Bukkit.getServer().profile.write(lastDaytimeKey, value)
-
-    override fun shouldActivate(): Boolean {
-        if (status != Status.INACTIVE) {
-            return false
-        }
-
-        if (world.isDayTime) {
-            if (!lastDaytimeCheck) {
-                lastDaytimeCheck = true
-            }
-            return false
-        }
-
-        if (lastDaytimeCheck && Random.nextDouble(1.0) < chance) {
-            lastDaytimeCheck = false
-            return true
-        }
-
-        if (config.getBool("ChanceIncrementEnabled")) {
-                chance += Random.nextDouble(config.getDouble("ChanceIncrementMin"), config.getDouble("ChanceIncrementMax"))
-        }
-
-        lastDaytimeCheck = false
-        return false
-    }
-
     override fun onActivation() {
         chance = config.getDouble("Chance").coerceAtMost(1.0)
+    }
+
+    override fun onDaytime() {
+        return
+    }
+
+    override fun checkConditions(): Boolean {
+        return Random.nextDouble(1.0) < chance
+    }
+
+    override fun onConditionFail() {
+        if (config.getBool("ChanceIncrementEnabled")) {
+            chance += Random.nextDouble(config.getDouble("ChanceIncrementMin"), config.getDouble("ChanceIncrementMax"))
+        }
     }
 }

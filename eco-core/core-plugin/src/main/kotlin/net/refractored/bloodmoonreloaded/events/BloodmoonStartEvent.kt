@@ -1,6 +1,6 @@
 package net.refractored.bloodmoonreloaded.events
 
-import net.refractored.bloodmoonreloaded.types.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.types.abstract.BloodmoonWorld
 import org.bukkit.World
 import org.bukkit.event.Cancellable
 import org.bukkit.event.Event
