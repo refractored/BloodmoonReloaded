@@ -30,7 +30,7 @@ abstract class DaysWorld(
         get() = Bukkit.getServer().profile.read(lastDaytimeKey)
         private set(value) = Bukkit.getServer().profile.write(lastDaytimeKey, value)
 
-    override fun shouldActivate(): Boolean {
+    final override fun shouldActivate(): Boolean {
         if (status != Status.INACTIVE) return false
 
         if (world.isDayTime) {
