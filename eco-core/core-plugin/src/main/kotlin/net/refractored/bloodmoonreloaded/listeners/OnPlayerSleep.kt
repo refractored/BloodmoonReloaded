@@ -1,7 +1,7 @@
 package net.refractored.bloodmoonreloaded.listeners
 
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.types.abstract.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

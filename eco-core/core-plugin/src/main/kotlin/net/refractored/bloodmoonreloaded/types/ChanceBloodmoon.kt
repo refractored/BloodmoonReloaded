@@ -8,8 +8,7 @@ import com.willfp.eco.core.integrations.placeholder.PlaceholderManager
 import com.willfp.eco.core.placeholder.PlayerlessPlaceholder
 import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
-import net.refractored.bloodmoonreloaded.types.abstract.BloodmoonWorld
-import net.refractored.bloodmoonreloaded.types.abstract.DaysWorld
+import net.refractored.bloodmoonreloaded.types.implementation.DaysWorld
 import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.Bukkit

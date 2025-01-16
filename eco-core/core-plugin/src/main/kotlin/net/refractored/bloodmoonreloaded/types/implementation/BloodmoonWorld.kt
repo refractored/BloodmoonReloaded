@@ -1,4 +1,4 @@
-package net.refractored.bloodmoonreloaded.types.abstract
+package net.refractored.bloodmoonreloaded.types.implementation
 
 import com.willfp.eco.core.config.interfaces.Config
 import com.willfp.eco.core.data.keys.PersistentDataKey

@@ -4,7 +4,7 @@ import com.willfp.eco.core.config.interfaces.Config
 import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.types.abstract.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.World
