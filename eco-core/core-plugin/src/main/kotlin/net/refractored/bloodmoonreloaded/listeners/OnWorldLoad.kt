@@ -10,6 +10,7 @@ class OnWorldLoad : Listener {
     @EventHandler
     fun execute(event: WorldLoadEvent) {
         if (!BloodmoonRegistry.isWorldEnabled(event.world.name)) return
+        // TODO: HORRIBLE IDEA, This will cancel ALL bloodmoons on world load
         BloodmoonPlugin.instance.loadConfigCategories()
     }
 }

@@ -12,6 +12,7 @@ import net.refractored.bloodmoonreloaded.types.implementation.DaysWorld
 import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.Bukkit
+import net.refractored.bloodmoonreloaded.util.MessageUtil.replace
 import org.bukkit.World
 import kotlin.random.Random
 
@@ -27,8 +28,8 @@ class ChanceBloodmoon(
         BloodmoonPlugin.instance.langYml
             .getStringPrefixed("messages.bloodmoon-info-chance")
             .replace("%world%", world.name)
-            .replace("%status%", this.status.toString())
-            .replace("%chance%", (this.fancyChance))
+            .replace("%status%", this.status.miniMessage())
+            .replace("%chance%", this.fancyChance)
             .miniToComponent()
 
 
@@ -80,8 +81,7 @@ class ChanceBloodmoon(
     }
 
     override fun onConditionFail() {
-        if (config.getBool("ChanceIncrementEnabled")) {
-            chance += Random.nextDouble(config.getDouble("ChanceIncrementMin"), config.getDouble("ChanceIncrementMax"))
-        }
+        if (!config.getBool("ChanceIncrementEnabled")) return
+        chance += Random.nextDouble(config.getDouble("ChanceIncrementMin"), config.getDouble("ChanceIncrementMax"))
     }
 }

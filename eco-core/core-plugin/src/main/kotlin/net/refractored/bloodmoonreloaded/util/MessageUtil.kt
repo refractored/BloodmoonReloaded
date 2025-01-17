@@ -18,6 +18,9 @@ object MessageUtil {
     /**
      * Returns a new string obtained by replacing all occurrences of the [oldValue] substring in this string
      * with the specified [newValue] component formatted as minimessage.
+     *
+     * If the object has a method to get the raw minimessage,
+     * it's recommended to use that instead as this just converts it back to minimessage,
      */
     fun String.replace(
         oldValue: String,

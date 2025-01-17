@@ -28,7 +28,7 @@ class TimedBloodmoon(
     override var info: ComponentLike = BloodmoonPlugin.instance.langYml
         .getStringPrefixed("messages.bloodmoon-info-time")
         .replace("%world%", world.name)
-        .replace("%status%", this.status.toString())
+        .replace("%status%", this.status.miniMessage())
         .replace("%hours%", timeframe.toHours().toString())
         .replace("%minutes%", timeframe.toMinutesPart().toString())
         .replace("%seconds%", timeframe.toSecondsPart().toString())

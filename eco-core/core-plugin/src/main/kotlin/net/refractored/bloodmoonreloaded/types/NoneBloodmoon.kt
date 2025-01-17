@@ -19,7 +19,7 @@ class NoneBloodmoon(
     override var info: ComponentLike = BloodmoonPlugin.instance.langYml
         .getStringPrefixed("messages.bloodmoon-info-none")
         .replace("%world%", world.name)
-        .replace("%status%", this.status.toString())
+        .replace("%status%", this.status.miniMessage())
         .miniToComponent()
 
     val permanentBloodmoon: Boolean = config.getBool("NoneStatus")

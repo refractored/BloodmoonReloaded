@@ -2,15 +2,12 @@
 # Configuration file for the core plugin
 #
 
-
 # Each world has an individual configuration file.
 # Check out the "worlds" folder in the plugin's data folder.
-
 
 # Worlds that have bloodmoons enabled.
 # Reload the plugin, and a config file should generate for said worlds
 #
-# WorldsList: []
 WorldsList:
   - world
 # If true, the WorldsList will be used as a whitelist.

@@ -22,7 +22,7 @@ class MirrorBloodmoon(
         .getStringPrefixed("messages.bloodmoon-info-mirror")
         .replace("%world%", world.name)
         .replace("%mirror_world%", world.name)
-        .replace("%status%", this.status.toString())
+        .replace("%status%", this.status.miniMessage())
         .miniToComponent()
 
     val mirrorWorld = config.getString("MirrorWorld")
