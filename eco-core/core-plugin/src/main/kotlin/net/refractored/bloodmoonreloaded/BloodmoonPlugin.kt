@@ -41,6 +41,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
         handler.register(BloodmoonStopCommand())
         handler.register(BloodmoonReloadCommand())
         handler.register(BloodmoonInfoCommand())
+        handler.register(BloodmoonManageDaysCommand())
 
         Conditions.register(IsBloodmoonActive)
 

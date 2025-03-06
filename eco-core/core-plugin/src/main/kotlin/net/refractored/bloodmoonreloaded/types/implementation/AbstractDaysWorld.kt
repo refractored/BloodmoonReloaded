@@ -11,7 +11,7 @@ import org.bukkit.World
 /**
  * This abstract class adds support for checking a world once a day if conditions are met.
  */
-abstract class DaysWorld(
+abstract class AbstractDaysWorld(
     world: World,
     config: Config
 ) : BloodmoonWorld(world, config) {
@@ -30,6 +30,10 @@ abstract class DaysWorld(
         get() = Bukkit.getServer().profile.read(lastDaytimeKey)
         private set(value) = Bukkit.getServer().profile.write(lastDaytimeKey, value)
 
+    /**
+     * Should not be overridden.
+     * @return true if the bloodmoon should activate.
+     */
     final override fun shouldActivate(): Boolean {
         if (status != Status.INACTIVE) return false
 

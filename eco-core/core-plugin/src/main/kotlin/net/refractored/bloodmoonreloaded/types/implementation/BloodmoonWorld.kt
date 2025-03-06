@@ -53,23 +53,24 @@ abstract class BloodmoonWorld(
      */
     enum class Status {
         ACTIVE,
+
         INACTIVE,
 
         /**
          * The bloodmoon is currently activating.
-         * This usually means the time is being transitioned to night.
+         * This means the time is being transitioned to night.
          */
         ACTIVATING;
 
         fun miniMessage() = BloodmoonPlugin.instance.langYml.getString("bloodmoon-status.${name.lowercase()}")
 
         /**
-         * @return The component from the lang.yml
+         * @return The minimessage converted to a component.
          */
         fun component() = miniMessage().miniToComponent()
 
         /**
-         * @return The plaintext from the lang.yml
+         * @return The component converted to plaintext.
          */
         fun plaintext() = PlainTextComponentSerializer.plainText().serialize(this.component())
     }

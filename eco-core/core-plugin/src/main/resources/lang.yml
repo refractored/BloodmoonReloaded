@@ -33,8 +33,13 @@ messages:
   bloodmoon-info-mirror: "<reset>The bloodmoon is currently inactive in %world%. it will activate when %mirror_world% activates."
   bloodmoon-info-none: "<reset>The bloodmoon is currently inactive in %world%."
   bloodmoon-info-active: "<reset>The bloodmoon is currently active in %world%."
+  bloodmoon-manage-days-set: "<green>%world% now has has %days% left until a bloodmoon."
+  bloodmoon-manage-days-set-negative: "<red>%world% cannot have a negative number as the result."
   bloodmoon-not-active-world: "<red>A bloodmoon is not active in this world."
+  not-a-days-bloodmoon: "<red>This world is not a incrementing days bloodmoon."
+  days-bloodmoon-set: "<green>Set the days to %days%."
   bossbar-title: "<red>Bloodmoon"
+  cant-modify-active: "<red>You cannot modify the bloodmoon while it is active."
 bloodmoon-status:
   active: "<green>Active"
   inactive: "<gray>Inactive"

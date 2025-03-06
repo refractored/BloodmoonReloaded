@@ -8,11 +8,10 @@ import com.willfp.eco.core.integrations.placeholder.PlaceholderManager
 import com.willfp.eco.core.placeholder.PlayerlessPlaceholder
 import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
-import net.refractored.bloodmoonreloaded.types.implementation.DaysWorld
+import net.refractored.bloodmoonreloaded.types.implementation.AbstractDaysWorld
 import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.Bukkit
-import net.refractored.bloodmoonreloaded.util.MessageUtil.replace
 import org.bukkit.World
 import kotlin.random.Random
 
@@ -22,7 +21,7 @@ import kotlin.random.Random
 class ChanceBloodmoon(
     world: World,
     config: Config
-) : DaysWorld(world, config) {
+) : AbstractDaysWorld(world, config) {
 
     override var info: ComponentLike =
         BloodmoonPlugin.instance.langYml
@@ -31,14 +30,6 @@ class ChanceBloodmoon(
             .replace("%status%", this.status.miniMessage())
             .replace("%chance%", this.fancyChance)
             .miniToComponent()
-
-
-    private val lastDaytimeKey =
-        PersistentDataKey(
-            BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_last_daytime"),
-            PersistentDataKeyType.BOOLEAN,
-            true
-        )
 
     private val chanceKey =
         PersistentDataKey(

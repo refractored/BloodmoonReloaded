@@ -8,7 +8,7 @@ import com.willfp.eco.core.integrations.placeholder.PlaceholderManager
 import com.willfp.eco.core.placeholder.PlayerlessPlaceholder
 import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
-import net.refractored.bloodmoonreloaded.types.implementation.DaysWorld
+import net.refractored.bloodmoonreloaded.types.implementation.AbstractDaysWorld
 import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
 import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import org.bukkit.Bukkit
@@ -20,7 +20,7 @@ import org.bukkit.World
 class DaysBloodmoon(
     world: World,
     config: Config
-) : DaysWorld(world, config) {
+) : AbstractDaysWorld(world, config) {
 
     init {
         PlaceholderManager.registerPlaceholder(
@@ -47,16 +47,9 @@ class DaysBloodmoon(
             0
         )
 
-    private val lastDaytimeKey =
-        PersistentDataKey(
-            BloodmoonPlugin.instance.namespacedKeyFactory.create("${world.name}_last_daytime"),
-            PersistentDataKeyType.BOOLEAN,
-            true
-        )
-
     var dayCount: Int
         get() = Bukkit.getServer().profile.read(dayCountKey)
-        private set(value) = Bukkit.getServer().profile.write(dayCountKey, value)
+        set(value) = Bukkit.getServer().profile.write(dayCountKey, value)
 
     private val daysUntilActivation: Int
         get() = config.getInt("Days")
