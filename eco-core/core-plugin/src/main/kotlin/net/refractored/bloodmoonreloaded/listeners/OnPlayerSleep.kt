@@ -20,5 +20,6 @@ class OnPlayerSleep : Listener {
         event.isCancelled = true
 
         if (bloodmoonWorld.config.getBool("Messages.BedDenyMessageEnabled"))
-            event.player.sendMessage(bloodmoonWorld.bedDenyMessage.miniToComponent())    }
+            event.player.sendMessage(bloodmoonWorld.bedDenyMessage.miniToComponent())
+    }
 }

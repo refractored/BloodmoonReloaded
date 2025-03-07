@@ -28,6 +28,7 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
      */
     fun isWorldEnabled(world: String): Boolean {
         val worldsList = BloodmoonPlugin.instance.configYml.getStrings("WorldsList")
+        if (world.startsWith("_")) return false
         return if (BloodmoonPlugin.instance.configYml.getBool("Whitelist")) {
             if (worldsList.isEmpty()) {
                 BloodmoonPlugin.instance.logger.warning("WorldsList is empty. No worlds will be enabled!")

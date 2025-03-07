@@ -10,6 +10,7 @@ class OnWorldLoad : Listener {
     @EventHandler
     fun execute(event: WorldLoadEvent) {
         if (!BloodmoonRegistry.isWorldEnabled(event.world.name)) return
+        BloodmoonRegistry.isWorldEnabled(event.world.name)
         BloodmoonRegistry.registerWorld(event.world.name)
     }
 }
