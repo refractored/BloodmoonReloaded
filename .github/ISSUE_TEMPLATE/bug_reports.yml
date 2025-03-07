@@ -30,27 +30,6 @@ body:
       description: This may include a video, or detailed instructions to help reconstruct the issue.
     validations:
       required: true
-  - type: textarea
-    attributes:
-      label: Paper version
-      description: |
-        Run `/version` on your server and **paste** the full, unmodified output here.
-        "latest" is *not* a version; we require the output of `/version` so we can adequately track down the issue.
-        Additionally, do NOT provide a screenshot, you MUST paste the entire output.
-        <details>
-        <summary>Example</summary>
-
-        ```
-        > version
-        [18:58:15 INFO]: Checking version, please wait...
-        [18:58:15 INFO]: This server is running Purpur version git-Purpur-1126 (MC: 1.16.5) (Implementing API version 1.16.5-R0.1-SNAPSHOT)
-        [18:58:15 INFO]: You are running the latest version
-        [18:58:15 INFO]: Previous version: git-Purpur-1120 (MC: 1.16.5)
-        ```
-
-        </details>
-    validations:
-      required: true
   - type: checkboxes
     attributes:
       label: Agreements
@@ -64,7 +43,7 @@ body:
           required: true
         - label: I ticked all the boxes without actually reading them
           required: false
-        - label: My version of Minecraft is supported by Purpur.
+        - label: My version of Minecraft is supported by the plugin.
           required: true
   - type: textarea
     attributes:
