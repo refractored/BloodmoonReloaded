@@ -6,8 +6,8 @@
 # Check out the "worlds" folder in the plugin's data folder.
 
 # Worlds that have bloodmoons enabled.
-# Reload the plugin, and a config file should generate for said worlds
-#
+# Reload the plugin, and a config file should generate for said worlds.
+# Worlds that are prefixed with a "_" are ignored.
 WorldsList:
   - world
 # If true, the WorldsList will be used as a whitelist.
