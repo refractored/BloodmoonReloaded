@@ -75,7 +75,7 @@ allprojects {
         compileOnly("net.kyori:adventure-platform-bukkit:4.1.2")
         implementation("net.kyori:adventure-text-minimessage:4.16.0")
 
-        compileOnly("com.willfp:eco:6.74.5")
+        compileOnly("com.willfp:eco:6.75.2")
         compileOnly("org.jetbrains:annotations:23.0.0")
         compileOnly("org.jetbrains.kotlin:kotlin-stdlib:2.0.20")
     }
