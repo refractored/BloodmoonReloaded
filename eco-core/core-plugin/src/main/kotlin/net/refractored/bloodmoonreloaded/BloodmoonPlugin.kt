@@ -78,7 +78,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
             activeWorld.deactivate(BloodmoonStopEvent.StopCause.RELOAD, false)
         }
         for (world in getWorlds()) {
-            if (world.status != BloodmoonWorld.Status.ACTIVE) continue
+            if (world.status != BloodmoonWorld.Status.INACTIVE) continue
             if (world.savedBloodmoonRemainingMillis <= 0) continue
             world.activate(world.savedBloodmoonRemainingMillis.toLong(), false)
         }
