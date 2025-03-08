@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Suggestions
+    url: https://github.com/refractored/BloodmoonReloaded/discussions/new?category=feature-requests
+    about: Any suggestions should go here!
   - name: Discord support
     url: https://discord.gg/qvEpFfweTn
     about: Please ask and answer questions here.
