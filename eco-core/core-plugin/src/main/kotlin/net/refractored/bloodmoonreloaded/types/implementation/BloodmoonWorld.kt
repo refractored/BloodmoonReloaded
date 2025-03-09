@@ -143,16 +143,16 @@ abstract class BloodmoonWorld(
     /**
      * The remaining time in milliseconds of the bloodmoon.
      */
-    var savedBloodmoonRemainingMillis: Double
-        get() = Bukkit.getServer().profile.read(bloodmoonRemainingMillis)
-        set(value) = Bukkit.getServer().profile.write(bloodmoonRemainingMillis, value)
+    var savedBloodmoonRemainingMillis: Long
+        get() = Bukkit.getServer().profile.read(bloodmoonRemainingMillis).toLong()
+        set(value) = Bukkit.getServer().profile.write( bloodmoonRemainingMillis, value.toDouble())
 
     var fullTime: Long = 0L
 
     /**
      * The length in milliseconds of the bloodmoon set in the config.
      */
-    val length: Long = config.getString("Length").toLong() * 1000
+    val configLength: Long = config.getString("Length").toLong() * 1000
 
     val isIncreasing = config.getBool("Increasing")
 
@@ -256,6 +256,10 @@ abstract class BloodmoonWorld(
      */
     open fun periodicTasks() {}
 
+    fun saveBloodmoonTime(){
+        savedBloodmoonRemainingMillis = (expiryTime - System.currentTimeMillis())
+    }
+
     /**
      * Run periodic tasks.
      * This is run every 20 ticks.
@@ -268,7 +272,7 @@ abstract class BloodmoonWorld(
                 }
             }
 
-            savedBloodmoonRemainingMillis = (expiryTime - System.currentTimeMillis()).toDouble()
+            saveBloodmoonTime()
 
             if (setThunder) {
                 world.setStorm(true)
@@ -287,11 +291,16 @@ abstract class BloodmoonWorld(
      */
     abstract fun shouldActivate(): Boolean
 
+    fun Any.println(): Any {
+        println(this)
+        return this
+    }
+
     fun activate(
         /**
          * The length in milliseconds of the bloodmoon.
          */
-        length: Long = this.length,
+        length: Long = this.configLength,
         /**
          * Whether to announce the activation.
          * This is true by default.
@@ -354,7 +363,7 @@ abstract class BloodmoonWorld(
 
         expiryTime = System.currentTimeMillis() + length
         fullTime = world.fullTime
-        savedBloodmoonRemainingMillis = length.toDouble()
+        savedBloodmoonRemainingMillis = length
 
         if (!bossbarEnabled) return
 
@@ -373,11 +382,11 @@ abstract class BloodmoonWorld(
             override fun run() {
                 val progress =
                     if (!isIncreasing) {
-                        val elapsedTime = System.currentTimeMillis() - (expiryTime - length)
-                        (elapsedTime.toDouble() / length.toDouble()).coerceIn(0.0, 1.0).toFloat()
+                        val elapsedTime = System.currentTimeMillis() - (expiryTime - configLength)
+                        (elapsedTime.toDouble() / configLength.toDouble()).coerceIn(0.0, 1.0).toFloat()
                     } else {
                         val remainingTime = expiryTime - System.currentTimeMillis()
-                        (remainingTime.toDouble() / length.toDouble()).coerceIn(0.0, 1.0).toFloat()
+                        (remainingTime.toDouble() / configLength.toDouble()).coerceIn(0.0, 1.0).toFloat()
                     }
                 bossbar.progress(progress)
                 if (status == Status.INACTIVE) {
@@ -427,10 +436,10 @@ abstract class BloodmoonWorld(
                 }
             }
         }
+        status = Status.INACTIVE
         revertSettings()
         if (reason != StopCause.TIMER) return
-        savedBloodmoonRemainingMillis = 0.0
-        status = Status.INACTIVE
+        savedBloodmoonRemainingMillis = 0L
         if (victoryChime) {
             for (player in world.players) {
                 player.playSound(player.location, "ui.toast.challenge_complete", 1.0f, 1.0f)

@@ -8,7 +8,7 @@ import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
 import revxrsal.commands.annotation.Command
 import revxrsal.commands.annotation.Description
 import revxrsal.commands.annotation.Optional
-import revxrsal.commands.bukkit.BukkitCommandActor
+import revxrsal.commands.bukkit.actor.BukkitCommandActor
 import revxrsal.commands.bukkit.annotation.CommandPermission
 
 class BloodmoonReloadCommand {
@@ -20,7 +20,7 @@ class BloodmoonReloadCommand {
         actor: BukkitCommandActor,
         @Optional confirm: Boolean = false
     ) {
-        if (!confirm && BloodmoonRegistry.getActiveWorlds().isNotEmpty()) {
+        if (!confirm && !BloodmoonRegistry.getActiveWorlds().isEmpty()) {
             throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
                     .getStringPrefixed("messages.confirm-reload")

@@ -69,8 +69,9 @@ allprojects {
 
     dependencies {
 
-        implementation("com.github.Revxrsal.Lamp:common:3.3.3")
-        implementation("com.github.Revxrsal.Lamp:bukkit:3.3.3")
+        implementation("io.github.revxrsal:lamp.common:4.0.0-rc.9")
+        implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.9")
+        implementation("io.github.revxrsal:lamp.brigadier:4.0.0-rc.9")
 
         compileOnly("net.kyori:adventure-platform-bukkit:4.1.2")
         implementation("net.kyori:adventure-text-minimessage:4.16.0")

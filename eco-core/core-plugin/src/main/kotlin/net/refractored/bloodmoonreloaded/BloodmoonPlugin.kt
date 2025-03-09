@@ -7,7 +7,6 @@ import com.willfp.libreforge.loader.configs.ConfigCategory
 import com.willfp.libreforge.registerGenericHolderProvider
 import net.refractored.bloodmoonreloaded.commands.*
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
-import net.refractored.bloodmoonreloaded.exceptions.CommandErrorHandler
 import net.refractored.bloodmoonreloaded.libreforge.IsBloodmoonActive
 import net.refractored.bloodmoonreloaded.listeners.*
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
@@ -15,10 +14,12 @@ import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getActiveWor
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getWorlds
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import org.bukkit.scheduler.BukkitRunnable
-import revxrsal.commands.bukkit.BukkitCommandHandler
+import revxrsal.commands.Lamp
+import revxrsal.commands.bukkit.BukkitLamp
+import revxrsal.commands.bukkit.actor.BukkitCommandActor
 
 class BloodmoonPlugin : LibreforgePlugin() {
-    lateinit var handler: BukkitCommandHandler
+//    lateinit var handler: BukkitCommandHandler
 
     override fun loadConfigCategories(): List<ConfigCategory> =
         listOf(
@@ -33,15 +34,20 @@ class BloodmoonPlugin : LibreforgePlugin() {
     override fun handleEnable() {
         instance = this
 
-        handler = BukkitCommandHandler.create(this)
+        val lamp: Lamp<BukkitCommandActor> = BukkitLamp.builder(this)
+            .build()
 
-        handler.exceptionHandler = CommandErrorHandler()
 
-        handler.register(BloodmoonStartCommand())
-        handler.register(BloodmoonStopCommand())
-        handler.register(BloodmoonReloadCommand())
-        handler.register(BloodmoonInfoCommand())
-        handler.register(BloodmoonManageDaysCommand())
+//        handler = BukkitCommandHandler.create(this)
+
+//        lamp.exceptionHandler = CommandErrorHandler()
+
+
+        lamp.register(BloodmoonStartCommand())
+        lamp.register(BloodmoonStopCommand())
+        lamp.register(BloodmoonReloadCommand())
+        lamp.register(BloodmoonInfoCommand())
+        lamp.register(BloodmoonManageDaysCommand())
 
         Conditions.register(IsBloodmoonActive)
 
@@ -70,23 +76,28 @@ class BloodmoonPlugin : LibreforgePlugin() {
         // Since extensions also register their own commands, and we want brigadier support, we want to
         // register ALL commands before brigadier. Auxilor has this function ran after all extensions are loaded.
         if (!registeredBrigadier) {
-            handler.registerBrigadier()
+//            handler.registerBrigadier()
             registeredBrigadier = true
         }
         // I'm not really sure if this is necessary.
         for (activeWorld in getActiveWorlds()) {
             activeWorld.deactivate(BloodmoonStopEvent.StopCause.RELOAD, false)
+            activeWorld.saveBloodmoonTime()
         }
         for (world in getWorlds()) {
             if (world.status != BloodmoonWorld.Status.INACTIVE) continue
             if (world.savedBloodmoonRemainingMillis <= 0) continue
-            world.activate(world.savedBloodmoonRemainingMillis.toLong(), false)
+            world.activate(world.savedBloodmoonRemainingMillis, false)
         }
     }
 
     override fun handleDisable() {
-        if (this::handler.isInitialized) {
-            handler.unregisterAllCommands()
+//        if (this::handler.isInitialized) {
+//            handler.unregisterAllCommands()
+//        }
+        for (activeWorld in getActiveWorlds()) {
+            activeWorld.deactivate(BloodmoonStopEvent.StopCause.RELOAD, false)
+            activeWorld.saveBloodmoonTime()
         }
     }
 

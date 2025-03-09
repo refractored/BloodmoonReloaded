@@ -12,9 +12,8 @@ import revxrsal.commands.annotation.Command
 import revxrsal.commands.annotation.Description
 import revxrsal.commands.annotation.Optional
 import revxrsal.commands.annotation.Subcommand
-import revxrsal.commands.bukkit.BukkitCommandActor
+import revxrsal.commands.bukkit.actor.BukkitCommandActor
 import revxrsal.commands.bukkit.annotation.CommandPermission
-import revxrsal.commands.bukkit.player
 
 @Command("bloodmoon manage days")
 class  BloodmoonManageDaysCommand {
@@ -24,7 +23,7 @@ class  BloodmoonManageDaysCommand {
     @Suppress("UNUSED")
     fun setDays(
         actor: BukkitCommandActor,
-        @Optional world: World = actor.player.world,
+         world: World,
         number: Int
     ) {
         val bloodmoonWorld =
@@ -63,7 +62,7 @@ class  BloodmoonManageDaysCommand {
     @Suppress("UNUSED")
     fun addDays(
         actor: BukkitCommandActor,
-        @Optional world: World = actor.player.world,
+       world: World ,
         number: Int
     ) {
         val bloodmoonWorld =
@@ -103,7 +102,7 @@ class  BloodmoonManageDaysCommand {
     @Suppress("UNUSED")
     fun removeDays(
         actor: BukkitCommandActor,
-        @Optional world: World = actor.player.world,
+         world: World ,
         number: Int
     ) {
         val bloodmoonWorld =

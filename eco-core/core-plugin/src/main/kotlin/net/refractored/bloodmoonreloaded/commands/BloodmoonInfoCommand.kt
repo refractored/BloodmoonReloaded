@@ -10,9 +10,8 @@ import org.bukkit.World
 import revxrsal.commands.annotation.Command
 import revxrsal.commands.annotation.Description
 import revxrsal.commands.annotation.Optional
-import revxrsal.commands.bukkit.BukkitCommandActor
+import revxrsal.commands.bukkit.actor.BukkitCommandActor
 import revxrsal.commands.bukkit.annotation.CommandPermission
-import revxrsal.commands.bukkit.player
 
 class BloodmoonInfoCommand {
     @CommandPermission("bloodmoon.command.info")
@@ -21,7 +20,7 @@ class BloodmoonInfoCommand {
     @Suppress("UNUSED")
     fun execute(
         actor: BukkitCommandActor,
-        @Optional world: World = actor.player.world
+        @Optional world: World = actor.asPlayer()!!.world,
     ) {
         val bloodmoonWorld =
             BloodmoonRegistry.getWorld(world.name) ?: throw CommandErrorException(

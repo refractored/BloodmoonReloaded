@@ -1,7 +1,7 @@
 package net.refractored.bloodmoonreloaded.exceptions
 
 import net.kyori.adventure.text.Component
-import revxrsal.commands.bukkit.BukkitCommandActor
+import revxrsal.commands.bukkit.actor.BukkitCommandActor
 import revxrsal.commands.command.CommandActor
 import revxrsal.commands.exception.SendableException
 
