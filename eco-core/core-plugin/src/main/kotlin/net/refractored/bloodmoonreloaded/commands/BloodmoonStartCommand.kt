@@ -29,7 +29,7 @@ class BloodmoonStartCommand {
                     .miniToComponent()
             )
         if (bloodmoonWorld.status != BloodmoonWorld.Status.INACTIVE) {
-            throw CommandErrorException(
+                throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
                     .getStringPrefixed("messages.bloodmoon-already-active")
                     .miniToComponent()

@@ -74,7 +74,9 @@ allprojects {
         implementation("io.github.revxrsal:lamp.brigadier:4.0.0-rc.9")
 
         compileOnly("net.kyori:adventure-platform-bukkit:4.1.2")
-        implementation("net.kyori:adventure-text-minimessage:4.16.0")
+        compileOnly("net.kyori:adventure-text-minimessage:4.16.0")
+
+        implementation("org.json:json:20231013")
 
         compileOnly("com.willfp:eco:6.75.2")
         compileOnly("org.jetbrains:annotations:23.0.0")
@@ -88,6 +90,7 @@ allprojects {
 
     tasks {
         shadowJar {
+            relocate("org.json", "net.refractored.libs")
             relocate("com.willfp.libreforge.loader", "net.refractored.bloodmoonreloaded.libreforge.loader")
         }
 

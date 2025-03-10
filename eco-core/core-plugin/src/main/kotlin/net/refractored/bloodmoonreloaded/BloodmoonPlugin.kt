@@ -5,6 +5,8 @@ import com.willfp.libreforge.conditions.Conditions
 import com.willfp.libreforge.loader.LibreforgePlugin
 import com.willfp.libreforge.loader.configs.ConfigCategory
 import com.willfp.libreforge.registerGenericHolderProvider
+import net.refractored.bloodmoonreloaded.Polymart.checkPolymartStatus
+import net.refractored.bloodmoonreloaded.Polymart.verifyPurchase
 import net.refractored.bloodmoonreloaded.commands.*
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
 import net.refractored.bloodmoonreloaded.libreforge.IsBloodmoonActive
@@ -21,6 +23,9 @@ import revxrsal.commands.bukkit.actor.BukkitCommandActor
 class BloodmoonPlugin : LibreforgePlugin() {
 //    lateinit var handler: BukkitCommandHandler
 
+    lateinit var lamp: Lamp<BukkitCommandActor>
+        private set
+
     override fun loadConfigCategories(): List<ConfigCategory> =
         listOf(
             BloodmoonRegistry
@@ -34,9 +39,8 @@ class BloodmoonPlugin : LibreforgePlugin() {
     override fun handleEnable() {
         instance = this
 
-        val lamp: Lamp<BukkitCommandActor> = BukkitLamp.builder(this)
+        lamp = BukkitLamp.builder(this)
             .build()
-
 
 //        handler = BukkitCommandHandler.create(this)
 
@@ -55,6 +59,19 @@ class BloodmoonPlugin : LibreforgePlugin() {
             getActiveWorlds().map { SimpleProvidedHolder(it) }
         }
 
+        val polymart =
+            object : BukkitRunnable() {
+                override fun run() {
+                    if (!checkPolymartStatus()) return
+                    if (verifyPurchase()) {
+                        logger.info("Thank you for purchasing this plugin! ^_^")
+                        return
+                    }
+                    logger.severe("Please consider purchasing this plugin on Polymart! :)")
+                    logger.severe("No functionality will be lost, but you will not receive support.")
+                }
+            }
+        scheduler.runAsync(polymart)
 
     }
 
@@ -67,6 +84,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
         eventManager.registerListener(OnPlayerSleep())
         eventManager.registerListener(OnPlayerRespawn())
         eventManager.registerListener(OnPlayerDeath())
+
     }
 
     private var registeredBrigadier = false
@@ -77,6 +95,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
         // register ALL commands before brigadier. Auxilor has this function ran after all extensions are loaded.
         if (!registeredBrigadier) {
 //            handler.registerBrigadier()
+
             registeredBrigadier = true
         }
         // I'm not really sure if this is necessary.
@@ -95,6 +114,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
 //        if (this::handler.isInitialized) {
 //            handler.unregisterAllCommands()
 //        }
+
         for (activeWorld in getActiveWorlds()) {
             activeWorld.deactivate(BloodmoonStopEvent.StopCause.RELOAD, false)
             activeWorld.saveBloodmoonTime()
