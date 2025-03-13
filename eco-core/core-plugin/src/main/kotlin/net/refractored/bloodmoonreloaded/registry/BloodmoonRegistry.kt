@@ -125,6 +125,8 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
             return
         }
 
+        BloodmoonPlugin.instance.logger.info("Loading config for world $id")
+
         when (config.getString("BloodmoonActivate").lowercase()) {
             "days" -> {
                 addToRegistry(DaysBloodmoon(world, config))

@@ -14,8 +14,8 @@ import java.net.URLEncoder
  * If it isn't, then it just kinda trys to motivate you to purchase.
  */
 object Polymart {
-    final val license = "%%__LICENSE__%%"
-    final val resource_id = "%%__RESOURCE__%%"
+    private const val license = "%%__LICENSE__%%"
+    private const val resource_id = "%%__RESOURCE__%%"
 
     fun checkPolymartStatus(): Boolean {
         val url = URI("https://api.polymart.org/v1/status").toURL()

@@ -64,11 +64,11 @@ class BloodmoonPlugin : LibreforgePlugin() {
                 override fun run() {
                     if (!checkPolymartStatus()) return
                     if (verifyPurchase()) {
-                        logger.info("Thank you for purchasing this plugin! ^_^")
+                        logger.info("Thank you for purchasing the plugin! ^_^")
                         return
                     }
-                    logger.severe("Please consider purchasing this plugin on Polymart! :)")
-                    logger.severe("No functionality will be lost, but you will not receive support.")
+                    logger.warning("Please consider purchasing this plugin on Polymart! :)")
+                    logger.warning("No functionality will be lost, but you will not receive support.")
                 }
             }
         scheduler.runAsync(polymart)

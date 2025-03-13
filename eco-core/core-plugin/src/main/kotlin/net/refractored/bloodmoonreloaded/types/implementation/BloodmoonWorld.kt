@@ -46,8 +46,6 @@ abstract class BloodmoonWorld(
 ) : Holder,
     Registrable {
 
-
-
     /**
      * Represents the status of the bloodmoon event.
      */

@@ -76,11 +76,11 @@ allprojects {
         compileOnly("net.kyori:adventure-platform-bukkit:4.1.2")
         compileOnly("net.kyori:adventure-text-minimessage:4.16.0")
 
-        implementation("org.json:json:20231013")
+        implementation("org.json:json:20250107")
 
         compileOnly("com.willfp:eco:6.75.2")
         compileOnly("org.jetbrains:annotations:23.0.0")
-        compileOnly("org.jetbrains.kotlin:kotlin-stdlib:2.0.20")
+        compileOnly(kotlin("stdlib", version = "2.1.0"))
     }
 
     java {
@@ -90,7 +90,8 @@ allprojects {
 
     tasks {
         shadowJar {
-            relocate("org.json", "net.refractored.libs")
+            relocate("org.json", "net.refractored.libs.json")
+            relocate("revxrsal.commands", "net.refractored.libs.lamp")
             relocate("com.willfp.libreforge.loader", "net.refractored.bloodmoonreloaded.libreforge.loader")
         }
 

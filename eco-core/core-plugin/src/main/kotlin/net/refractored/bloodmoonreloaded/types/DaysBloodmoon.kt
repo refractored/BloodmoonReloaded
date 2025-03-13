@@ -22,6 +22,17 @@ class DaysBloodmoon(
     config: Config
 ) : AbstractDaysWorld(world, config) {
 
+    private val dayCountKey =
+        PersistentDataKey(
+            BloodmoonPlugin.instance.namespacedKeyFactory.create("${world.name}_day_count"),
+            PersistentDataKeyType.INT,
+            0
+        )
+
+    var dayCount: Int
+        get() = Bukkit.getServer().profile.read(dayCountKey)
+        set(value) = Bukkit.getServer().profile.write(dayCountKey, value)
+
     init {
         PlaceholderManager.registerPlaceholder(
             PlayerlessPlaceholder(
@@ -39,17 +50,6 @@ class DaysBloodmoon(
         .replace("%status%", this.status.miniMessage())
         .replace("%days%", this.dayCount.toString())
         .miniToComponent()
-
-    private val dayCountKey =
-        PersistentDataKey(
-            BloodmoonPlugin.instance.namespacedKeyFactory.create("${world.name}_day_count"),
-            PersistentDataKeyType.INT,
-            0
-        )
-
-    var dayCount: Int
-        get() = Bukkit.getServer().profile.read(dayCountKey)
-        set(value) = Bukkit.getServer().profile.write(dayCountKey, value)
 
     private val daysUntilActivation: Int
         get() = config.getInt("Days")
