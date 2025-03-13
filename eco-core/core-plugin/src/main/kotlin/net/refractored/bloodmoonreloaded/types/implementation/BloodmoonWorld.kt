@@ -289,11 +289,6 @@ abstract class BloodmoonWorld(
      */
     abstract fun shouldActivate(): Boolean
 
-    fun Any.println(): Any {
-        println(this)
-        return this
-    }
-
     fun activate(
         /**
          * The length in milliseconds of the bloodmoon.
