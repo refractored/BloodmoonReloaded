@@ -41,11 +41,11 @@ class TimedBloodmoon(
             0.0
         )
 
-    private var remainingMilis: Double
-        get() = Bukkit.getServer().profile.read(timeKey)
-        set(value) = Bukkit.getServer().profile.write(timeKey, value)
+    private var remainingMilis: Long
+        get() = Bukkit.getServer().profile.read(timeKey).toLong()
+        set(value) = Bukkit.getServer().profile.write(timeKey, value.toDouble())
 
-    val millisUntilActivation: Long = if (remainingMilis == 0.0) {
+    val millisUntilActivation: Long = if (remainingMilis == 0L) {
         config.getString("Time").toLong() * 1000
     } else {
         remainingMilis.toLong()
@@ -57,7 +57,7 @@ class TimedBloodmoon(
         if (status != Status.INACTIVE) {
             return false
         }
-        remainingMilis = (activationTime - System.currentTimeMillis()).toDouble()
+        remainingMilis = (activationTime - System.currentTimeMillis())
         if (activationTime < System.currentTimeMillis()) {
             return false
         }
@@ -68,6 +68,6 @@ class TimedBloodmoon(
     }
 
     override fun onActivation() {
-        remainingMilis = 0.0
+        remainingMilis = 0L
     }
 }
