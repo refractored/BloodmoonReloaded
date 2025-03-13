@@ -21,6 +21,17 @@ class TimedBloodmoon(
     config: Config
 ) : BloodmoonWorld(world, config) {
 
+    private val timeKey =
+        PersistentDataKey(
+            BloodmoonPlugin.instance.namespacedKeyFactory.create("${world.name}_remaining_time"),
+            PersistentDataKeyType.DOUBLE,
+            0.0
+        )
+
+    private var remainingMilis: Long
+        get() = Bukkit.getServer().profile.read(timeKey).toLong()
+        set(value) = Bukkit.getServer().profile.write(timeKey, value.toDouble())
+
     // TODO: This may cause milliseconds of time to be lost
     private val timeframe: Duration = Duration.ofMillis(remainingTime)
 
@@ -34,16 +45,7 @@ class TimedBloodmoon(
         .replace("%seconds%", timeframe.toSecondsPart().toString())
         .miniToComponent()
 
-    private val timeKey =
-        PersistentDataKey(
-            BloodmoonPlugin.instance.namespacedKeyFactory.create("${world.name}_remaining_time"),
-            PersistentDataKeyType.DOUBLE,
-            0.0
-        )
 
-    private var remainingMilis: Long
-        get() = Bukkit.getServer().profile.read(timeKey).toLong()
-        set(value) = Bukkit.getServer().profile.write(timeKey, value.toDouble())
 
     val millisUntilActivation: Long = if (remainingMilis == 0L) {
         config.getString("Time").toLong() * 1000

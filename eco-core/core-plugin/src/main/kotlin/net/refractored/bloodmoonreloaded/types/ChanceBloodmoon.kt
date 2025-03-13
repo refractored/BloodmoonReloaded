@@ -23,14 +23,6 @@ class ChanceBloodmoon(
     config: Config
 ) : AbstractDaysWorld(world, config) {
 
-    override var info: ComponentLike =
-        BloodmoonPlugin.instance.langYml
-            .getStringPrefixed("messages.bloodmoon-info-chance")
-            .replace("%world%", world.name)
-            .replace("%status%", this.status.miniMessage())
-            .replace("%chance%", this.fancyChance)
-            .miniToComponent()
-
     private val chanceKey =
         PersistentDataKey(
             BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_chance"),
@@ -41,6 +33,14 @@ class ChanceBloodmoon(
     var chance: Double
         get() = Bukkit.getServer().profile.read(chanceKey)
         private set(value) = Bukkit.getServer().profile.write(chanceKey, value)
+
+    override var info: ComponentLike =
+        BloodmoonPlugin.instance.langYml
+            .getStringPrefixed("messages.bloodmoon-info-chance")
+            .replace("%world%", world.name)
+            .replace("%status%", this.status.miniMessage())
+            .replace("%chance%", this.fancyChance)
+            .miniToComponent()
 
     /**
      * @return The chance as a percentage out of 100.
