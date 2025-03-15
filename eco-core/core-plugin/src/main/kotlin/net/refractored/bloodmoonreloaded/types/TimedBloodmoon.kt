@@ -21,46 +21,56 @@ class TimedBloodmoon(
     config: Config
 ) : BloodmoonWorld(world, config) {
 
+    val configTime: Long
+        get() = config.getString("Timed").toLong() * 1000
+
     private val timeKey =
         PersistentDataKey(
-            BloodmoonPlugin.instance.namespacedKeyFactory.create("${world.name}_remaining_time"),
+            BloodmoonPlugin.instance.namespacedKeyFactory.create("${world.name}_timed_remaining"),
             PersistentDataKeyType.DOUBLE,
-            0.0
+            // For anyone wondering why I did this.
+            // Eco doesnt have support for Longs for some reason :c
+            configTime.toDouble()
         )
 
-    private var remainingMilis: Long
+    private var savedRemainingTime: Long
         get() = Bukkit.getServer().profile.read(timeKey).toLong()
         set(value) = Bukkit.getServer().profile.write(timeKey, value.toDouble())
 
-    // TODO: This may cause milliseconds of time to be lost
-    private val timeframe: Duration = Duration.ofMillis(remainingTime)
+    val startTime: Long = savedRemainingTime + System.currentTimeMillis()
 
+    // Todo: Use a function to get the remaining time
+    override var info: ComponentLike
+        get() {
+             val timeframe: Duration = Duration.ofMillis(remainingTime)
+            return BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.bloodmoon-info-time")
+                .replace("%world%", world.name)
+                .replace("%status%", this.status.miniMessage())
+                .replace("%hours%", timeframe.toHours().toString())
+                .replace("%minutes%", timeframe.toMinutesPart().toString())
+                .replace("%seconds%", timeframe.toSecondsPart().toString())
+                .miniToComponent()
+        }
+        set(value) {}
 
-    override var info: ComponentLike = BloodmoonPlugin.instance.langYml
-        .getStringPrefixed("messages.bloodmoon-info-time")
-        .replace("%world%", world.name)
-        .replace("%status%", this.status.miniMessage())
-        .replace("%hours%", timeframe.toHours().toString())
-        .replace("%minutes%", timeframe.toMinutesPart().toString())
-        .replace("%seconds%", timeframe.toSecondsPart().toString())
-        .miniToComponent()
-
-
-
-    val millisUntilActivation: Long = if (remainingMilis == 0L) {
-        config.getString("Time").toLong() * 1000
-    } else {
-        remainingMilis.toLong()
+    fun saveRemainingTime(){
+        savedRemainingTime = (startTime - System.currentTimeMillis())
     }
 
-    private val activationTime = System.currentTimeMillis() + millisUntilActivation
+    override fun onDeactivation() {
+        savedRemainingTime = configTime
+    }
+
+    override fun periodicTasks() {
+        saveRemainingTime()
+    }
 
     override fun shouldActivate(): Boolean {
         if (status != Status.INACTIVE) {
             return false
         }
-        remainingMilis = (activationTime - System.currentTimeMillis())
-        if (activationTime < System.currentTimeMillis()) {
+        if (startTime > System.currentTimeMillis()) {
             return false
         }
         if (config.getBool("TimedNightOnly")) {
@@ -69,7 +79,4 @@ class TimedBloodmoon(
         return true
     }
 
-    override fun onActivation() {
-        remainingMilis = 0L
-    }
 }
