@@ -64,6 +64,6 @@ class DaysBloodmoon(
     }
 
     override fun checkConditions(): Boolean {
-        return (dayCount >= 0)
+        return (dayCount <= 0)
     }
 }
