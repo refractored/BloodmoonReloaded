@@ -32,13 +32,11 @@ class BloodmoonStopEvent(
     }
 
     companion object {
-        @JvmStatic
         private val handlerList = HandlerList()
 
         /**
          * Get the handler list for this event
          */
-        @JvmStatic
         fun getHandlerList(): HandlerList = handlerList
     }
 
