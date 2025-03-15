@@ -37,6 +37,6 @@ class BloodmoonInfoCommand {
             )
             return
         }
-        actor.reply(bloodmoonWorld.info)
+        actor.reply(bloodmoonWorld.getInfo())
     }
 }

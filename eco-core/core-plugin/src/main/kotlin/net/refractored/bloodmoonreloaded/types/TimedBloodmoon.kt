@@ -40,10 +40,9 @@ class TimedBloodmoon(
     val startTime: Long = savedRemainingTime + System.currentTimeMillis()
 
     // Todo: Use a function to get the remaining time
-    override var info: ComponentLike
-        get() {
-             val timeframe: Duration = Duration.ofMillis(remainingTime)
-            return BloodmoonPlugin.instance.langYml
+    override fun getInfo(): ComponentLike {
+        val timeframe: Duration = Duration.ofMillis(remainingTime)
+        return BloodmoonPlugin.instance.langYml
                 .getStringPrefixed("messages.bloodmoon-info-time")
                 .replace("%world%", world.name)
                 .replace("%status%", this.status.miniMessage())
@@ -52,7 +51,6 @@ class TimedBloodmoon(
                 .replace("%seconds%", timeframe.toSecondsPart().toString())
                 .miniToComponent()
         }
-        set(value) {}
 
     fun saveRemainingTime(){
         savedRemainingTime = (startTime - System.currentTimeMillis())

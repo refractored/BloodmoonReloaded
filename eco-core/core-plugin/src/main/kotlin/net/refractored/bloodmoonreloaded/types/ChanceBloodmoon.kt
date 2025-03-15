@@ -34,7 +34,7 @@ class ChanceBloodmoon(
         get() = Bukkit.getServer().profile.read(chanceKey)
         private set(value) = Bukkit.getServer().profile.write(chanceKey, value)
 
-    override var info: ComponentLike =
+    override fun getInfo(): ComponentLike =
         BloodmoonPlugin.instance.langYml
             .getStringPrefixed("messages.bloodmoon-info-chance")
             .replace("%world%", world.name)

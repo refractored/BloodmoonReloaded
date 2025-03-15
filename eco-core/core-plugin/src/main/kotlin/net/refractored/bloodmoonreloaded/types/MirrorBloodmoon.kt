@@ -19,7 +19,7 @@ class  MirrorBloodmoon(
     config: Config
 ) : BloodmoonWorld(world, config) {
 
-    override var info: ComponentLike = BloodmoonPlugin.instance.langYml
+    override fun getInfo():  ComponentLike = BloodmoonPlugin.instance.langYml
         .getStringPrefixed("messages.bloodmoon-info-mirror")
         .replace("%world%", world.name)
         .replace("%mirror_world%", world.name)

@@ -97,7 +97,7 @@ abstract class BloodmoonWorld(
 
     var status = Status.INACTIVE
 
-    abstract var info: ComponentLike
+    abstract fun getInfo(): ComponentLike
 
     override val effects =
         Effects.compile(
@@ -404,7 +404,8 @@ abstract class BloodmoonWorld(
     }
 
     /**
-     * Deactivate the bloodmoon.
+     * Deactivates the bloodmoon.
+     * @throws IllegalStateException if the bloodmoon is not active.
      */
     fun deactivate(
         reason: StopCause = StopCause.PLUGIN,
