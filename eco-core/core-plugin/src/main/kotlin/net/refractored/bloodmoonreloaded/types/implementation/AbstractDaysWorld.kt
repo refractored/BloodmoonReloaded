@@ -38,21 +38,30 @@ abstract class AbstractDaysWorld(
         if (status != Status.INACTIVE) return false
 
         if (world.isDayTime) {
-            if (!lastDaytimeCheck) {
-                onDaytime()
-                lastDaytimeCheck = true
-            }
+            handleDaytime()
             return false
         }
 
-        if (lastDaytimeCheck && checkConditions()) {
-            lastDaytimeCheck = false
+        return handleNighttime()
+    }
+
+    private fun handleDaytime() {
+        if (!lastDaytimeCheck) {
+            onDaytime()
+            lastDaytimeCheck = true
+        }
+    }
+
+    private fun handleNighttime(): Boolean {
+        if (!lastDaytimeCheck) return false
+
+        lastDaytimeCheck = false
+
+        if (checkConditions()) {
             return true
         }
 
         onConditionFail()
-        lastDaytimeCheck = false
-
         return false
     }
 
