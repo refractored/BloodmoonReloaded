@@ -46,7 +46,7 @@ class ChanceBloodmoon(
      * @return The chance as a percentage out of 100.
      */
     val fancyChance: String
-        get() = (chance * 100).toString()
+        get() = "%.2f".format(chance * 100)
 
     init {
         PlaceholderManager.registerPlaceholder(
@@ -73,6 +73,6 @@ class ChanceBloodmoon(
 
     override fun onConditionFail() {
         if (!config.getBool("ChanceIncrementEnabled")) return
-        chance += Random.nextDouble(config.getDouble("ChanceIncrementMin"), config.getDouble("ChanceIncrementMax"))
+        chance += (Random.nextDouble(config.getDouble("ChanceIncrementMin"), config.getDouble("ChanceIncrementMax")))
     }
 }
