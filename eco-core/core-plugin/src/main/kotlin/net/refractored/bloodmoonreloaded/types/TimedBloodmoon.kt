@@ -104,12 +104,18 @@ class TimedBloodmoon(
         return startTime - System.currentTimeMillis()
     }
 
-    override fun onActivation() {
+    override fun onDeactivation() {
         savedRemainingTime = configTime
         startTime = configTime + System.currentTimeMillis()
     }
 
+    override fun onActivation() {
+        savedRemainingTime = -1L
+        startTime = -1L
+    }
+
     override fun periodicTasks() {
+        if (status != Status.INACTIVE) return
         saveRemainingTime()
     }
 
