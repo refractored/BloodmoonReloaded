@@ -116,7 +116,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
 //        }
 
         for (activeWorld in getActiveWorlds()) {
-            activeWorld.deactivate(BloodmoonStopEvent.StopCause.RELOAD, false)
+            activeWorld.deactivate(BloodmoonStopEvent.StopCause.RESTART, false)
             activeWorld.saveBloodmoonTime()
         }
     }

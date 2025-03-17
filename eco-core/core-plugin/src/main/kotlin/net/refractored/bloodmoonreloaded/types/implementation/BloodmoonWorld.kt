@@ -432,7 +432,7 @@ abstract class BloodmoonWorld(
         }
         status = Status.INACTIVE
         revertSettings()
-        if (reason != StopCause.TIMER) return
+        if (reason == StopCause.RESTART || reason == StopCause.UNLOAD) return
         savedBloodmoonRemainingMillis = 0L
         if (victoryChime) {
             for (player in world.players) {

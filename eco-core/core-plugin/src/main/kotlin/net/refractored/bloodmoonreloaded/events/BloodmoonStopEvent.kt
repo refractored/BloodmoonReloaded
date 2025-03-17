@@ -66,6 +66,8 @@ class BloodmoonStopEvent(
          */
         RELOAD,
 
+        RESTART,
+
 
     }
 }
