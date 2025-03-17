@@ -5,8 +5,8 @@ import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
-import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
-import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
+import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
+import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import org.bukkit.Bukkit
 import org.bukkit.World
 

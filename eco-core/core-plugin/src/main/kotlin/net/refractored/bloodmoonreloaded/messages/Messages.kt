@@ -1,10 +1,10 @@
-package net.refractored.bloodmoonreloaded.util
+package net.refractored.bloodmoonreloaded.messages
 
 import com.willfp.eco.core.config.base.LangYml
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 
-object MessageUtil {
+object Messages {
     /**
      * Converts this component to a string using minimessage.
      */

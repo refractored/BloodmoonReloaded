@@ -2,7 +2,7 @@ package net.refractored.bloodmoonreloaded.listeners
 
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
-import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
+import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerBedEnterEvent

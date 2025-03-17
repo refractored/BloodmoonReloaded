@@ -19,8 +19,8 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStartEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent.StopCause
-import net.refractored.bloodmoonreloaded.util.MessageUtil.miniPrefix
-import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
+import net.refractored.bloodmoonreloaded.messages.Messages.miniPrefix
+import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import org.bukkit.Bukkit
 import org.bukkit.GameRule
 import org.bukkit.NamespacedKey

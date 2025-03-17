@@ -3,8 +3,8 @@ package net.refractored.bloodmoonreloaded.commands
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.exceptions.CommandErrorException
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
-import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
+import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
+import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import revxrsal.commands.annotation.Command
 import revxrsal.commands.annotation.Description
 import revxrsal.commands.annotation.Optional
