@@ -4,6 +4,8 @@ import com.willfp.eco.core.config.interfaces.Config
 import com.willfp.eco.core.data.keys.PersistentDataKey
 import com.willfp.eco.core.data.keys.PersistentDataKeyType
 import com.willfp.eco.core.data.profile
+import com.willfp.eco.core.integrations.placeholder.PlaceholderManager
+import com.willfp.eco.core.placeholder.PlayerlessPlaceholder
 import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
@@ -37,11 +39,46 @@ class TimedBloodmoon(
         get() = Bukkit.getServer().profile.read(timeKey).toLong()
         set(value) = Bukkit.getServer().profile.write(timeKey, value.toDouble())
 
-    val startTime: Long = savedRemainingTime + System.currentTimeMillis()
+    init {
+        PlaceholderManager.registerPlaceholder(
+            PlayerlessPlaceholder(
+                BloodmoonPlugin.instance,
+                "${world.name}_timed_remaining_hours"
+            ) {
+                getHoursMinutesSeconds(getTimedRemaining()).first.toString()
+            }
+        )
+        PlaceholderManager.registerPlaceholder(
+            PlayerlessPlaceholder(
+                BloodmoonPlugin.instance,
+                "${world.name}_timed_remaining_minutes"
+            ) {
+                getHoursMinutesSeconds(getTimedRemaining()).second.toString()
+            }
+        )
+        PlaceholderManager.registerPlaceholder(
+            PlayerlessPlaceholder(
+                BloodmoonPlugin.instance,
+                "${world.name}_timed_remaining_seconds"
+            ) {
+                getHoursMinutesSeconds(getTimedRemaining()).third.toString()
+            }
+        )
+        PlaceholderManager.registerPlaceholder(
+            PlayerlessPlaceholder(
+                BloodmoonPlugin.instance,
+                "${world.name}_timed_remaining"
+            ) {
+                val time = getHoursMinutesSeconds(getTimedRemaining())
+                "${time.first}h ${time.second}m ${time.third}s"
+            }
+        )
+    }
 
-    // Todo: Use a function to get the remaining time
+    var startTime: Long = savedRemainingTime + System.currentTimeMillis()
+
     override fun getInfo(): ComponentLike {
-        val timeframe: Duration = Duration.ofMillis(remainingTime)
+        val timeframe: Duration = Duration.ofMillis(getTimedRemaining())
         return BloodmoonPlugin.instance.langYml
                 .getStringPrefixed("messages.bloodmoon-info-time")
                 .replace("%world%", world.name)
@@ -52,12 +89,24 @@ class TimedBloodmoon(
                 .miniToComponent()
         }
 
-    fun saveRemainingTime(){
-        savedRemainingTime = (startTime - System.currentTimeMillis())
+    fun getHoursMinutesSeconds(durationMillis: Long): Triple<Long, Long, Long> {
+        val hours = durationMillis / 3600000
+        val minutes = (durationMillis % 3600000) / 60000
+        val seconds = (durationMillis % 60000) / 1000
+        return Triple(hours, minutes, seconds)
     }
 
-    override fun onDeactivation() {
+    fun saveRemainingTime(){
+        savedRemainingTime = getTimedRemaining()
+    }
+
+    fun getTimedRemaining(): Long {
+        return startTime - System.currentTimeMillis()
+    }
+
+    override fun onActivation() {
         savedRemainingTime = configTime
+        startTime = configTime + System.currentTimeMillis()
     }
 
     override fun periodicTasks() {
@@ -65,15 +114,13 @@ class TimedBloodmoon(
     }
 
     override fun shouldActivate(): Boolean {
-        if (status != Status.INACTIVE) {
-            return false
-        }
-        if (startTime > System.currentTimeMillis()) {
-            return false
-        }
-        if (config.getBool("TimedNightOnly")) {
+        if (status != Status.INACTIVE) return false
+        if (startTime > System.currentTimeMillis()) return false
+
+        if (config.getBool("TimedNightOnly")){
             return !world.isDayTime
         }
+
         return true
     }
 
