@@ -97,7 +97,7 @@ class TimedBloodmoon(
     }
 
     fun saveRemainingTime(){
-        savedRemainingTime = getTimedRemaining()
+        savedRemainingTime = getTimedRemaining().coerceAtLeast(0L)
     }
 
     fun getTimedRemaining(): Long {
