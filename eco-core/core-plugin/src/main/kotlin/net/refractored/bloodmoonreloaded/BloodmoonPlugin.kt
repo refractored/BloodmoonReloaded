@@ -68,7 +68,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
                         return
                     }
                     logger.warning("Please consider purchasing this plugin on Polymart! :)")
-                    logger.warning("No functionality will be lost, but you will not receive support.")
+                    logger.warning("No functionality will be lost, but you might not receive support.")
                 }
             }
         scheduler.runAsync(polymart)
