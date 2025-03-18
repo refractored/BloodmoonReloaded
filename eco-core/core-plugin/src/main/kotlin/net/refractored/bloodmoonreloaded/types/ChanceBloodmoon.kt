@@ -11,6 +11,8 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.types.implementation.AbstractDaysWorld
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
+import net.refractored.bloodmoonreloaded.registry.TypeRegistry
+import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import org.bukkit.Bukkit
 import org.bukkit.World
 import kotlin.random.Random
@@ -74,5 +76,11 @@ class ChanceBloodmoon(
     override fun onConditionFail() {
         if (!config.getBool("ChanceIncrementEnabled")) return
         chance += (Random.nextDouble(config.getDouble("ChanceIncrementMin"), config.getDouble("ChanceIncrementMax")))
+    }
+
+    companion object : TypeRegistry.BloodmoonWorldFactory {
+        override fun create(world: World, config: Config): BloodmoonWorld {
+            return ChanceBloodmoon(world, config)
+        }
     }
 }

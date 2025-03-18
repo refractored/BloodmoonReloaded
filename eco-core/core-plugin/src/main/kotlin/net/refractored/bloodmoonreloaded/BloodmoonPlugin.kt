@@ -14,6 +14,8 @@ import net.refractored.bloodmoonreloaded.listeners.*
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getActiveWorlds
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getWorlds
+import net.refractored.bloodmoonreloaded.registry.TypeRegistry
+import net.refractored.bloodmoonreloaded.types.*
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import org.bukkit.scheduler.BukkitRunnable
 import revxrsal.commands.Lamp
@@ -46,12 +48,17 @@ class BloodmoonPlugin : LibreforgePlugin() {
 
 //        lamp.exceptionHandler = CommandErrorHandler()
 
-
         lamp.register(BloodmoonStartCommand())
         lamp.register(BloodmoonStopCommand())
         lamp.register(BloodmoonReloadCommand())
         lamp.register(BloodmoonInfoCommand())
         lamp.register(BloodmoonManageDaysCommand())
+
+        TypeRegistry.registerType("chance", ChanceBloodmoon)
+        TypeRegistry.registerType("days", DaysBloodmoon)
+        TypeRegistry.registerType("mirror", MirrorBloodmoon)
+        TypeRegistry.registerType("none", NoneBloodmoon)
+        TypeRegistry.registerType("timed", TimedBloodmoon)
 
         Conditions.register(IsBloodmoonActive)
 

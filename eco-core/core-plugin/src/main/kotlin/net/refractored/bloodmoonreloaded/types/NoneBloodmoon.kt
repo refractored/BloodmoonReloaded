@@ -6,6 +6,7 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
+import net.refractored.bloodmoonreloaded.registry.TypeRegistry
 import org.bukkit.World
 
 /**
@@ -35,5 +36,11 @@ class NoneBloodmoon(
         if (!permanentBloodmoon) return
 
         expiryTime = -1
+    }
+
+    companion object : TypeRegistry.BloodmoonWorldFactory {
+        override fun create(world: World, config: Config): BloodmoonWorld {
+            return NoneBloodmoon(world, config)
+        }
     }
 }

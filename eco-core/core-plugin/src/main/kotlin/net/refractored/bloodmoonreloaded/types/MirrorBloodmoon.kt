@@ -7,6 +7,7 @@ import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
+import net.refractored.bloodmoonreloaded.registry.TypeRegistry
 import org.bukkit.World
 
 /**
@@ -32,5 +33,11 @@ class  MirrorBloodmoon(
             return false
         }
         return mirrorWorld.status == Status.ACTIVE
+    }
+
+    companion object : TypeRegistry.BloodmoonWorldFactory {
+        override fun create(world: World, config: Config): BloodmoonWorld {
+            return MirrorBloodmoon(world, config)
+        }
     }
 }
