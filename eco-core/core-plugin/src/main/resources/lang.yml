@@ -1,3 +1,6 @@
+# This plugin uses Minimessage formatting.
+# For more information on this, see:
+# https://docs.advntr.dev/minimessage/format#standard-tags
 messages:
   # Prefix for most messages
   prefix: "<#A50000>Bloodmoon<White> »<reset> "
