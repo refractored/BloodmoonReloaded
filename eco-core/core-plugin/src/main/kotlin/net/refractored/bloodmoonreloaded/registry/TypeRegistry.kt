@@ -1,5 +1,3 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
 package net.refractored.bloodmoonreloaded.registry
 
 import com.willfp.eco.core.config.interfaces.Config
