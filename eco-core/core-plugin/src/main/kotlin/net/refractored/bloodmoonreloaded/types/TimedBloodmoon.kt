@@ -23,8 +23,7 @@ class TimedBloodmoon(
     config: Config
 ) : BloodmoonWorld(world, config) {
 
-    val configTime: Long
-        get() = config.getString("Timed").toLong() * 1000
+    val configTime: Long = config.getString("Timed").toLong() * 1000
 
     private val timeKey =
         PersistentDataKey(
@@ -97,11 +96,11 @@ class TimedBloodmoon(
     }
 
     fun saveRemainingTime(){
-        savedRemainingTime = getTimedRemaining().coerceAtLeast(0L)
+        savedRemainingTime = getTimedRemaining()
     }
 
     fun getTimedRemaining(): Long {
-        return startTime - System.currentTimeMillis()
+        return (startTime - System.currentTimeMillis()).coerceAtLeast(0L)
     }
 
     override fun onDeactivation() {
