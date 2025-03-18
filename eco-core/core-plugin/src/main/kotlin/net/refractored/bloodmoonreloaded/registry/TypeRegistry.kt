@@ -12,7 +12,17 @@ object TypeRegistry {
     private val registry: MutableMap<String, BloodmoonWorldFactory> = mutableMapOf()
 
     fun registerType(type: String, factory: BloodmoonWorldFactory) {
+        if (registry.containsKey(type)) {
+            throw IllegalArgumentException("Bloodmoon type $type is already registered.")
+        }
         registry[type] = factory
+    }
+
+    fun unregisterType(type: String) {
+        if (!registry.containsKey(type)) {
+            throw IllegalArgumentException("Bloodmoon type $type is not registered.")
+        }
+        registry.remove(type)
     }
 
     fun getType(type: String): BloodmoonWorldFactory {
