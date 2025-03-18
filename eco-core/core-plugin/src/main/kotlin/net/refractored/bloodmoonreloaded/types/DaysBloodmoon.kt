@@ -9,8 +9,10 @@ import com.willfp.eco.core.placeholder.PlayerlessPlaceholder
 import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.types.implementation.AbstractDaysWorld
-import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
-import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
+import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
+import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
+import net.refractored.bloodmoonreloaded.registry.TypeRegistry
+import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import org.bukkit.Bukkit
 import org.bukkit.World
 
@@ -65,5 +67,11 @@ class DaysBloodmoon(
 
     override fun checkConditions(): Boolean {
         return (dayCount <= 0)
+    }
+
+    companion object : TypeRegistry.BloodmoonWorldFactory {
+        override fun create(world: World, config: Config): BloodmoonWorld {
+            return DaysBloodmoon(world, config)
+        }
     }
 }

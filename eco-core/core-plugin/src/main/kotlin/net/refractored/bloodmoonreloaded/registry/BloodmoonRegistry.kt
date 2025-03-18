@@ -109,7 +109,7 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
         id: String,
         config: Config
     ) {
-        // Each config file is checked inside of the worlds folder,
+        // Each config file is checked inside the "worlds" folder,
         val world =
             Bukkit.getWorld(id) ?: run {
                 BloodmoonPlugin.instance.logger.warning("World $id does not exist. Skipping...")
@@ -127,35 +127,21 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
 
         BloodmoonPlugin.instance.logger.info("Loading config for world $id")
 
-        when (config.getString("BloodmoonActivate").lowercase()) {
-            "days" -> {
-                addToRegistry(DaysBloodmoon(world, config))
-                return
-            }
-            "timed" -> {
-                addToRegistry(TimedBloodmoon(world, config))
-                return
-            }
-            "chance" -> {
-                addToRegistry(ChanceBloodmoon(world, config))
-                return
-            }
-            "mirror" -> {
-                addToRegistry(MirrorBloodmoon(world, config))
-                return
-            }
-            "none" -> {
-                addToRegistry(NoneBloodmoon(world, config))
-                return
-            }
 
+        try {
+            val bloodmoonFactory = TypeRegistry.getType(config.getString("BloodmoonActivate").lowercase())
+            addToRegistry(bloodmoonFactory.create(world, config))
+        } catch (e: Exception) {
+            BloodmoonPlugin.instance.logger.warning("Failed to load config for world $id:")
+            BloodmoonPlugin.instance.logger.warning("${e.message}")
+            e.printStackTrace()
+            return
         }
 
-        BloodmoonPlugin.instance.logger.warning("Bloodmoon world $id has no valid BloodmoonActivate type.")
-        addToRegistry(NoneBloodmoon(world, config))
     }
 
     override fun clear(plugin: LibreforgePlugin) {
         registry.clear()
     }
+
 }

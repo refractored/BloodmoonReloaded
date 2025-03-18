@@ -5,9 +5,9 @@ import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
-import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
-import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
-import org.bukkit.Bukkit
+import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
+import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
+import net.refractored.bloodmoonreloaded.registry.TypeRegistry
 import org.bukkit.World
 
 /**
@@ -26,18 +26,18 @@ class  MirrorBloodmoon(
         .replace("%status%", this.status.miniMessage())
         .miniToComponent()
 
-    val mirrorWorld = config.getString("MirrorWorld")
-
-    init {
-        if (Bukkit.getWorld(mirrorWorld) == null || BloodmoonRegistry.getWorld(mirrorWorld) == null) {
-            BloodmoonPlugin.instance.logger.warning("MirrorWorld $mirrorWorld does not exist or is not a bloodmoon world. Please check your config.")
-        }
-    }
+        val mirrorWorld = BloodmoonRegistry.getWorld(config.getString("MirrorWorld")) ?: throw IllegalArgumentException("${world.name}'s config does not contain a valid bloodmoon world.")
 
     override fun shouldActivate(): Boolean {
         if (status != Status.INACTIVE) {
             return false
         }
-        return BloodmoonRegistry.getWorld(mirrorWorld)?.status == Status.ACTIVE
+        return mirrorWorld.status == Status.ACTIVE
+    }
+
+    companion object : TypeRegistry.BloodmoonWorldFactory {
+        override fun create(world: World, config: Config): BloodmoonWorld {
+            return MirrorBloodmoon(world, config)
+        }
     }
 }

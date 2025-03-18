@@ -1,8 +1,11 @@
+# This plugin uses Minimessage formatting.
+# For more information on this, see:
+# https://docs.advntr.dev/minimessage/format#standard-tags
 messages:
-  # Prefix for all messages
+  # Prefix for most messages
   prefix: "<#A50000>Bloodmoon<White> »<reset> "
 
-  confirm-reload: "<yellow>Reloading the plugin will STOP all bloodmoons. To continue anyway, use /bloodmoon reload true."
+  confirm-reload: "<yellow>Reloading during a active bloodmoon is not recommended. To continue anyway, use <color:#fffb80><click:run_command:'/bloodmoon reload true'>/bloodmoon reload true</click></color>."
   reloaded: "<green>Reloaded!"
 
   # Not all of these are actually used, but they are here incase they are ever needed.
