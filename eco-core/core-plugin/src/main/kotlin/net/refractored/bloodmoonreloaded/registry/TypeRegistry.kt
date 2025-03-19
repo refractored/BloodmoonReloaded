@@ -26,7 +26,7 @@ object TypeRegistry {
     }
 
     fun getType(type: String): BloodmoonWorldFactory {
-        return registry[type] ?: throw IllegalArgumentException("Bloodmoon type $type not found.")
+        return registry[type] ?: throw IllegalArgumentException("Bloodmoon type \"$type\" not found.")
     }
 
     interface BloodmoonWorldFactory {

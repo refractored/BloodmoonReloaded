@@ -127,14 +127,13 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
 
         BloodmoonPlugin.instance.logger.info("Loading config for world $id")
 
-
         try {
             val bloodmoonFactory = TypeRegistry.getType(config.getString("BloodmoonActivate").lowercase())
             addToRegistry(bloodmoonFactory.create(world, config))
         } catch (e: Exception) {
-            BloodmoonPlugin.instance.logger.warning("Failed to load config for world $id:")
-            BloodmoonPlugin.instance.logger.warning("${e.message}")
-            e.printStackTrace()
+            BloodmoonPlugin.instance.logger.severe("Failed to load config for world \"$id\":")
+            BloodmoonPlugin.instance.logger.severe("${e.message}")
+            if (BloodmoonPlugin.instance.configYml.getBool("debug")) e.printStackTrace()
             return
         }
 
