@@ -3,7 +3,7 @@ plugins {
     `java-library`
     `maven-publish`
     kotlin("jvm") version "2.0.20"
-    id("io.github.goooler.shadow") version "8.1.8"
+    id("com.gradleup.shadow") version "8.3.5"
     id("com.willfp.libreforge-gradle-plugin") version "1.0.0"
 }
 
@@ -57,7 +57,7 @@ allprojects {
     apply(plugin = "java")
     apply(plugin = "kotlin")
     apply(plugin = "maven-publish")
-    apply(plugin = "io.github.goooler.shadow")
+    apply(plugin = "com.gradleup.shadow")
 
     repositories {
         mavenLocal()
@@ -91,7 +91,7 @@ allprojects {
     tasks {
         shadowJar {
             relocate("org.json", "net.refractored.libs.json")
-            relocate("revxrsal.commands", "net.refractored.libs.lamp")
+//            relocate("revxrsal.commands", "net.refractored.libs.lamp")
             relocate("com.willfp.libreforge.loader", "net.refractored.bloodmoonreloaded.libreforge.loader")
         }
 
