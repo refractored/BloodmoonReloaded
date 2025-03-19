@@ -91,7 +91,7 @@ allprojects {
     tasks {
         shadowJar {
             relocate("org.json", "net.refractored.libs.json")
-//            relocate("revxrsal.commands", "net.refractored.libs.lamp")
+            relocate("revxrsal.commands", "net.refractored.libs.lamp")
             relocate("com.willfp.libreforge.loader", "net.refractored.bloodmoonreloaded.libreforge.loader")
         }
 

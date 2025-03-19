@@ -23,6 +23,10 @@ import revxrsal.commands.bukkit.BukkitLamp
 import revxrsal.commands.bukkit.actor.BukkitCommandActor
 
 class BloodmoonPlugin : LibreforgePlugin() {
+
+    init {
+        instance = this
+    }
 //    lateinit var handler: BukkitCommandHandler
 
     lateinit var lamp: Lamp<BukkitCommandActor>
@@ -39,8 +43,6 @@ class BloodmoonPlugin : LibreforgePlugin() {
     // Reload:
     // handleReload -> createTasks -> onReload (Extensions)
     override fun handleEnable() {
-        instance = this
-
         lamp = BukkitLamp.builder(this)
             .build()
 
@@ -66,6 +68,24 @@ class BloodmoonPlugin : LibreforgePlugin() {
             getActiveWorlds().map { SimpleProvidedHolder(it) }
         }
 
+        handleAfterLoad()
+
+    }
+
+    override fun handleAfterLoad() {
+        for (extension in this.extensionLoader.loadedExtensions) {
+            extension.handleAfterLoad()
+        }
+
+        // Registered after to prevent issues with extensions.
+        eventManager.registerListener(OnWorldLoad())
+        eventManager.registerListener(OnWorldUnload())
+        eventManager.registerListener(OnPlayerTeleport())
+        eventManager.registerListener(OnPlayerJoin())
+        eventManager.registerListener(OnPlayerSleep())
+        eventManager.registerListener(OnPlayerRespawn())
+        eventManager.registerListener(OnPlayerDeath())
+
         val polymart =
             object : BukkitRunnable() {
                 override fun run() {
@@ -80,17 +100,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
             }
         scheduler.runAsync(polymart)
 
-    }
 
-    override fun handleAfterLoad() {
-        // Registered after to prevent issues with extensions.
-        eventManager.registerListener(OnWorldLoad())
-        eventManager.registerListener(OnWorldUnload())
-        eventManager.registerListener(OnPlayerTeleport())
-        eventManager.registerListener(OnPlayerJoin())
-        eventManager.registerListener(OnPlayerSleep())
-        eventManager.registerListener(OnPlayerRespawn())
-        eventManager.registerListener(OnPlayerDeath())
 
     }
 
