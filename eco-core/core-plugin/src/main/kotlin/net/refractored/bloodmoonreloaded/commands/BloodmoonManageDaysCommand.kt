@@ -22,7 +22,7 @@ class  BloodmoonManageDaysCommand {
     @Suppress("UNUSED")
     fun setDays(
         actor: BukkitCommandActor,
-         world: World,
+        world: World,
         number: Int
     ) {
         val bloodmoonWorld =

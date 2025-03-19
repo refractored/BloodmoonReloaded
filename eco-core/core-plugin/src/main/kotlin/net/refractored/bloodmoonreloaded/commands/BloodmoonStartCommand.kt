@@ -20,8 +20,12 @@ class BloodmoonStartCommand {
     @Suppress("UNUSED")
     fun execute(
         actor: BukkitCommandActor,
-        @Optional world: World = actor.asPlayer()!!.world
-    ) {
+        @Optional world: World = actor.asPlayer()?.world ?: throw CommandErrorException(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.not-player")
+                .miniToComponent(),
+        ),
+        ) {
         val bloodmoonWorld =
             BloodmoonRegistry.getWorld(world.name) ?: throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
