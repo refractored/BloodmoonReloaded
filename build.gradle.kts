@@ -27,20 +27,31 @@ fun getGitHash(): String {
     return gitCommitHash
 }
 
-fun getCurrentGitBranch(): String {
-    var gitBranch = "unknown"
+fun isGitDirty(): Boolean = try {
+    val workingDir = File("${project.projectDir}")
+    val process = ProcessBuilder("git", "diff", "--quiet", "--ignore-submodules=dirty")
+        .directory(workingDir)
+        .start()
+    process.waitFor()
+    process.exitValue() != 0
+} catch (e: Exception) {
+    false
+}
+
+fun getCurrentGitTag(): String? {
+    var gitTag: String? = null
     try {
         val workingDir = File("${project.projectDir}")
-        val process = ProcessBuilder("git", "rev-parse", "--abbrev-ref", "HEAD")
+        val process = ProcessBuilder("git", "describe", "--tags", "--exact-match")
             .directory(workingDir)
             .start()
         process.waitFor()
         if (process.exitValue() == 0) {
-            gitBranch = process.inputStream.bufferedReader().readText().trim()
+            gitTag = process.inputStream.bufferedReader().readText().trim()
         }
     } catch (e: Exception) {
     }
-    return gitBranch
+    return gitTag
 }
 
 base {
@@ -89,6 +100,10 @@ allprojects {
     }
 
     tasks {
+        if (getCurrentGitTag()?.removePrefix("v") != version) {
+            version = "${version}-${getGitHash()}${if (isGitDirty()) "-dirty" else ""}"
+        }
+        
         shadowJar {
             relocate("org.json", "net.refractored.libs.json")
             relocate("revxrsal.commands", "net.refractored.libs.lamp")
@@ -110,10 +125,7 @@ allprojects {
         }
 
         processResources {
-            val nonReleaseBranches = setOf("main", "master", "HEAD")
-            if (getCurrentGitBranch() !in nonReleaseBranches) {
-                version = "${version}-${getCurrentGitBranch()}-${getGitHash()}"
-            }
+
             filesMatching(listOf("**plugin.yml", "**eco.yml")) {
                 expand(
                     "version" to version,
