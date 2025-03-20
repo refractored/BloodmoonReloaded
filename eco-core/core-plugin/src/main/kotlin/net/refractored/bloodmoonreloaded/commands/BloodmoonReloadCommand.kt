@@ -23,14 +23,14 @@ class BloodmoonReloadCommand {
         if (!confirm && !BloodmoonRegistry.getActiveWorlds().isEmpty()) {
             throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.confirm-reload")
+                    .getStringPrefixed("messages.reload.confirm")
                     .miniToComponent()
             )
         }
         BloodmoonPlugin.instance.reload()
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.reloaded")
+                .getStringPrefixed("messages.reload.success")
                 .miniToComponent()
         )
     }

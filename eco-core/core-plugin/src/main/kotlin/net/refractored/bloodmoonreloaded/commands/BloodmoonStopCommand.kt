@@ -24,34 +24,34 @@ class BloodmoonStopCommand {
         actor: BukkitCommandActor,
         @Optional world: World = actor.asPlayer()?.world ?: throw CommandErrorException(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.not-player")
+                .getStringPrefixed("messages.general.not-player")
                 .miniToComponent(),
         ),
     ) {
         val bloodmoonWorld =
             BloodmoonRegistry.getWorld(world.name) ?: throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.not-a-bloodmoon-world")
+                    .getStringPrefixed("messages.general.invalid-bloodmoon")
                     .miniToComponent()
             )
         if (bloodmoonWorld.status == BloodmoonWorld.Status.INACTIVE) {
             throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.bloodmoon-not-active")
+                    .getStringPrefixed("messages.deactivate.inactive")
                     .miniToComponent()
             )
         }
         if (bloodmoonWorld is NoneBloodmoon && bloodmoonWorld.permanentBloodmoon) {
             throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.cannot-stop-permanent")
+                    .getStringPrefixed("messages.deactivate.permanent")
                     .miniToComponent()
             )
         }
         bloodmoonWorld.deactivate(StopCause.COMMAND)
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.bloodmoon-deactivated")
+                .getStringPrefixed("messages.deactivate.success")
                 .miniToComponent()
         )
     }

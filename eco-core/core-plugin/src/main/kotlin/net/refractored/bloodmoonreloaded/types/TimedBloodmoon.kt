@@ -80,7 +80,7 @@ class TimedBloodmoon(
     override fun getInfo(): ComponentLike {
         val timeframe: Duration = Duration.ofMillis(getTimedRemaining())
         return BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.bloodmoon-info-time")
+                .getStringPrefixed("messages.info.success.timed")
                 .replace("%world%", world.name)
                 .replace("%status%", this.status.miniMessage())
                 .replace("%hours%", timeframe.toHours().toString())

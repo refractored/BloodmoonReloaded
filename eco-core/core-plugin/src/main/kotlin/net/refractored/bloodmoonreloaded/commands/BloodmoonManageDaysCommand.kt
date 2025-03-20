@@ -35,21 +35,21 @@ class  BloodmoonManageDaysCommand {
         if (bloodmoonWorld.status != BloodmoonWorld.Status.INACTIVE) {
             throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.cant-modify-active")
+                    .getStringPrefixed("messages.manage-days.active")
                     .miniToComponent()
             )
         }
         if (bloodmoonWorld !is DaysBloodmoon) {
             throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.not-a-days-bloodmoon")
+                    .getStringPrefixed("messages.manage-days.not-days")
                     .miniToComponent()
             )
         }
         bloodmoonWorld.dayCount = number
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.bloodmoon-manage-days-set")
+                .getStringPrefixed("messages.manage-days.success")
                 .replace("%world%", world.name)
                 .replace("%days%", number.toString())
                 .miniToComponent()
@@ -74,14 +74,14 @@ class  BloodmoonManageDaysCommand {
         if (bloodmoonWorld.status != BloodmoonWorld.Status.INACTIVE) {
             throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.cant-modify-active")
+                    .getStringPrefixed("messages.manage-days.active")
                     .miniToComponent()
             )
         }
         if (bloodmoonWorld !is DaysBloodmoon) {
             throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.not-a-days-bloodmoon")
+                    .getStringPrefixed("messages.manage-days.not-days")
                     .miniToComponent()
             )
         }
@@ -89,7 +89,7 @@ class  BloodmoonManageDaysCommand {
         bloodmoonWorld.dayCount = result
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.bloodmoon-manage-days-set")
+                .getStringPrefixed("messages.manage-days.success")
                 .replace("%world%", world.name)
                 .replace("%days%", result.toString())
                 .miniToComponent()
@@ -108,35 +108,28 @@ class  BloodmoonManageDaysCommand {
         val bloodmoonWorld =
             BloodmoonRegistry.getWorld(world.name) ?: throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.not-a-bloodmoon-world")
+                    .getStringPrefixed("messages.general.invalid-bloodmoon")
                     .miniToComponent()
             )
         if (bloodmoonWorld.status != BloodmoonWorld.Status.INACTIVE) {
             throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.cant-modify-active")
+                    .getStringPrefixed("messages.manage-days.active")
                     .miniToComponent()
             )
         }
         if (bloodmoonWorld !is DaysBloodmoon) {
             throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.not-a-days-bloodmoon")
+                    .getStringPrefixed("messages.manage-days.not-days")
                     .miniToComponent()
             )
         }
         val result = bloodmoonWorld.dayCount - number
-        if (result < 0) {
-            throw CommandErrorException(
-                BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.bloodmoon-manage-days-set-negative")
-                    .miniToComponent()
-            )
-        }
-        bloodmoonWorld.dayCount = result
+        bloodmoonWorld.dayCount -= result
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.bloodmoon-manage-days-set")
+                .getStringPrefixed("messages.manage-days.success")
                 .replace("%world%", world.name)
                 .replace("%days%", result.toString())
                 .miniToComponent()

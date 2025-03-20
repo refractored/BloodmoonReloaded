@@ -47,7 +47,7 @@ class DaysBloodmoon(
     }
 
     override fun getInfo(): ComponentLike = BloodmoonPlugin.instance.langYml
-        .getStringPrefixed("messages.bloodmoon-info-days")
+        .getStringPrefixed("messages.info.success.days")
         .replace("%world%", world.name)
         .replace("%status%", this.status.miniMessage())
         .replace("%days%", this.dayCount.toString())

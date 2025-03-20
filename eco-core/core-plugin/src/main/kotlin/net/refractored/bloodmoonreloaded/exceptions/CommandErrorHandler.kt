@@ -16,7 +16,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onInvalidPlayer(e: InvalidPlayerException, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.invalid-player")
+                .getStringPrefixed("messages.general.invalid-player")
                 .replace("%input%", e.input())
                 .miniToComponent()
         )
@@ -26,7 +26,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onInvalidWorld(e: InvalidWorldException, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.invalid-world")
+                .getStringPrefixed("messages.general.invalid-world")
                 .replace("%input%", e.input())
                 .miniToComponent()
         )
@@ -36,7 +36,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onInvalidWorld(e: MissingLocationParameterException, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.invalid-location")
+                .getStringPrefixed("messages.general.invalid-location")
                 .replace("%argument%", e.input())
                 .miniToComponent()
         )
@@ -46,7 +46,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onSenderNotConsole(e: SenderNotConsoleException?, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.not-console")
+                .getStringPrefixed("messages.general.not-console")
                 .miniToComponent()
         )
     }
@@ -55,7 +55,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onSenderNotPlayer(e: SenderNotPlayerException?, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.not-player")
+                .getStringPrefixed("messages.general.not-player")
                 .miniToComponent()
         )
     }
@@ -64,7 +64,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onMalformedEntitySelector(e: MalformedEntitySelectorException, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.invalid-entity-selector")
+                .getStringPrefixed("messages.general.invalid-entity-selector")
                 .replace("%input%", e.input())
                 .replace("%error%", e.errorMessage())
                 .miniToComponent()
@@ -75,7 +75,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onNonPlayerEntities(e: NonPlayerEntitiesException, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.more-than-one-entity")
+                .getStringPrefixed("messages.general.more-than-one-entity")
                 .miniToComponent()
         )
     }
@@ -84,7 +84,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onMoreThanOneEntity(e: MoreThanOneEntityException?, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.more-than-one-entity")
+                .getStringPrefixed("messages.general.more-than-one-entity")
                 .miniToComponent()
         )
     }
@@ -93,7 +93,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onEmptyEntitySelector(e: EmptyEntitySelectorException?, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.no-entities-found")
+                .getStringPrefixed("messages.general.no-entities-found")
                 .miniToComponent()
         )
     }
@@ -101,7 +101,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onEnumNotFound(e: EnumNotFoundException, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.invalid-choice")
+                .getStringPrefixed("messages.general.invalid-choice")
                 .replace("%input%", e.input())
                 .miniToComponent()
         )
@@ -109,7 +109,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
 
     override fun onExpectedLiteral(e: ExpectedLiteralException, actor: BukkitCommandActor) {
         BloodmoonPlugin.instance.langYml
-            .getStringPrefixed("messages.expected-string-literal")
+            .getStringPrefixed("messages.general.expected-string-literal")
             .replace("%input%", e.input())
             .replace("%literal%", e.node<CommandActor>().name())
             .miniToComponent()
@@ -117,9 +117,9 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
 
     override fun onInputParse(e: InputParseException, actor: BukkitCommandActor) {
         when (e.cause()) {
-            InputParseException.Cause.INVALID_ESCAPE_CHARACTER -> actor.reply(BloodmoonPlugin.instance.langYml.getStringPrefixed("messages.invalid-escape-character").miniToComponent())
-            InputParseException.Cause.UNCLOSED_QUOTE -> actor.reply(BloodmoonPlugin.instance.langYml.getStringPrefixed("messages.unclosed-quote").miniToComponent())
-            InputParseException.Cause.EXPECTED_WHITESPACE -> actor.reply(BloodmoonPlugin.instance.langYml.getStringPrefixed("messages.expected-whitespace").miniToComponent())
+            InputParseException.Cause.INVALID_ESCAPE_CHARACTER -> actor.reply(BloodmoonPlugin.instance.langYml.getStringPrefixed("messages.general.invalid-escape-character").miniToComponent())
+            InputParseException.Cause.UNCLOSED_QUOTE -> actor.reply(BloodmoonPlugin.instance.langYml.getStringPrefixed("messages.general.unclosed-quote").miniToComponent())
+            InputParseException.Cause.EXPECTED_WHITESPACE -> actor.reply(BloodmoonPlugin.instance.langYml.getStringPrefixed("messages.general.expected-whitespace").miniToComponent())
         }
     }
 
@@ -127,7 +127,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
         if (e.inputSize() < e.minimum()) {
             actor.reply(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.list-too-small")
+                    .getStringPrefixed("messages.general.list-too-small")
                     .replace("%parameter%", parameter.name())
                     .replace("%minimum%", fmt(e.minimum()))
                     .miniToComponent()
@@ -137,7 +137,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
         if (e.inputSize() > e.maximum()) {
             actor.reply(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.list-too-large")
+                    .getStringPrefixed("messages.general.list-too-large")
                     .replace("%parameter%", parameter.name())
                     .replace("%maximum%", fmt(e.maximum()))
                     .miniToComponent()
@@ -148,7 +148,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
         if (e.input().length < e.minimum()) {
             actor.reply(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.string-too-small")
+                    .getStringPrefixed("messages.general.string-too-small")
                     .replace("%parameter%", parameter.name())
                     .replace("%minimum%", fmt(e.minimum()))
                     .miniToComponent()
@@ -158,7 +158,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
         if (e.input().length > e.maximum()) {
             actor.reply(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.string-too-long")
+                    .getStringPrefixed("messages.general.string-too-long")
                     .replace("%parameter%", parameter.name())
                     .replace("%minimum%", fmt(e.minimum()))
                     .miniToComponent()
@@ -169,7 +169,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onInvalidBoolean(e: InvalidBooleanException, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.invalid-boolean")
+                .getStringPrefixed("messages.general.invalid-boolean")
                 .replace("%input%", e.input())
                 .miniToComponent()
         )
@@ -178,7 +178,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onInvalidDecimal(e: InvalidDecimalException, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.invalid-number")
+                .getStringPrefixed("messages.general.invalid-number")
                 .replace("%input%", e.input())
                 .miniToComponent()
         )
@@ -187,7 +187,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onInvalidInteger(e: InvalidIntegerException, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.invalid-integer")
+                .getStringPrefixed("messages.general.invalid-integer")
                 .replace("%input%", e.input())
                 .miniToComponent()
         )
@@ -196,7 +196,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onInvalidUUID(e: InvalidUUIDException, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.invalid-uuid")
+                .getStringPrefixed("messages.general.invalid-uuid")
                 .replace("%input%", e.input())
                 .miniToComponent()
         )
@@ -205,7 +205,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onMissingArgument(e: MissingArgumentException, actor: BukkitCommandActor, parameter: ParameterNode<BukkitCommandActor?, *>) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.missing-argument")
+                .getStringPrefixed("messages.general.missing-argument")
                 .replace("%argument%", parameter.name())
                 .replace("%command%", parameter.command().usage())
                 .miniToComponent()
@@ -215,7 +215,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onNoPermission(e: NoPermissionException, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.no-permission")
+                .getStringPrefixed("messages.general.no-permission")
                 .miniToComponent()
         )
     }
@@ -224,7 +224,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
         if (e.input().toDouble() < e.minimum()) {
             actor.reply(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.number-too-small")
+                    .getStringPrefixed("messages.general.number-too-small")
                     .replace("%parameter%", parameter.name())
                     .replace("%input%", fmt(e.input()))
                     .replace("%minimum%", fmt(e.minimum()))
@@ -235,7 +235,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
         if (e.input().toDouble() > e.maximum()) {
             actor.reply(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.number-too-large")
+                    .getStringPrefixed("messages.general.number-too-large")
                     .replace("%parameter%", parameter.name())
                     .replace("%input%", fmt(e.input()))
                     .replace("%minimum%", fmt(e.minimum()))
@@ -248,14 +248,14 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
         if (e.numberOfPages() == 1) {
             actor.reply(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.invalid-help-single")
+                    .getStringPrefixed("messages.general.invalid-help-single")
                     .replace("%input%", fmt(e.page()))
                     .miniToComponent()
             )
         } else {
             actor.reply(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.invalid-help-single")
+                    .getStringPrefixed("messages.general.invalid-help-single")
                     .replace("%input%", fmt(e.page()))
                     .replace("%pages%", fmt(e.numberOfPages()))
                     .miniToComponent()
@@ -266,7 +266,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onUnknownCommand(e: UnknownCommandException, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.unknown-command")
+                .getStringPrefixed("messages.general.unknown-command")
                 .replace("%command%", e.input())
                 .miniToComponent()
         )

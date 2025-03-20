@@ -38,7 +38,7 @@ class ChanceBloodmoon(
 
     override fun getInfo(): ComponentLike =
         BloodmoonPlugin.instance.langYml
-            .getStringPrefixed("messages.bloodmoon-info-chance")
+            .getStringPrefixed("messages.info.success.chance")
             .replace("%world%", world.name)
             .replace("%status%", this.status.miniMessage())
             .replace("%chance%", this.fancyChance)

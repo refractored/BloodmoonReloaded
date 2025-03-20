@@ -18,7 +18,7 @@ class NoneBloodmoon(
 ) : BloodmoonWorld(world, config) {
 
     override fun getInfo():  ComponentLike = BloodmoonPlugin.instance.langYml
-        .getStringPrefixed("messages.bloodmoon-info-none")
+        .getStringPrefixed("messages.info.success.none")
         .replace("%world%", world.name)
         .replace("%status%", this.status.miniMessage())
         .miniToComponent()

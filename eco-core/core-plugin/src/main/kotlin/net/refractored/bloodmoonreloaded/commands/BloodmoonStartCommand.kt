@@ -22,27 +22,27 @@ class BloodmoonStartCommand {
         actor: BukkitCommandActor,
         @Optional world: World = actor.asPlayer()?.world ?: throw CommandErrorException(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.not-player")
+                .getStringPrefixed("messages.general.not-player")
                 .miniToComponent(),
         ),
         ) {
         val bloodmoonWorld =
             BloodmoonRegistry.getWorld(world.name) ?: throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.not-a-bloodmoon-world")
+                    .getStringPrefixed("messages.general.invalid-bloodmoon")
                     .miniToComponent()
             )
         if (bloodmoonWorld.status != BloodmoonWorld.Status.INACTIVE) {
                 throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.bloodmoon-already-active")
+                    .getStringPrefixed("messages.activate.already-active")
                     .miniToComponent()
             )
         }
         bloodmoonWorld.activate()
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.bloodmoon-activated")
+                .getStringPrefixed("messages.activate.success")
                 .miniToComponent()
         )
     }
