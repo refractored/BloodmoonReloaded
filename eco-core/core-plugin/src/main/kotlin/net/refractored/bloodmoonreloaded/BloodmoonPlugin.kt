@@ -91,6 +91,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
                 override fun run() {
                     if (!checkPolymartStatus()) return
                     if (verifyPurchase()) {
+                        if (!configYml.getBool("DisablePurchaseMessage")) return
                         logger.info("Thank you for purchasing the plugin! ^_^")
                         return
                     }
@@ -99,8 +100,6 @@ class BloodmoonPlugin : LibreforgePlugin() {
                 }
             }
         scheduler.runAsync(polymart)
-
-
 
     }
 
