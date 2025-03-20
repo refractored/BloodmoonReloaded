@@ -52,6 +52,7 @@ class BloodmoonStopCommand {
         actor.reply(
             BloodmoonPlugin.instance.langYml
                 .getStringPrefixed("messages.deactivate.success")
+                .replace("%world%", world.name)
                 .miniToComponent()
         )
     }

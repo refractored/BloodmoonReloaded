@@ -43,6 +43,7 @@ class BloodmoonStartCommand {
         actor.reply(
             BloodmoonPlugin.instance.langYml
                 .getStringPrefixed("messages.activate.success")
+                .replace("%world%", world.name)
                 .miniToComponent()
         )
     }
