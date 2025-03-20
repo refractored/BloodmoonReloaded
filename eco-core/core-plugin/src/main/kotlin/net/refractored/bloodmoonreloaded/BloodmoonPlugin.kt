@@ -79,12 +79,13 @@ class BloodmoonPlugin : LibreforgePlugin() {
         eventManager.registerListener(OnPlayerRespawn())
         eventManager.registerListener(OnPlayerDeath())
 
+        
         val polymart =
             object : BukkitRunnable() {
                 override fun run() {
                     if (!checkPolymartStatus()) return
                     if (verifyPurchase()) {
-                        if (!configYml.getBool("DisablePurchaseMessage")) return
+                        if (configYml.getBool("disable-purchase-message")) return
                         logger.info("Thank you for purchasing the plugin! ^_^")
                         return
                     }

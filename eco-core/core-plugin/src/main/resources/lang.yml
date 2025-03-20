@@ -1,6 +1,9 @@
 # This plugin uses Minimessage formatting.
 # For more information on this, see:
 # https://docs.advntr.dev/minimessage/format#standard-tags
+
+# Some messages are used by the core plugin, and some are used by extensions.
+# Extension messages are only used if the extension for them is installed & enabled.
 messages:
   # Prefix for most messages
   prefix: "<#A50000>Bloodmoon</#A50000> <white>»</white><reset> "
@@ -38,6 +41,8 @@ messages:
     invalid-help-single: "<red>Invalid help page: <yellow>%input%</yellow>. Must be <yellow>1</yellow>."
     invalid-help: "<red>Invalid help page: <yellow>%input%</yellow>. Must be between <yellow>1</yellow> and <yellow>%pages%</yellow>."
     invalid-bloodmoon: "<red>This world is not configured for bloodmoons."
+    # Used by the Hordes extension.
+    invalid-horde: "<red>This world is not configured for hordes."
 
   # Command messages
   deactivate:
@@ -65,6 +70,13 @@ messages:
       days: "<reset>The bloodmoon is currently inactive in %world%. It will start in <yellow>%days%</yellow> days."
       chance: "<reset>The bloodmoon is currently inactive in %world%. it has a <yellow>%chance%</yellow> chance to start tonight."
       mirror: "<reset>The bloodmoon is currently inactive in %world%. it will activate when %mirror_world% activates."
+  # Used by extensions.
+  spawn:
+    # Used by the Hordes extension.
+    horde:
+      no-players: "<red>No eligible players found. Players in creative or vanish are ignored. Try specifying a player."
+      success: "<green>Horde spawned on <yellow>%player%</yellow>."
+
 bloodmoon-status:
   active: "<green>Active"
   inactive: "<gray>Inactive"
