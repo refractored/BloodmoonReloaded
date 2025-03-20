@@ -28,7 +28,6 @@ class BloodmoonPlugin : LibreforgePlugin() {
     init {
         instance = this
     }
-//    lateinit var handler: BukkitCommandHandler
 
     lateinit var lamp: Lamp<BukkitCommandActor>
         private set
@@ -47,8 +46,6 @@ class BloodmoonPlugin : LibreforgePlugin() {
         lamp = BukkitLamp.builder(this)
             .exceptionHandler(CommandErrorHandler())
             .build()
-
-//        lamp.exceptionHandler = CommandErrorHandler()
 
         lamp.register(BloodmoonStartCommand())
         lamp.register(BloodmoonStopCommand())
