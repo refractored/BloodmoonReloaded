@@ -9,6 +9,7 @@ import net.refractored.bloodmoonreloaded.Polymart.checkPolymartStatus
 import net.refractored.bloodmoonreloaded.Polymart.verifyPurchase
 import net.refractored.bloodmoonreloaded.commands.*
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
+import net.refractored.bloodmoonreloaded.exceptions.CommandErrorHandler
 import net.refractored.bloodmoonreloaded.libreforge.IsBloodmoonActive
 import net.refractored.bloodmoonreloaded.listeners.*
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
@@ -44,9 +45,8 @@ class BloodmoonPlugin : LibreforgePlugin() {
     // handleReload -> createTasks -> onReload (Extensions)
     override fun handleEnable() {
         lamp = BukkitLamp.builder(this)
+            .exceptionHandler(CommandErrorHandler())
             .build()
-
-//        handler = BukkitCommandHandler.create(this)
 
 //        lamp.exceptionHandler = CommandErrorHandler()
 
@@ -68,14 +68,10 @@ class BloodmoonPlugin : LibreforgePlugin() {
             getActiveWorlds().map { SimpleProvidedHolder(it) }
         }
 
-        handleAfterLoad()
-
+        afterLoad()
     }
 
     override fun handleAfterLoad() {
-        for (extension in this.extensionLoader.loadedExtensions) {
-            extension.handleAfterLoad()
-        }
 
         // Registered after to prevent issues with extensions.
         eventManager.registerListener(OnWorldLoad())
@@ -103,18 +99,9 @@ class BloodmoonPlugin : LibreforgePlugin() {
 
     }
 
-    private var registeredBrigadier = false
-
     override fun handleReload() {
-        // Lamp does not allow (or just breaks) whenever commands are registered after brigadier.
-        // Since extensions also register their own commands, and we want brigadier support, we want to
-        // register ALL commands before brigadier. Auxilor has this function ran after all extensions are loaded.
-        if (!registeredBrigadier) {
-//            handler.registerBrigadier()
-
-            registeredBrigadier = true
-        }
         // I'm not really sure if this is necessary.
+        // Eco might already cancel all bloodmoons on reload.
         for (activeWorld in getActiveWorlds()) {
             activeWorld.deactivate(BloodmoonStopEvent.StopCause.RELOAD, false)
             activeWorld.saveBloodmoonTime()
@@ -127,10 +114,9 @@ class BloodmoonPlugin : LibreforgePlugin() {
     }
 
     override fun handleDisable() {
-//        if (this::handler.isInitialized) {
-//            handler.unregisterAllCommands()
-//        }
-
+        if (this::lamp.isInitialized) {
+            lamp.unregisterAllCommands()
+        }
         for (activeWorld in getActiveWorlds()) {
             activeWorld.deactivate(BloodmoonStopEvent.StopCause.RESTART, false)
             activeWorld.saveBloodmoonTime()

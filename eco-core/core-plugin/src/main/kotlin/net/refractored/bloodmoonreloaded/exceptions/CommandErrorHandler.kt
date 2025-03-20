@@ -1,153 +1,274 @@
 package net.refractored.bloodmoonreloaded.exceptions
-//
-//import net.refractored.bloodmoonreloaded.BloodmoonPlugin
-//import net.refractored.bloodmoonreloaded.util.MessageUtil.getStringPrefixed
-//import net.refractored.bloodmoonreloaded.util.MessageUtil.miniToComponent
-//import revxrsal.commands.bukkit.sender
-//import revxrsal.commands.command.CommandActor
-//import revxrsal.commands.exception.*
-//
-//class CommandErrorHandler : DefaultExceptionHandler() {
-//    override fun invalidNumber(
-//        actor: CommandActor,
-//        exception: InvalidNumberException,
-//    ) {
-//        actor.sender.sendMessage(
-//            BloodmoonPlugin.instance.langYml
-//                .getStringPrefixed("messages.invalid-number")
-//                .replace("%input%", exception.input)
-//                .miniToComponent(),
-//        )
-//    }
-//
-//    override fun invalidSubcommand(
-//        actor: CommandActor,
-//        exception: InvalidSubcommandException,
-//    ) {
-//        actor.sender.sendMessage(
-//            BloodmoonPlugin.instance.langYml
-//                .getStringPrefixed("messages.invalid-subcommand")
-//                .replace("%input%", exception.input)
-//                .miniToComponent(),
-//        )
-//    }
-//
-//    override fun invalidBoolean(
-//        actor: CommandActor,
-//        exception: InvalidBooleanException,
-//    ) {
-//        actor.sender.sendMessage(
-//            BloodmoonPlugin.instance.langYml
-//                .getStringPrefixed("messages.invalid-boolean")
-//                .replace("%input%", exception.input)
-//                .miniToComponent(),
-//        )
-//    }
-//
-//    override fun cooldown(
-//        actor: CommandActor,
-//        exception: CooldownException,
-//    ) {
-//        actor.errorLocalized("OnCooldown", formatTimeFancy(exception.timeLeftMillis))
-//        actor.sender.sendMessage(
-//            BloodmoonPlugin.instance.langYml
-//                .getStringPrefixed("messages.on-cooldown")
-//                .replace("%time%", formatTimeFancy(exception.timeLeftMillis))
-//                .miniToComponent(),
-//        )
-//    }
-//
-//    override fun numberNotInRange(
-//        actor: CommandActor,
-//        exception: NumberNotInRangeException,
-//    ) {
-//        actor.sender.sendMessage(
-//            BloodmoonPlugin.instance.langYml
-//                .getStringPrefixed("messages.number-not-in-range")
-//                .replace("%input%", FORMAT.format(exception.input))
-//                .replace("%min%", FORMAT.format(exception.minimum))
-//                .replace("%max%", FORMAT.format(exception.maximum))
-//                .miniToComponent(),
-//        )
-//    }
-//
-//    override fun invalidEnumValue(
-//        actor: CommandActor,
-//        exception: EnumNotFoundException,
-//    ) {
-//        actor.sender.sendMessage(
-//            BloodmoonPlugin.instance.langYml
-//                .getStringPrefixed("messages.invalid-enum")
-//                .replace("%input%", exception.input)
-//                .replace("%parameter%", exception.parameter.name)
-//                .miniToComponent(),
-//        )
-//    }
-//
-//    override fun commandInvocation(
-//        actor: CommandActor,
-//        exception: CommandInvocationException,
-//    ) {
-//        exception.cause.printStackTrace()
-//    }
-//
-//    override fun tooManyArguments(
-//        actor: CommandActor,
-//        exception: TooManyArgumentsException,
-//    ) {
-//        val command = exception.command
-//        val usage = (command.path.toRealString() + " " + command.usage).trim { it <= ' ' }
-//        actor.sender.sendMessage(
-//            BloodmoonPlugin.instance.langYml
-//                .getStringPrefixed("messages.too-many-arguments")
-//                .replace("%usage%", usage)
-//                .miniToComponent(),
-//        )
-//    }
-//
-//    override fun invalidCommand(
-//        actor: CommandActor,
-//        exception: InvalidCommandException,
-//    ) {
-//        actor.sender.sendMessage(
-//            BloodmoonPlugin.instance.langYml
-//                .getStringPrefixed("messages.invalid-command")
-//                .replace("%input%", exception.input)
-//                .miniToComponent(),
-//        )
-//    }
-//
-//    override fun noSubcommandSpecified(
-//        actor: CommandActor,
-//        exception: NoSubcommandSpecifiedException,
-//    ) {
-//        actor.sender.sendMessage(
-//            BloodmoonPlugin.instance.langYml
-//                .getStringPrefixed("messages.no-subcommand-specified")
-//                .miniToComponent(),
-//        )
-//    }
-//
-//    override fun missingArgument(
-//        actor: CommandActor,
-//        exception: MissingArgumentException,
-//    ) {
-//        actor.sender.sendMessage(
-//            BloodmoonPlugin.instance.langYml
-//                .getStringPrefixed("messages.missing-argument")
-//                .replace("%parameter%", exception.parameter.name)
-//                .miniToComponent(),
-//        )
-//    }
-//
-//    override fun noPermission(
-//        actor: CommandActor,
-//        exception: NoPermissionException,
-//    ) {
-//        actor.sender.sendMessage(
-//            BloodmoonPlugin.instance.langYml
-//                .getStringPrefixed("messages.no-permission")
-//                .miniToComponent(),
-//        )
-//    }
-//}
+
+import net.refractored.bloodmoonreloaded.BloodmoonPlugin
+import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
+import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
+import revxrsal.commands.bukkit.actor.BukkitCommandActor
+import revxrsal.commands.bukkit.exception.*
+import revxrsal.commands.bukkit.util.BukkitUtils
+import revxrsal.commands.command.CommandActor
+import revxrsal.commands.exception.*
+import revxrsal.commands.node.ParameterNode
+import java.util.*
+
+class CommandErrorHandler :  BukkitExceptionHandler() {
+    @HandleException
+    override fun onInvalidPlayer(e: InvalidPlayerException, actor: BukkitCommandActor) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.invalid-player")
+                .replace("%input%", e.input())
+                .miniToComponent()
+        )
+    }
+
+    @HandleException
+    override fun onInvalidWorld(e: InvalidWorldException, actor: BukkitCommandActor) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.invalid-world")
+                .replace("%input%", e.input())
+                .miniToComponent()
+        )
+    }
+
+    @HandleException
+    override fun onInvalidWorld(e: MissingLocationParameterException, actor: BukkitCommandActor) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.invalid-location")
+                .replace("%argument%", e.input())
+                .miniToComponent()
+        )
+    }
+
+    @HandleException
+    override fun onSenderNotConsole(e: SenderNotConsoleException?, actor: BukkitCommandActor) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.not-console")
+                .miniToComponent()
+        )
+    }
+
+    @HandleException
+    override fun onSenderNotPlayer(e: SenderNotPlayerException?, actor: BukkitCommandActor) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.not-player")
+                .miniToComponent()
+        )
+    }
+
+    @HandleException
+    override fun onMalformedEntitySelector(e: MalformedEntitySelectorException, actor: BukkitCommandActor) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.invalid-entity-selector")
+                .replace("%input%", e.input())
+                .replace("%error%", e.errorMessage())
+                .miniToComponent()
+        )
+    }
+
+    @HandleException
+    override fun onNonPlayerEntities(e: NonPlayerEntitiesException, actor: BukkitCommandActor) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.more-than-one-entity")
+                .miniToComponent()
+        )
+    }
+
+    @HandleException
+    override fun onMoreThanOneEntity(e: MoreThanOneEntityException?, actor: BukkitCommandActor) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.more-than-one-entity")
+                .miniToComponent()
+        )
+    }
+
+    @HandleException
+    override fun onEmptyEntitySelector(e: EmptyEntitySelectorException?, actor: BukkitCommandActor) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.no-entities-found")
+                .miniToComponent()
+        )
+    }
+
+    override fun onEnumNotFound(e: EnumNotFoundException, actor: BukkitCommandActor) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.invalid-choice")
+                .replace("%input%", e.input())
+                .miniToComponent()
+        )
+    }
+
+    override fun onExpectedLiteral(e: ExpectedLiteralException, actor: BukkitCommandActor) {
+        BloodmoonPlugin.instance.langYml
+            .getStringPrefixed("messages.expected-string-literal")
+            .replace("%input%", e.input())
+            .replace("%literal%", e.node<CommandActor>().name())
+            .miniToComponent()
+    }
+
+    override fun onInputParse(e: InputParseException, actor: BukkitCommandActor) {
+        when (e.cause()) {
+            InputParseException.Cause.INVALID_ESCAPE_CHARACTER -> actor.reply(BloodmoonPlugin.instance.langYml.getStringPrefixed("messages.invalid-escape-character").miniToComponent())
+            InputParseException.Cause.UNCLOSED_QUOTE -> actor.reply(BloodmoonPlugin.instance.langYml.getStringPrefixed("messages.unclosed-quote").miniToComponent())
+            InputParseException.Cause.EXPECTED_WHITESPACE -> actor.reply(BloodmoonPlugin.instance.langYml.getStringPrefixed("messages.expected-whitespace").miniToComponent())
+        }
+    }
+
+    override fun onInvalidListSize(e: InvalidListSizeException, actor: BukkitCommandActor, parameter: ParameterNode<BukkitCommandActor?, *>) {
+        if (e.inputSize() < e.minimum()) {
+            actor.reply(
+                BloodmoonPlugin.instance.langYml
+                    .getStringPrefixed("messages.list-too-small")
+                    .replace("%parameter%", parameter.name())
+                    .replace("%minimum%", fmt(e.minimum()))
+                    .miniToComponent()
+            )
+        }
+
+        if (e.inputSize() > e.maximum()) {
+            actor.reply(
+                BloodmoonPlugin.instance.langYml
+                    .getStringPrefixed("messages.list-too-large")
+                    .replace("%parameter%", parameter.name())
+                    .replace("%maximum%", fmt(e.maximum()))
+                    .miniToComponent()
+            )        }
+    }
+
+    override fun onInvalidStringSize(e: InvalidStringSizeException, actor: BukkitCommandActor, parameter: ParameterNode<BukkitCommandActor?, *>) {
+        if (e.input().length < e.minimum()) {
+            actor.reply(
+                BloodmoonPlugin.instance.langYml
+                    .getStringPrefixed("messages.string-too-small")
+                    .replace("%parameter%", parameter.name())
+                    .replace("%minimum%", fmt(e.minimum()))
+                    .miniToComponent()
+            )
+        }
+
+        if (e.input().length > e.maximum()) {
+            actor.reply(
+                BloodmoonPlugin.instance.langYml
+                    .getStringPrefixed("messages.string-too-long")
+                    .replace("%parameter%", parameter.name())
+                    .replace("%minimum%", fmt(e.minimum()))
+                    .miniToComponent()
+            )
+        }
+    }
+
+    override fun onInvalidBoolean(e: InvalidBooleanException, actor: BukkitCommandActor) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.invalid-boolean")
+                .replace("%input%", e.input())
+                .miniToComponent()
+        )
+    }
+
+    override fun onInvalidDecimal(e: InvalidDecimalException, actor: BukkitCommandActor) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.invalid-number")
+                .replace("%input%", e.input())
+                .miniToComponent()
+        )
+    }
+
+    override fun onInvalidInteger(e: InvalidIntegerException, actor: BukkitCommandActor) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.invalid-integer")
+                .replace("%input%", e.input())
+                .miniToComponent()
+        )
+    }
+
+    override fun onInvalidUUID(e: InvalidUUIDException, actor: BukkitCommandActor) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.invalid-uuid")
+                .replace("%input%", e.input())
+                .miniToComponent()
+        )
+    }
+
+    override fun onMissingArgument(e: MissingArgumentException, actor: BukkitCommandActor, parameter: ParameterNode<BukkitCommandActor?, *>) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.missing-argument")
+                .replace("%argument%", parameter.name())
+                .replace("%command%", parameter.command().usage())
+                .miniToComponent()
+        )
+    }
+
+    override fun onNoPermission(e: NoPermissionException, actor: BukkitCommandActor) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.no-permission")
+                .miniToComponent()
+        )
+    }
+
+    override fun onNumberNotInRange(e: NumberNotInRangeException, actor: BukkitCommandActor, parameter: ParameterNode<BukkitCommandActor?, Number?>) {
+        if (e.input().toDouble() < e.minimum()) {
+            actor.reply(
+                BloodmoonPlugin.instance.langYml
+                    .getStringPrefixed("messages.number-too-small")
+                    .replace("%parameter%", parameter.name())
+                    .replace("%input%", fmt(e.input()))
+                    .replace("%minimum%", fmt(e.minimum()))
+                    .miniToComponent()
+            )
+        }
+
+        if (e.input().toDouble() > e.maximum()) {
+            actor.reply(
+                BloodmoonPlugin.instance.langYml
+                    .getStringPrefixed("messages.number-too-large")
+                    .replace("%parameter%", parameter.name())
+                    .replace("%input%", fmt(e.input()))
+                    .replace("%minimum%", fmt(e.minimum()))
+                    .miniToComponent()
+            )
+        }
+    }
+
+    override fun onInvalidHelpPage(e: InvalidHelpPageException, actor: BukkitCommandActor) {
+        if (e.numberOfPages() == 1) {
+            actor.reply(
+                BloodmoonPlugin.instance.langYml
+                    .getStringPrefixed("messages.invalid-help-single")
+                    .replace("%input%", fmt(e.page()))
+                    .miniToComponent()
+            )
+        } else {
+            actor.reply(
+                BloodmoonPlugin.instance.langYml
+                    .getStringPrefixed("messages.invalid-help-single")
+                    .replace("%input%", fmt(e.page()))
+                    .replace("%pages%", fmt(e.numberOfPages()))
+                    .miniToComponent()
+            )
+        }
+    }
+
+    override fun onUnknownCommand(e: UnknownCommandException, actor: BukkitCommandActor) {
+        actor.reply(
+            BloodmoonPlugin.instance.langYml
+                .getStringPrefixed("messages.unknown-command")
+                .replace("%command%", e.input())
+                .miniToComponent()
+        )
+    }
+}
