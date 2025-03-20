@@ -57,6 +57,7 @@ messages:
   remaining:
     success: "<green>There are <yellow>%time%</yellow> remaining in the bloodmoon."
   info:
+    active: "<green>Bloodmoon is active in <yellow>%world%</yellow>."
     success:
       none: "<reset>The bloodmoon is currently inactive in %world%."
       active: "<reset>The bloodmoon is currently active in %world%."

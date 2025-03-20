@@ -35,7 +35,7 @@ class BloodmoonInfoCommand {
         if (bloodmoonWorld.status != BloodmoonWorld.Status.INACTIVE) {
             actor.reply(
                 BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.bloodmoon-info-active")
+                    .getStringPrefixed("messages.info.active")
                     .replace("%world%", world.name)
                     .miniToComponent()
             )
