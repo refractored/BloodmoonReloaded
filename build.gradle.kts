@@ -101,21 +101,17 @@ allprojects {
 
     tasks {
         if (getCurrentGitTag()?.removePrefix("v") != version) {
-            version = "${version}-${getGitHash()}${if (isGitDirty()) "-dirty" else ""}"
+            version = "${version}-${getGitHash()}"
         }
-        
+        if (isGitDirty()) {
+            version = "${version}-dirty"
+        }
+
         shadowJar {
             relocate("org.json", "net.refractored.libs.json")
             relocate("revxrsal.commands", "net.refractored.libs.lamp")
             relocate("com.willfp.libreforge.loader", "net.refractored.bloodmoonreloaded.libreforge.loader")
         }
-
-//        compileKotlin {
-//            kotlinOptions {
-//                jvmTarget = "17"
-//            }
-//        }
-
 
         compileJava {
             options.isDeprecation = true
@@ -125,7 +121,6 @@ allprojects {
         }
 
         processResources {
-
             filesMatching(listOf("**plugin.yml", "**eco.yml")) {
                 expand(
                     "version" to version,
