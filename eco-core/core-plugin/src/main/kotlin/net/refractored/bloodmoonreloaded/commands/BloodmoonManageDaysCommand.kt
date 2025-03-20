@@ -10,6 +10,7 @@ import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import org.bukkit.World
 import revxrsal.commands.annotation.Command
 import revxrsal.commands.annotation.Description
+import revxrsal.commands.annotation.Range
 import revxrsal.commands.annotation.Subcommand
 import revxrsal.commands.bukkit.actor.BukkitCommandActor
 import revxrsal.commands.bukkit.annotation.CommandPermission
@@ -23,7 +24,7 @@ class  BloodmoonManageDaysCommand {
     fun setDays(
         actor: BukkitCommandActor,
         world: World,
-        number: Int
+        @Range(min = 0.0) number: Int
     ) {
         val bloodmoonWorld =
             BloodmoonRegistry.getWorld(world.name) ?: throw CommandErrorException(
@@ -61,8 +62,8 @@ class  BloodmoonManageDaysCommand {
     @Suppress("UNUSED")
     fun addDays(
         actor: BukkitCommandActor,
-       world: World ,
-        number: Int
+        world: World ,
+        @Range(min = 0.0) number: Int
     ) {
         val bloodmoonWorld =
             BloodmoonRegistry.getWorld(world.name) ?: throw CommandErrorException(
@@ -102,7 +103,7 @@ class  BloodmoonManageDaysCommand {
     fun removeDays(
         actor: BukkitCommandActor,
         world: World ,
-        number: Int
+        @Range(min = 0.0) number: Int
     ) {
         val bloodmoonWorld =
             BloodmoonRegistry.getWorld(world.name) ?: throw CommandErrorException(
