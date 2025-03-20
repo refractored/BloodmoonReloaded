@@ -63,7 +63,7 @@ class  BloodmoonManageDaysCommand {
     fun addDays(
         actor: BukkitCommandActor,
         world: World ,
-        @Range(min = 0.0) number: Int
+        @Range(min = 1.0) number: Int
     ) {
         val bloodmoonWorld =
             BloodmoonRegistry.getWorld(world.name) ?: throw CommandErrorException(
@@ -103,7 +103,7 @@ class  BloodmoonManageDaysCommand {
     fun removeDays(
         actor: BukkitCommandActor,
         world: World ,
-        @Range(min = 0.0) number: Int
+        @Range(min = 1.0) number: Int
     ) {
         val bloodmoonWorld =
             BloodmoonRegistry.getWorld(world.name) ?: throw CommandErrorException(
