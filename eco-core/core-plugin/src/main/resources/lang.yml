@@ -48,12 +48,10 @@ messages:
   bloodmoon-deactivated: "<green>A bloodmoon has been deactivated in this world."
   bloodmoon-not-active: "<red>A bloodmoon is not active in this world."
   bloodmoon-remaining: "<green>There are <yellow>%time%</yellow> remaining in the bloodmoon."
-  bloodmoon-manage-days-set: "<green><yellow>%world%</yellow> now has has %days% left until a bloodmoon."
+  bloodmoon-manage-days-set: "<green><yellow>%world%</yellow> now has has %days% days left until a bloodmoon."
   bloodmoon-manage-days-set-negative: "<red><yellow>%world%</yellow> cannot have a negative number as the result."
-  bloodmoon-not-active-world: "<red>A bloodmoon is not active in this world."
   not-a-days-bloodmoon: "<red>This world is not a incrementing days bloodmoon."
-  days-bloodmoon-set: "<green>Set the day counter to <yellow>%days%<\yellow>."
-  bossbar-title: "<red>Bloodmoon"
+  days-bloodmoon-set: "<green>Set the day counter to <yellow>%days%</yellow>."
   cant-modify-active: "<red>You cannot modify the bloodmoon while it is active."
 
   # Bloodmoon info messages
