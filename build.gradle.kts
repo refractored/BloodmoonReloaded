@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+
 plugins {
     java
     `java-library`
@@ -99,7 +101,20 @@ allprojects {
         toolchain.languageVersion.set(JavaLanguageVersion.of(21))
     }
 
+    tasks.withType<JavaCompile> {
+        // Preserve parameter names in the bytecode
+        options.compilerArgs.add("-parameters")
+    }
+
+    tasks.withType<KotlinJvmCompile> {
+        compilerOptions {
+            javaParameters = true
+        }
+    }
+
     tasks {
+
+
         if (getCurrentGitTag()?.removePrefix("v") != version) {
             version = "${version}-${getGitHash()}"
         }
