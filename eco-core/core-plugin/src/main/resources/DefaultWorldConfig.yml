@@ -102,7 +102,7 @@ commands:
 # If "timed" is selected, the bloodmoon will activate after a specific time and when the world is night.
 # If "chance" is selected, the bloodmoon will activate after a random chance every night.
 # If "mirror" is selected, the bloodmoon will activate shortly after another world's bloodmoon activates.
-# If "none", or anything else is selected, the bloodmoon will not activate on its own, and must be activated manually.
+# If "none" is selected, the bloodmoon will not activate on its own, and must be activated manually.
 BloodmoonActivate: Days
 
 #######################################################################################
