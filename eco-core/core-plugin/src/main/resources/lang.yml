@@ -19,10 +19,10 @@ messages:
     more-than-one-entity: "<red>Only one entity is allowed, but the provided selector allows more than one."
     unknown-command: "<red>Unknown command: <yellow>%command%</yellow>."
     missing-argument: "<red>Required argument is missing: <yellow>%argument%</yellow>. Usage: <yellow>%usage%</yellow>"
-    number-too-small: "<red>%parameter% too small <yellow>(%input%)</yellow>. Must be at least <yellow>%minimum%</yellow>."
-    number-too-large: "<red>%parameter% too small <yellow>(%input%)</yellow>. Must be at least <yellow>%minimum%</yellow>."
-    string-too-small: "<red>%parameter% must be at least <yellow>%minimum%</yellow> characters long."
-    string-too-long: "<red>%parameter% must be at most <yellow>%minimum%</yellow> characters long."
+    number-too-small: "<red><yellow>%parameter%</yellow> too small <yellow>(%input%)</yellow>. Must be at least <yellow>%minimum%</yellow>."
+    number-too-large: "<red><yellow>%parameter%</yellow> too small <yellow>(%input%)</yellow>. Must be at least <yellow>%minimum%</yellow>."
+    string-too-small: "<red><yellow>%parameter%</yellow> must be at least <yellow>%minimum%</yellow> characters long."
+    string-too-long: "<red><yellow>%parameter%</yellow> must be at most <yellow>%minimum%</yellow> characters long."
     list-too-small: "<red>You must input at least <yellow>%minimum%</yellow> entries for <yellow>%parameter%</yellow>."
     list-too-large: "<red>You must input at most <yellow>%maximum%</yellow> entries for <yellow>%parameter%</yellow>."
     expected-string-literal: "<red>Expected: <yellow>%literal%</yellow>, but found: <yellow>%input%</yellow>."
@@ -40,9 +40,9 @@ messages:
     invalid-choice: "Invalid choice: <yellow>%input%</yellow>. Please enter a valid option from the available values."
     invalid-help-single: "<red>Invalid help page: <yellow>%input%</yellow>. Must be <yellow>1</yellow>."
     invalid-help: "<red>Invalid help page: <yellow>%input%</yellow>. Must be between <yellow>1</yellow> and <yellow>%pages%</yellow>."
-    invalid-bloodmoon: "<red>This world is not configured for bloodmoons."
+    invalid-bloodmoon: "<red><yellow>%world%</yellow> is not configured for bloodmoons."
     # Used by the Hordes extension.
-    invalid-horde: "<red>This world is not configured for hordes."
+    invalid-horde: "<red><yellow>%world%</yellow> is not configured for hordes."
 
   # Command messages
   deactivate:
@@ -64,12 +64,12 @@ messages:
   info:
     active: "<green>Bloodmoon is active in <yellow>%world%</yellow>."
     success:
-      none: "<reset>The bloodmoon is currently inactive in %world%."
-      active: "<reset>The bloodmoon is currently active in %world%."
-      time: "<reset>The bloodmoon is currently inactive in %world%. It will start in <yellow>%hours%:%minutes%:%seconds%</yellow>."
-      days: "<reset>The bloodmoon is currently inactive in %world%. It will start in <yellow>%days%</yellow> days."
-      chance: "<reset>The bloodmoon is currently inactive in %world%. it has a <yellow>%chance%</yellow> chance to start tonight."
-      mirror: "<reset>The bloodmoon is currently inactive in %world%. it will activate when %mirror_world% activates."
+      none: "<reset>The bloodmoon is currently inactive in <yellow>%world%</yellow>"
+      active: "<reset>The bloodmoon is currently active in <yellow>%world%</yellow>."
+      time: "<reset>The bloodmoon is currently inactive in <yellow>%world%</yellow>. It will start in <yellow>%hours%:%minutes%:%seconds%</yellow>."
+      days: "<reset>The bloodmoon is currently inactive in <yellow>%world%</yellow>. It will start in <yellow>%days%</yellow> days."
+      chance: "<reset>The bloodmoon is currently inactive in <yellow>%world%</yellow>. it has a <yellow>%chance%</yellow> chance to start tonight."
+      mirror: "<reset>The bloodmoon is currently inactive in <yellow>%world%</yellow>. it will activate when %mirror_world% activates."
   # Used by extensions.
   spawn:
     # Used by the Hordes extension.
