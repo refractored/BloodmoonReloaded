@@ -3,10 +3,10 @@ package net.refractored.bloodmoonreloaded.types
 import com.willfp.eco.core.config.interfaces.Config
 import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import net.refractored.bloodmoonreloaded.registry.TypeRegistry
+import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import org.bukkit.World
 
 /**
@@ -17,7 +17,7 @@ class NoneBloodmoon(
     config: Config
 ) : BloodmoonWorld(world, config) {
 
-    override fun getInfo():  ComponentLike = BloodmoonPlugin.instance.langYml
+    override fun getInfo(): ComponentLike = BloodmoonPlugin.instance.langYml
         .getStringPrefixed("messages.info.success.none")
         .replace("%world%", world.name)
         .replace("%status%", this.status.miniMessage())
@@ -39,8 +39,6 @@ class NoneBloodmoon(
     }
 
     companion object : TypeRegistry.BloodmoonWorldFactory {
-        override fun create(world: World, config: Config): BloodmoonWorld {
-            return NoneBloodmoon(world, config)
-        }
+        override fun create(world: World, config: Config): BloodmoonWorld = NoneBloodmoon(world, config)
     }
 }

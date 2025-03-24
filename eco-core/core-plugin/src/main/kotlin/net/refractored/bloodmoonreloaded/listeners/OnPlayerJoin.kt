@@ -13,8 +13,6 @@ class OnPlayerJoin : Listener {
 
         if (bloodmoonDestination.status != BloodmoonWorld.Status.ACTIVE) return
 
-        if (!bloodmoonDestination.bossbarEnabled) return
-
-        bloodmoonDestination.bossbar.addViewer(event.player)
+        bloodmoonDestination.bossbar?.addViewer(event.player)
     }
 }

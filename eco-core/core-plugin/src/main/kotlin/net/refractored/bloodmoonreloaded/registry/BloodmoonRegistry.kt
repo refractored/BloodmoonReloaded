@@ -39,12 +39,10 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
         }
     }
 
-
-
     fun getWorlds() = registry.toList()
 
     // Get all worlds with the status of active
-    fun getActiveWorlds() = registry.filter { it.status == BloodmoonWorld.Status.ACTIVE && it !is NoneBloodmoon}
+    fun getActiveWorlds() = registry.filter { it.status == BloodmoonWorld.Status.ACTIVE && it !is NoneBloodmoon }
 
     fun getWorld(id: String) = registry.get(id)
 
@@ -68,14 +66,14 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
      * @param world The world to create the config for.
      * @throws IllegalStateException If the world config already exists.
      */
-    fun createWorldConfig(subDirectory:String, world: String) {
+    fun createWorldConfig(subDirectory: String, world: String) {
         val worldsDir = BloodmoonPlugin.instance.dataFolder.resolve(subDirectory)
         if (!worldsDir.exists()) {
             worldsDir.mkdir()
         }
-        if (BloodmoonPlugin.instance.dataFolder.resolve("${subDirectory}/$world.yml").exists()) return
+        if (BloodmoonPlugin.instance.dataFolder.resolve("$subDirectory/$world.yml").exists()) return
         BloodmoonPlugin.instance.getResource("DefaultWorldConfig.yml").use {
-            Files.copy(it!!, BloodmoonPlugin.instance.dataFolder.resolve("${subDirectory}/$world.yml").toPath())
+            Files.copy(it!!, BloodmoonPlugin.instance.dataFolder.resolve("$subDirectory/$world.yml").toPath())
         }
     }
 
@@ -136,11 +134,9 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
             if (BloodmoonPlugin.instance.configYml.getBool("debug")) e.printStackTrace()
             return
         }
-
     }
 
     override fun clear(plugin: LibreforgePlugin) {
         registry.clear()
     }
-
 }

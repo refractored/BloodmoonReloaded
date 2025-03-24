@@ -11,6 +11,7 @@ import com.willfp.libreforge.Holder
 import com.willfp.libreforge.ViolationContext
 import com.willfp.libreforge.conditions.Conditions
 import com.willfp.libreforge.effects.Effects
+import com.willfp.libreforge.getStrings
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.ComponentLike
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
@@ -19,7 +20,6 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStartEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent.StopCause
-import net.refractored.bloodmoonreloaded.messages.Messages.miniPrefix
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import org.bukkit.Bukkit
 import org.bukkit.GameRule
@@ -119,7 +119,8 @@ abstract class BloodmoonWorld(
      */
     var revertDaylightCycle: Boolean
         get() {
-            return world.persistentDataContainer.get(BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_daylightcycle"),
+            return world.persistentDataContainer.get(
+                BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_daylightcycle"),
                 PersistentDataType.BOOLEAN
             ) ?: false
         }
@@ -143,7 +144,7 @@ abstract class BloodmoonWorld(
      */
     var savedBloodmoonRemainingMillis: Long
         get() = Bukkit.getServer().profile.read(bloodmoonRemainingMillis).toLong()
-        set(value) = Bukkit.getServer().profile.write( bloodmoonRemainingMillis, value.toDouble())
+        set(value) = Bukkit.getServer().profile.write(bloodmoonRemainingMillis, value.toDouble())
 
     var fullTime: Long = 0L
 
@@ -152,80 +153,50 @@ abstract class BloodmoonWorld(
      */
     val configLength: Long = config.getString("length").toLong() * 1000
 
-    val bedDisabled = config.getBool("bed-disabled")
-
-    val bossbarEnabled: Boolean = config.getBool("bossbar.enabled")
-
-    val createFog: Boolean = config.getBool("bossbar.fog")
-
-    val isIncreasing = config.getBool("bossbar.increasing")
-
-    val darkenScreen: Boolean = config.getBool("bossbar.darken-screen")
-
-    val setDaylightCycle: Boolean = config.getBool("stop-daylight-cycle")
-
-    val setThunder: Boolean = config.getBool("set-thunder")
-
-    val victoryChime: Boolean = config.getBool("victory-chime")
-
-    val periodicCaveSounds: Boolean = config.getBool("periodic-cave-sounds.enabled")
-
-    val clearInventory: Boolean = config.getBool("on-player-death.clear-inventory")
-
-    val clearEXP: Boolean = config.getBool("on-player-death.clear-exp")
-
-    val useCustomDeathMessage: Boolean = config.getBool("on-player-death.custom-death-message")
-
-    val disableChangeTime: Boolean = config.getBool("disable-time-change")
-
-    val bossbarColor =
-        BossBar.Color.entries.find { it.name == config.getString("bossbar.color") }
-            ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("bossbar.color")}")
-
-    val bossbarStyle =
-        BossBar.Overlay.entries.find { it.name == config.getString("bossbar.style") }
-            ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("bossbar.style")}")
-
-    val customDeathMessage = config.getString("messages.death-message")
-
-    val usePrefix = config.getBool("messages.use-prefix")
-
-    val activationMessage = if (usePrefix) {
-        BloodmoonPlugin.instance.langYml.miniPrefix() + config.getString("messages.activation")
+    val activationCommands: List<String>? = if (config.getBool("on-activation.run-commands.enabled")) {
+        config.getStrings("on-activation.run-commands.commands").map { it.replace("%world%", world.name) }
     } else {
-        config.getString("messages.activation")
+        null
     }
 
-    val deactivationMessage = if (usePrefix) {
-        BloodmoonPlugin.instance.langYml.miniPrefix() + config.getString("messages.deactivation")
+    val deactivationCommands: List<String>? = if (config.getBool("on-deactivation.run-commands.enabled")) {
+        config.getStrings("on-deactivation.run-commands.commands").map { it.replace("%world%", world.name) }
     } else {
-        config.getString("messages.deactivation")
+        null
     }
-
-    val bedDenyMessage = if (usePrefix) {
-        BloodmoonPlugin.instance.langYml.miniPrefix() + config.getString("messages.bed-deny-message")
-    } else {
-        config.getString("messages.bed-deny-message")
-    }
-
-    val activationCommands = config.getStrings("Commands.Activation").map { it.replace("%world%", world.name) }
-
-    val deactivationCommands = config.getStrings("Commands.Activation").map { it.replace("%world%", world.name) }
 
     override fun getID(): String = world.name
 
     /**
      * Whether the bloodmoon is currently activating.
+     * Null if bossbar is not enabled.
      */
-    var bossbar =
-        BossBar.bossBar(
-            config
-                .getString("bossbar.title")
-                .miniToComponent(),
-            1.0f,
-            bossbarColor,
-            bossbarStyle
-        )
+    var bossbar: BossBar?
+
+    init {
+        if (config.getBool("while-active.bossbar.enabled")) {
+            bossbar = BossBar.bossBar(
+                config
+                    .getString("while-active.bossbar.title")
+                    .miniToComponent(),
+                1.0f,
+                (
+                    BossBar.Color.entries.find { it.name == config.getString("while-active.bossbar.color") }
+                        ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("while-active.bossbar.color")}")
+                    ),
+                (
+                    BossBar.Overlay.entries.find { it.name == config.getString("while-active.bossbar.style") }
+                        ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("while-active.bossbar.style")}")
+                    )
+            ).apply {
+                config.getStrings("while-active.bossbar.flags").forEach { flag ->
+                    addFlags(BossBar.Flag.valueOf(flag.uppercase()))
+                }
+            }
+        } else {
+            bossbar = null
+        }
+    }
 
     /**
      * The time the bloodmoon expires.
@@ -254,7 +225,7 @@ abstract class BloodmoonWorld(
      */
     open fun periodicTasks() {}
 
-    fun saveBloodmoonTime(){
+    fun saveBloodmoonTime() {
         savedBloodmoonRemainingMillis = (expiryTime - System.currentTimeMillis())
     }
 
@@ -264,17 +235,21 @@ abstract class BloodmoonWorld(
      */
     fun runPeriodicTasks() {
         if (status == Status.ACTIVE) {
-            if (periodicCaveSounds && (Random.nextDouble(1.0) < config.getDouble("periodic-cave-sounds.chance"))) {
+            if (config.getBool("periodic-sounds.enabled") && (Random.nextDouble(1.0) < config.getDouble("periodic-cave-sounds.chance"))) {
                 for (player in world.players) {
-                    player.playSound(player.location, "ambient.cave", 1.0f, 1.0f)
+                    player.playSound(player.location, config.getStrings("periodic-sounds.sounds").random(), 1.0f, 1.0f)
                 }
             }
 
             saveBloodmoonTime()
 
-            if (setThunder) {
+            if (config.getBool("while-active.weather.enabled") && config.getBool("while-active.weather.rain")) {
                 world.setStorm(true)
+                if (config.getBool("while-active.weather.thunder")) {
+                    world.isThundering = true
+                }
             }
+
             world.fullTime = fullTime
         }
 
@@ -310,19 +285,20 @@ abstract class BloodmoonWorld(
             return
         }
         status = Status.ACTIVATING
-        activationCommands.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
-        if (announce && config.getBool("messages.activation-enabled")) {
-            if (config.getBool("messages.activation-announce-global")) {
-                Bukkit.broadcast(activationMessage.miniToComponent())
+        activationCommands?.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
+        if (announce && config.getBool("on-activation.announce.enabled")) {
+            if (config.getBool("on-activation.announce.global")) {
+                Bukkit.broadcast(config.getString("on-activation.announce.message").miniToComponent())
             } else {
                 world.players.forEach { player ->
-                    player.sendMessage(activationMessage.miniToComponent())
+                    player.sendMessage(config.getString("on-activation.announce.message").miniToComponent())
                 }
             }
         }
-        if (disableChangeTime) {
+        if (config.getBool("while-active.disable-time-change")) {
             activateBloodmoon(length)
             status = Status.ACTIVE
+            playActivationSounds()
             onActivation()
             return
         }
@@ -333,6 +309,7 @@ abstract class BloodmoonWorld(
                         cancel()
                         activateBloodmoon(length)
                         status = Status.ACTIVE
+                        playActivationSounds()
                         onActivation()
                         return
                     }
@@ -349,7 +326,7 @@ abstract class BloodmoonWorld(
      * Enables the bloodmoon.
      */
     private fun activateBloodmoon(length: Long) {
-        if (setDaylightCycle) {
+        if (config.getBool("while-active.stop-daylight-cycle")) {
             revertDaylightCycle = true
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false)
         }
@@ -358,48 +335,41 @@ abstract class BloodmoonWorld(
         fullTime = world.fullTime
         savedBloodmoonRemainingMillis = length
 
-        if (!bossbarEnabled) return
-
-        world.players.forEach {
-            bossbar.addViewer(it)
-        }
-        if (createFog) {
-            bossbar.addFlags(BossBar.Flag.CREATE_WORLD_FOG)
-        }
-        if (darkenScreen) {
-            bossbar.addFlags(BossBar.Flag.DARKEN_SCREEN)
-        }
-
-        // Runnable to update bossbar.
-        object : BukkitRunnable() {
-            override fun run() {
-                val progress =
-                    if (!isIncreasing) {
-                        val elapsedTime = System.currentTimeMillis() - (expiryTime - configLength)
-                        (elapsedTime.toDouble() / configLength.toDouble()).coerceIn(0.0, 1.0).toFloat()
-                    } else {
-                        val remainingTime = expiryTime - System.currentTimeMillis()
-                        (remainingTime.toDouble() / configLength.toDouble()).coerceIn(0.0, 1.0).toFloat()
-                    }
-                bossbar.progress(progress)
-                if (status == Status.INACTIVE) {
-                    cancel()
-                    return
-                }
+        bossbar?.let { bossbar ->
+            world.players.forEach {
+                bossbar.addViewer(it)
             }
-        }.runTaskTimer(BloodmoonPlugin.instance, 1, 1)
+
+            // Runnable to update bossbar.
+            object : BukkitRunnable() {
+                override fun run() {
+                    val progress =
+                        if (!config.getBool("while-active.bossbar.increasing")) {
+                            val elapsedTime = System.currentTimeMillis() - (expiryTime - configLength)
+                            (elapsedTime.toDouble() / configLength.toDouble()).coerceIn(0.0, 1.0).toFloat()
+                        } else {
+                            val remainingTime = expiryTime - System.currentTimeMillis()
+                            (remainingTime.toDouble() / configLength.toDouble()).coerceIn(0.0, 1.0).toFloat()
+                        }
+                    bossbar.progress(progress)
+                    if (status == Status.INACTIVE) {
+                        cancel()
+                        return
+                    }
+                }
+            }.runTaskTimer(BloodmoonPlugin.instance, 1, 1)
+        }
     }
 
     private fun revertSettings() {
         if (revertDaylightCycle) {
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true)
         }
-        if (setThunder) {
-            world.clearWeatherDuration = 20 * 60 * 20
-            world.setStorm(false)
-        }
-        world.players.forEach { player ->
-            bossbar.removeViewer(player)
+
+        bossbar?.let { bossbar ->
+            world.players.forEach { player ->
+                bossbar.removeViewer(player)
+            }
         }
     }
 
@@ -420,26 +390,44 @@ abstract class BloodmoonWorld(
         // Run, if event is not cancelled
         // This comment is here so I remember to not be stupid and add stuff before the event is fired.
 
-        deactivationCommands.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
-        if (announce && config.getBool("messages.deactivation-enabled")) {
-            if (config.getBool("messages.deactivation-announce-global")) {
-                Bukkit.broadcast(deactivationMessage.miniToComponent())
+        deactivationCommands?.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
+        if (announce && config.getBool("on-deactivation.announce.enabled")) {
+            if (config.getBool("on-deactivation.announce.global")) {
+                Bukkit.broadcast(config.getString("on-deactivation.announce.message").miniToComponent())
             } else {
                 world.players.forEach { player ->
-                    player.sendMessage(deactivationMessage.miniToComponent())
+                    player.sendMessage(config.getString("on-deactivation.announce.message").miniToComponent())
                 }
             }
         }
         status = Status.INACTIVE
         revertSettings()
-        if (reason == StopCause.RESTART || reason == StopCause.UNLOAD) return
-        savedBloodmoonRemainingMillis = 0L
-        if (victoryChime) {
-            for (player in world.players) {
-                player.playSound(player.location, "ui.toast.challenge_complete", 1.0f, 1.0f)
+        if (config.getBool("on.deactivation.weather.enabled") && config.getBool("on.deactivation.weather.rain")) {
+            world.setStorm(true)
+            if (config.getBool("on.deactivation.weather.thunder")) {
+                world.isThundering = true
             }
         }
+        if (reason == StopCause.RESTART || reason == StopCause.UNLOAD) return
+        savedBloodmoonRemainingMillis = 0L
+        playDectivationSounds()
         this.onDeactivation()
+    }
+
+    fun playActivationSounds() {
+        if (config.getBool("on-activation.sounds.enabled")) {
+            for (player in world.players) {
+                player.playSound(player.location, config.getStrings("on-activation.sounds.sounds").random(), 1.0f, 1.0f)
+            }
+        }
+    }
+
+    fun playDectivationSounds() {
+        if (config.getBool("on-deactivation.sounds.enabled")) {
+            for (player in world.players) {
+                player.playSound(player.location, config.getStrings("on-deactivation.sounds.sounds").random(), 1.0f, 1.0f)
+            }
+        }
     }
 
     override fun onRemove() {

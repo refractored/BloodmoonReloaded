@@ -1,9 +1,9 @@
 package net.refractored.bloodmoonreloaded.listeners
 
 import com.willfp.eco.util.toComponent
+import net.refractored.bloodmoonreloaded.messages.Messages.replace
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
-import net.refractored.bloodmoonreloaded.messages.Messages.replace
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -16,20 +16,20 @@ class OnPlayerDeath : Listener {
         val world = BloodmoonRegistry.getWorld(event.player.world.name) ?: return
         if (world.status != BloodmoonWorld.Status.ACTIVE) return
 
-        if (world.clearInventory) {
+        if (world.config.getBool("while-active.on-player-death.clear-inventory")) {
             event.player.inventory.clear()
             event.drops.clear()
         }
 
-        if (world.clearEXP) {
+        if (world.config.getBool("while-active.on-player-death.clear-exp")) {
             event.setShouldDropExperience(false)
             event.droppedExp = 0
             event.player.exp = 0f
         }
 
-        if (world.useCustomDeathMessage) {
+        if (world.config.getBool("while-active.on-player-death.custom-death-message")) {
             event.deathMessage(
-                world.customDeathMessage
+                world.config.getString("messages.death-message")
                     .replace("%player%", event.player.name)
                     .replace("%player_displayname%", event.player.displayName())
                     .toComponent()

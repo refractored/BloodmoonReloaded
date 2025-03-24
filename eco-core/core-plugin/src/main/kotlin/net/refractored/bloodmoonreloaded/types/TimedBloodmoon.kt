@@ -8,10 +8,10 @@ import com.willfp.eco.core.integrations.placeholder.PlaceholderManager
 import com.willfp.eco.core.placeholder.PlayerlessPlaceholder
 import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import net.refractored.bloodmoonreloaded.registry.TypeRegistry
+import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import org.bukkit.Bukkit
 import org.bukkit.World
 import java.time.Duration
@@ -80,14 +80,14 @@ class TimedBloodmoon(
     override fun getInfo(): ComponentLike {
         val timeframe: Duration = Duration.ofMillis(getTimedRemaining())
         return BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.info.success.timed")
-                .replace("%world%", world.name)
-                .replace("%status%", this.status.miniMessage())
-                .replace("%hours%", timeframe.toHours().toString())
-                .replace("%minutes%", timeframe.toMinutesPart().toString())
-                .replace("%seconds%", timeframe.toSecondsPart().toString())
-                .miniToComponent()
-        }
+            .getStringPrefixed("messages.info.success.timed")
+            .replace("%world%", world.name)
+            .replace("%status%", this.status.miniMessage())
+            .replace("%hours%", timeframe.toHours().toString())
+            .replace("%minutes%", timeframe.toMinutesPart().toString())
+            .replace("%seconds%", timeframe.toSecondsPart().toString())
+            .miniToComponent()
+    }
 
     fun getHoursMinutesSeconds(durationMillis: Long): Triple<Long, Long, Long> {
         val hours = durationMillis / 3600000
@@ -96,13 +96,11 @@ class TimedBloodmoon(
         return Triple(hours, minutes, seconds)
     }
 
-    fun saveRemainingTime(){
+    fun saveRemainingTime() {
         savedRemainingTime = getTimedRemaining()
     }
 
-    fun getTimedRemaining(): Long {
-        return (startTime - System.currentTimeMillis()).coerceAtLeast(0L)
-    }
+    fun getTimedRemaining(): Long = (startTime - System.currentTimeMillis()).coerceAtLeast(0L)
 
     override fun onDeactivation() {
         savedRemainingTime = configTime
@@ -123,7 +121,7 @@ class TimedBloodmoon(
         if (status != Status.INACTIVE) return false
         if (startTime > System.currentTimeMillis()) return false
 
-        if (config.getBool("timed.night-only")){
+        if (config.getBool("timed.night-only")) {
             return !world.isDayTime
         }
 
@@ -131,9 +129,6 @@ class TimedBloodmoon(
     }
 
     companion object : TypeRegistry.BloodmoonWorldFactory {
-        override fun create(world: World, config: Config): BloodmoonWorld {
-            return TimedBloodmoon(world, config)
-        }
+        override fun create(world: World, config: Config): BloodmoonWorld = TimedBloodmoon(world, config)
     }
-
 }

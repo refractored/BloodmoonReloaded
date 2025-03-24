@@ -24,12 +24,11 @@ class OnPlayerTeleport : Listener {
         if (bloodmoonOrigin?.status != BloodmoonWorld.Status.ACTIVE && bloodmoonDestination?.status != BloodmoonWorld.Status.ACTIVE) return
 
         if (bloodmoonOrigin?.status == BloodmoonWorld.Status.ACTIVE) {
-            bloodmoonOrigin.bossbar.removeViewer(event.player)
+            bloodmoonOrigin.bossbar?.removeViewer(event.player)
         }
 
         if (bloodmoonDestination?.status == BloodmoonWorld.Status.ACTIVE) {
-            if (!bloodmoonDestination.bossbarEnabled) return
-            bloodmoonDestination.bossbar.addViewer(event.player)
+            bloodmoonDestination.bossbar?.addViewer(event.player)
         }
     }
 }

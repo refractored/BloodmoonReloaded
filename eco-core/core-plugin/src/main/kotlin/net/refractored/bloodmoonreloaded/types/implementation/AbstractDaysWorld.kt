@@ -81,5 +81,4 @@ abstract class AbstractDaysWorld(
      * If [checkConditions] returns false, what should be run after.
      */
     open fun onConditionFail() {}
-
 }

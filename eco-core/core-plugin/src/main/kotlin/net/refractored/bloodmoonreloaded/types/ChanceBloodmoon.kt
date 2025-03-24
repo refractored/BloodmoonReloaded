@@ -8,10 +8,10 @@ import com.willfp.eco.core.integrations.placeholder.PlaceholderManager
 import com.willfp.eco.core.placeholder.PlayerlessPlaceholder
 import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
-import net.refractored.bloodmoonreloaded.types.implementation.AbstractDaysWorld
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import net.refractored.bloodmoonreloaded.registry.TypeRegistry
+import net.refractored.bloodmoonreloaded.types.implementation.AbstractDaysWorld
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import org.bukkit.Bukkit
 import org.bukkit.World
@@ -36,13 +36,12 @@ class ChanceBloodmoon(
         get() = Bukkit.getServer().profile.read(chanceKey)
         private set(value) = Bukkit.getServer().profile.write(chanceKey, value)
 
-    override fun getInfo(): ComponentLike =
-        BloodmoonPlugin.instance.langYml
-            .getStringPrefixed("messages.info.success.chance")
-            .replace("%world%", world.name)
-            .replace("%status%", this.status.miniMessage())
-            .replace("%chance%", this.fancyChance)
-            .miniToComponent()
+    override fun getInfo(): ComponentLike = BloodmoonPlugin.instance.langYml
+        .getStringPrefixed("messages.info.success.chance")
+        .replace("%world%", world.name)
+        .replace("%status%", this.status.miniMessage())
+        .replace("%chance%", this.fancyChance)
+        .miniToComponent()
 
     /**
      * @return The chance as a percentage out of 100.
@@ -69,9 +68,7 @@ class ChanceBloodmoon(
         return
     }
 
-    override fun checkConditions(): Boolean {
-        return Random.nextDouble(1.0) < chance
-    }
+    override fun checkConditions(): Boolean = Random.nextDouble(1.0) < chance
 
     override fun onConditionFail() {
         if (!config.getBool("chance.increment.enabled")) return
@@ -79,8 +76,6 @@ class ChanceBloodmoon(
     }
 
     companion object : TypeRegistry.BloodmoonWorldFactory {
-        override fun create(world: World, config: Config): BloodmoonWorld {
-            return ChanceBloodmoon(world, config)
-        }
+        override fun create(world: World, config: Config): BloodmoonWorld = ChanceBloodmoon(world, config)
     }
 }
