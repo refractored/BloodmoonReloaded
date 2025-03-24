@@ -344,7 +344,7 @@ abstract class BloodmoonWorld(
             object : BukkitRunnable() {
                 override fun run() {
                     val progress =
-                        if (!config.getBool("while-active.bossbar.increasing")) {
+                        if (config.getBool("while-active.bossbar.increasing")) {
                             val elapsedTime = System.currentTimeMillis() - (expiryTime - configLength)
                             (elapsedTime.toDouble() / configLength.toDouble()).coerceIn(0.0, 1.0).toFloat()
                         } else {
@@ -410,22 +410,22 @@ abstract class BloodmoonWorld(
         }
         if (reason == StopCause.RESTART || reason == StopCause.UNLOAD) return
         savedBloodmoonRemainingMillis = 0L
-        playDectivationSounds()
+        playDeactivationSounds()
         this.onDeactivation()
     }
 
     fun playActivationSounds() {
-        if (config.getBool("on-activation.sounds.enabled")) {
+        if (config.getBool("on-activation.sound.enabled")) {
             for (player in world.players) {
-                player.playSound(player.location, config.getStrings("on-activation.sounds.sounds").random(), 1.0f, 1.0f)
+                player.playSound(player.location, config.getString("on-activation.sound.name"), config.getDouble("on-activation.sound.volume").toFloat(), config.getDouble("on-activation.sound.pitch").toFloat())
             }
         }
     }
 
     fun playDeactivationSounds() {
-        if (config.getBool("on-deactivation.sounds.enabled")) {
+        if (config.getBool("on-deactivation.sound.enabled")) {
             for (player in world.players) {
-                player.playSound(player.location, config.getStrings("on-deactivation.sounds.sounds").random(), 1.0f, 1.0f)
+                player.playSound(player.location, config.getString("on-deactivation.sound.name"), config.getDouble("on-deactivation.sound.volume").toFloat(), config.getDouble("on-deactivation.sound.pitch").toFloat())
             }
         }
     }

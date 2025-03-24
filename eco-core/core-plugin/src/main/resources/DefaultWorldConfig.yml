@@ -145,8 +145,8 @@ while-active:
     # Flags for the bossbar.
     # https://jd.advntr.dev/api/4.7.0/net/kyori/adventure/bossbar/BossBar.Flag.html
     flags:
-      - DARKEN_SKY
-      - CREATE_FOG
+      - DARKEN_SCREEN
+      - CREATE_WORLD_FOG
     # If true, the bossbar will increase with time
     # If false, the bossbar will decrease with time
     increasing: true
