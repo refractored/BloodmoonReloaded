@@ -54,7 +54,7 @@ class DaysBloodmoon(
         .miniToComponent()
 
     private val daysUntilActivation: Int
-        get() = config.getInt("Days")
+        get() = config.getInt("days.count")
 
 
     override fun onActivation() {

@@ -150,62 +150,62 @@ abstract class BloodmoonWorld(
     /**
      * The length in milliseconds of the bloodmoon set in the config.
      */
-    val configLength: Long = config.getString("Length").toLong() * 1000
+    val configLength: Long = config.getString("length").toLong() * 1000
 
-    val isIncreasing = config.getBool("Increasing")
+    val bedDisabled = config.getBool("bed-disabled")
 
-    val bedDisabled = config.getBool("BedDisabled")
+    val bossbarEnabled: Boolean = config.getBool("bossbar.enabled")
 
-    val bossbarEnabled: Boolean = config.getBool("Bossbar.Enabled")
+    val createFog: Boolean = config.getBool("bossbar.fog")
 
-    val createFog: Boolean = config.getBool("Bossbar.Fog")
+    val isIncreasing = config.getBool("bossbar.increasing")
 
-    val darkenScreen: Boolean = config.getBool("Bossbar.DarkenScreen")
+    val darkenScreen: Boolean = config.getBool("bossbar.darken-screen")
 
-    val setDaylightCycle: Boolean = config.getBool("SetDaylightCycle")
+    val setDaylightCycle: Boolean = config.getBool("stop-daylight-cycle")
 
-    val setThunder: Boolean = config.getBool("SetThunder")
+    val setThunder: Boolean = config.getBool("set-thunder")
 
-    val victoryChime: Boolean = config.getBool("VictoryChime")
+    val victoryChime: Boolean = config.getBool("victory-chime")
 
-    val periodicCaveSounds: Boolean = config.getBool("PeriodicCaveSounds.Enabled")
+    val periodicCaveSounds: Boolean = config.getBool("periodic-cave-sounds.enabled")
 
-    val clearInventory: Boolean = config.getBool("PlayerDeath.ClearInventory")
+    val clearInventory: Boolean = config.getBool("on-player-death.clear-inventory")
 
-    val clearEXP: Boolean = config.getBool("PlayerDeath.ClearEXP")
+    val clearEXP: Boolean = config.getBool("on-player-death.clear-exp")
 
-    val useCustomDeathMessage: Boolean = config.getBool("PlayerDeath.CustomDeathMessage")
+    val useCustomDeathMessage: Boolean = config.getBool("on-player-death.custom-death-message")
 
-    val disableChangeTime: Boolean = config.getBool("DisableChangeTime")
+    val disableChangeTime: Boolean = config.getBool("disable-time-change")
 
     val bossbarColor =
-        BossBar.Color.entries.find { it.name == config.getString("Bossbar.Color") }
-            ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("Bossbar.Color")}")
+        BossBar.Color.entries.find { it.name == config.getString("bossbar.color") }
+            ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("bossbar.color")}")
 
     val bossbarStyle =
-        BossBar.Overlay.entries.find { it.name == config.getString("Bossbar.Style") }
-            ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("Bossbar.Style")}")
+        BossBar.Overlay.entries.find { it.name == config.getString("bossbar.style") }
+            ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("bossbar.style")}")
 
-    val customDeathMessage = config.getString("Messages.DeathMessage")
+    val customDeathMessage = config.getString("messages.death-message")
 
-    val usePrefix = config.getBool("Messages.UsePrefix")
+    val usePrefix = config.getBool("messages.use-prefix")
 
     val activationMessage = if (usePrefix) {
-        BloodmoonPlugin.instance.langYml.miniPrefix() + config.getString("Messages.Activation")
+        BloodmoonPlugin.instance.langYml.miniPrefix() + config.getString("messages.activation")
     } else {
-        config.getString("Messages.Activation")
+        config.getString("messages.activation")
     }
 
     val deactivationMessage = if (usePrefix) {
-        BloodmoonPlugin.instance.langYml.miniPrefix() + config.getString("Messages.Deactivation")
+        BloodmoonPlugin.instance.langYml.miniPrefix() + config.getString("messages.deactivation")
     } else {
-        config.getString("Messages.Deactivation")
+        config.getString("messages.deactivation")
     }
 
     val bedDenyMessage = if (usePrefix) {
-        BloodmoonPlugin.instance.langYml.miniPrefix() + config.getString("Messages.BedDenyMessage")
+        BloodmoonPlugin.instance.langYml.miniPrefix() + config.getString("messages.bed-deny-message")
     } else {
-        config.getString("Messages.BedDenyMessage")
+        config.getString("messages.bed-deny-message")
     }
 
     val activationCommands = config.getStrings("Commands.Activation").map { it.replace("%world%", world.name) }
@@ -220,7 +220,7 @@ abstract class BloodmoonWorld(
     var bossbar =
         BossBar.bossBar(
             config
-                .getString("Bossbar.Title")
+                .getString("bossbar.title")
                 .miniToComponent(),
             1.0f,
             bossbarColor,
@@ -264,7 +264,7 @@ abstract class BloodmoonWorld(
      */
     fun runPeriodicTasks() {
         if (status == Status.ACTIVE) {
-            if (periodicCaveSounds && (Random.nextDouble(1.0) < config.getDouble("PeriodicCaveSounds.Chance"))) {
+            if (periodicCaveSounds && (Random.nextDouble(1.0) < config.getDouble("periodic-cave-sounds.chance"))) {
                 for (player in world.players) {
                     player.playSound(player.location, "ambient.cave", 1.0f, 1.0f)
                 }
@@ -311,8 +311,8 @@ abstract class BloodmoonWorld(
         }
         status = Status.ACTIVATING
         activationCommands.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
-        if (announce && config.getBool("Messages.DeactivationEnabled")) {
-            if (config.getBool("Messages.ActivationAnnounceGlobal")) {
+        if (announce && config.getBool("messages.activation-enabled")) {
+            if (config.getBool("messages.activation-announce-global")) {
                 Bukkit.broadcast(activationMessage.miniToComponent())
             } else {
                 world.players.forEach { player ->
@@ -421,8 +421,8 @@ abstract class BloodmoonWorld(
         // This comment is here so I remember to not be stupid and add stuff before the event is fired.
 
         deactivationCommands.forEach { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it) }
-        if (announce && config.getBool("Messages.DeactivationEnabled")) {
-            if (config.getBool("Messages.DeactivationAnnounceGlobal")) {
+        if (announce && config.getBool("messages.deactivation-enabled")) {
+            if (config.getBool("messages.deactivation-announce-global")) {
                 Bukkit.broadcast(deactivationMessage.miniToComponent())
             } else {
                 world.players.forEach { player ->

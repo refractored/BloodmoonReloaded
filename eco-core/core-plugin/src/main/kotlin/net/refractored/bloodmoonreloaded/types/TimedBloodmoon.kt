@@ -24,7 +24,7 @@ class TimedBloodmoon(
     config: Config
 ) : BloodmoonWorld(world, config) {
 
-    val configTime: Long = config.getString("Timed").toLong() * 1000
+    val configTime: Long = config.getString("timed.duration").toLong() * 1000
 
     private val timeKey =
         PersistentDataKey(
@@ -123,7 +123,7 @@ class TimedBloodmoon(
         if (status != Status.INACTIVE) return false
         if (startTime > System.currentTimeMillis()) return false
 
-        if (config.getBool("TimedNightOnly")){
+        if (config.getBool("timed.night-only")){
             return !world.isDayTime
         }
 

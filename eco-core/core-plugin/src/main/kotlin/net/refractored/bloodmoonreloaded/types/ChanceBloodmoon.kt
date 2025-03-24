@@ -62,7 +62,7 @@ class ChanceBloodmoon(
     }
 
     override fun onActivation() {
-        chance = config.getDouble("Chance").coerceAtMost(1.0)
+        chance = config.getDouble("chance.initial-percentage").coerceAtMost(1.0)
     }
 
     override fun onDaytime() {
@@ -74,8 +74,8 @@ class ChanceBloodmoon(
     }
 
     override fun onConditionFail() {
-        if (!config.getBool("ChanceIncrementEnabled")) return
-        chance += (Random.nextDouble(config.getDouble("ChanceIncrementMin"), config.getDouble("ChanceIncrementMax")))
+        if (!config.getBool("chance.increment.enabled")) return
+        chance += (Random.nextDouble(config.getDouble("chance.increment.min"), config.getDouble("chance.increment.max")))
     }
 
     companion object : TypeRegistry.BloodmoonWorldFactory {

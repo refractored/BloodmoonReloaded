@@ -26,7 +26,7 @@ class  MirrorBloodmoon(
         .replace("%status%", this.status.miniMessage())
         .miniToComponent()
 
-        val mirrorWorld = BloodmoonRegistry.getWorld(config.getString("MirrorWorld")) ?: throw IllegalArgumentException("Config does not contain a valid bloodmoon world.")
+        val mirrorWorld = BloodmoonRegistry.getWorld(config.getString("mirror.world")) ?: throw IllegalArgumentException("Config does not contain a valid bloodmoon world.")
 
     override fun shouldActivate(): Boolean {
         if (status != Status.INACTIVE) {
