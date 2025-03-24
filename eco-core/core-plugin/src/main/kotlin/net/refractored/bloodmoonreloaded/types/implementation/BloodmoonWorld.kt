@@ -243,11 +243,9 @@ abstract class BloodmoonWorld(
 
             saveBloodmoonTime()
 
-            if (config.getBool("while-active.weather.enabled") && config.getBool("while-active.weather.rain")) {
-                world.setStorm(true)
-                if (config.getBool("while-active.weather.thunder")) {
-                    world.isThundering = true
-                }
+            if (config.getBool("while-active.weather.enabled")) {
+                world.setStorm(config.getBool("while-active.weather.rain"))
+                world.isThundering = config.getBool("while-active.weather.thunder")
             }
 
             world.fullTime = fullTime
@@ -402,11 +400,9 @@ abstract class BloodmoonWorld(
         }
         status = Status.INACTIVE
         revertSettings()
-        if (config.getBool("on.deactivation.weather.enabled") && config.getBool("on.deactivation.weather.rain")) {
-            world.setStorm(true)
-            if (config.getBool("on.deactivation.weather.thunder")) {
-                world.isThundering = true
-            }
+        if (config.getBool("on-deactivation.weather.enabled")) {
+            world.setStorm(config.getBool("on-deactivation.weather.rain"))
+            world.isThundering = config.getBool("on-deactivation.weather.thunder")
         }
         if (reason == StopCause.RESTART || reason == StopCause.UNLOAD) return
         savedBloodmoonRemainingMillis = 0L
