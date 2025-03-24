@@ -80,7 +80,7 @@ on-deactivation:
   sound:
     enabled: true
     # The sound to play when the bloodmoon activates.
-    # https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+    # https://www.digminecraft.com/lists/sound_list_pc.php
     name: "ui.toast.challenge_complete"
     # The volume of the sound.
     volume: 1.0
@@ -131,7 +131,7 @@ while-active:
     # https://www.digminecraft.com/lists/sound_list_pc.php
     sounds:
       - "ambient.cave"
-    # 0.005 = 0.5% Chance to play every couple of ticks.
+    # 0.005 = 0.5% Chance to play every second.
     chance: 0.005
   bossbar:
     enabled: true
@@ -201,7 +201,7 @@ mirror:
   # Just copy and paste the config above the activation-method line to do that.
   world: "world"
 
-# If activation-method isn't to "none", this will be ignored.
+# If activation-method isn't to "none", this section will be ignored.
 none:
   # If the bloodmoon should be active when the server starts.
   always-active: false

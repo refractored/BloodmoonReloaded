@@ -146,20 +146,20 @@ abstract class BloodmoonWorld(
         get() = Bukkit.getServer().profile.read(bloodmoonRemainingMillis).toLong()
         set(value) = Bukkit.getServer().profile.write(bloodmoonRemainingMillis, value.toDouble())
 
-    var fullTime: Long = 0L
+    private var fullTime: Long = 0L
 
     /**
      * The length in milliseconds of the bloodmoon set in the config.
      */
     val configLength: Long = config.getString("length").toLong() * 1000
 
-    val activationCommands: List<String>? = if (config.getBool("on-activation.run-commands.enabled")) {
+    private val activationCommands: List<String>? = if (config.getBool("on-activation.run-commands.enabled")) {
         config.getStrings("on-activation.run-commands.commands").map { it.replace("%world%", world.name) }
     } else {
         null
     }
 
-    val deactivationCommands: List<String>? = if (config.getBool("on-deactivation.run-commands.enabled")) {
+    private val deactivationCommands: List<String>? = if (config.getBool("on-deactivation.run-commands.enabled")) {
         config.getStrings("on-deactivation.run-commands.commands").map { it.replace("%world%", world.name) }
     } else {
         null
@@ -235,9 +235,9 @@ abstract class BloodmoonWorld(
      */
     fun runPeriodicTasks() {
         if (status == Status.ACTIVE) {
-            if (config.getBool("periodic-sounds.enabled") && (Random.nextDouble(1.0) < config.getDouble("periodic-cave-sounds.chance"))) {
+            if (config.getBool("while-active.periodic-sounds.enabled") && (Random.nextDouble(1.0) < config.getDouble("while-active.periodic-sounds.chance"))) {
                 for (player in world.players) {
-                    player.playSound(player.location, config.getStrings("periodic-sounds.sounds").random(), 1.0f, 1.0f)
+                    player.playSound(player.location, config.getStrings("while-active.periodic-sounds.sounds").random(), 1.0f, 1.0f)
                 }
             }
 
@@ -250,8 +250,6 @@ abstract class BloodmoonWorld(
 
             world.fullTime = fullTime
         }
-
-        // In case, a bloodmoon wants to do some special stuff im not sure.
         this.periodicTasks()
     }
 
