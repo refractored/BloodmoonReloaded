@@ -1,6 +1,5 @@
 package net.refractored.bloodmoonreloaded.exceptions
 
-import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.messages.Messages.toPlaintext
 import revxrsal.commands.bukkit.actor.BukkitCommandActor

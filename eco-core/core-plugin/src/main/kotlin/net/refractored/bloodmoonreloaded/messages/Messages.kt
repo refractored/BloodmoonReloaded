@@ -3,6 +3,7 @@ package net.refractored.bloodmoonreloaded.messages
 import com.willfp.eco.core.config.base.LangYml
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 
 object Messages {
     /**
@@ -14,6 +15,8 @@ object Messages {
      * Converts this string to a component using minimessage.
      */
     fun String.miniToComponent(): Component = MiniMessage.miniMessage().deserialize(this)
+
+    fun Component.toPlaintext(): String = PlainTextComponentSerializer.plainText().serialize(this)
 
     /**
      * Returns a new string obtained by replacing all occurrences of the [oldValue] substring in this string
