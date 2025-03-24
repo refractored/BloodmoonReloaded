@@ -26,6 +26,7 @@ class BloodmoonStartCommand {
             BloodmoonRegistry.getWorld(world.name) ?: throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
                     .getStringPrefixed("messages.general.invalid-bloodmoon")
+                    .replace("%world%", world.name)
                     .miniToComponent()
             )
         if (bloodmoonWorld.status != BloodmoonWorld.Status.INACTIVE) {
