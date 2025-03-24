@@ -5,13 +5,12 @@ import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import revxrsal.commands.bukkit.actor.BukkitCommandActor
 import revxrsal.commands.bukkit.exception.*
-import revxrsal.commands.bukkit.util.BukkitUtils
 import revxrsal.commands.command.CommandActor
 import revxrsal.commands.exception.*
 import revxrsal.commands.node.ParameterNode
 import java.util.*
 
-class CommandErrorHandler :  BukkitExceptionHandler() {
+class CommandErrorHandler : BukkitExceptionHandler() {
     @HandleException
     override fun onInvalidPlayer(e: InvalidPlayerException, actor: BukkitCommandActor) {
         actor.reply(
@@ -46,7 +45,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onSenderNotConsole(e: SenderNotConsoleException?, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.general.not-console")
+                .getStringPrefixed("messages.not-console")
                 .miniToComponent()
         )
     }
@@ -55,7 +54,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onSenderNotPlayer(e: SenderNotPlayerException?, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.general.not-player")
+                .getStringPrefixed("messages.not-player")
                 .miniToComponent()
         )
     }
@@ -141,7 +140,8 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
                     .replace("%parameter%", parameter.name())
                     .replace("%maximum%", fmt(e.maximum()))
                     .miniToComponent()
-            )        }
+            )
+        }
     }
 
     override fun onInvalidStringSize(e: InvalidStringSizeException, actor: BukkitCommandActor, parameter: ParameterNode<BukkitCommandActor?, *>) {
@@ -215,7 +215,7 @@ class CommandErrorHandler :  BukkitExceptionHandler() {
     override fun onNoPermission(e: NoPermissionException, actor: BukkitCommandActor) {
         actor.reply(
             BloodmoonPlugin.instance.langYml
-                .getStringPrefixed("messages.general.no-permission")
+                .getStringPrefixed("messages.no-permission")
                 .miniToComponent()
         )
     }

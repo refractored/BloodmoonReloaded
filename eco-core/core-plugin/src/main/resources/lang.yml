@@ -5,15 +5,15 @@
 # Some messages are used by the core plugin, and some are used by extensions.
 # Extension messages are only used if the extension for them is installed & enabled.
 messages:
-  # Prefix for most messages
+  # Common messages
   prefix: "<#A50000>Bloodmoon</#A50000> <white>»</white><reset> "
+  no-permission: "<red>You don't have permission to do this!"
+  not-player: "<red>This command must be run by a player, or is missing player only arguments."
+  not-console: "<red>This command must be run by the console."
 
   # General Error messages
   # Not all are currently in use, but are here for future use.
   general:
-    no-permission: "<red>You don't have permission to do this!"
-    not-player: "<red>This command must be run by a player."
-    not-console: "<red>This command must be run by the console."
     no-entities-found: "<red>No entities were found."
     no-non-player-entities: "<red>No non-player entities were found."
     more-than-one-entity: "<red>Only one entity is allowed, but the provided selector allows more than one."

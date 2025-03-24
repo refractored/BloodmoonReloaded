@@ -1,21 +1,17 @@
 package net.refractored.bloodmoonreloaded
 
-
-import org.apache.logging.log4j.Logger
-import java.net.HttpURLConnection
-import java.net.URL
 import org.json.JSONObject
+import java.net.HttpURLConnection
 import java.net.URI
 import java.net.URLEncoder
-
 
 /**
  * I use this to check if the plugin is purchased from polymart.
  * If it isn't, then it just kinda trys to motivate you to purchase.
  */
 object Polymart {
-    private const val license = "%%__LICENSE__%%"
-    private const val resource_id = "%%__RESOURCE__%%"
+    private const val LICENSE = "%%__LICENSE__%%"
+    private const val RESOURCE_ID = "%%__RESOURCE__%%"
 
     fun checkPolymartStatus(): Boolean {
         val url = URI("https://api.polymart.org/v1/status").toURL()
@@ -37,8 +33,8 @@ object Polymart {
     }
 
     fun verifyPurchase(): Boolean {
-        val encodedLicense = URLEncoder.encode(license, "UTF-8")
-        val encodedResourceId = URLEncoder.encode(resource_id, "UTF-8")
+        val encodedLicense = URLEncoder.encode(LICENSE, "UTF-8")
+        val encodedResourceId = URLEncoder.encode(RESOURCE_ID, "UTF-8")
         val url = URI("https://api.polymart.org/v1/verifyPurchase/?license=$encodedLicense&resource_id=$encodedResourceId").toURL()
         val connection = url.openConnection() as HttpURLConnection
         connection.requestMethod = "GET"
@@ -58,4 +54,3 @@ object Polymart {
         }
     }
 }
-
