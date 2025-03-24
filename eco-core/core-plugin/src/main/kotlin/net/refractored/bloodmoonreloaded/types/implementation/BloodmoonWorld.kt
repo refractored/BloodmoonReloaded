@@ -422,7 +422,7 @@ abstract class BloodmoonWorld(
         }
     }
 
-    fun playDectivationSounds() {
+    fun playDeactivationSounds() {
         if (config.getBool("on-deactivation.sounds.enabled")) {
             for (player in world.players) {
                 player.playSound(player.location, config.getStrings("on-deactivation.sounds.sounds").random(), 1.0f, 1.0f)
