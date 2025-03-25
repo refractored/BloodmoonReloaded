@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets
  * If it isn't, then it just kinda trys to motivate you to purchase.
  */
 object Polymart {
-    private const val LICENSE = "%%__LICENSE__%% "
+    private const val LICENSE = "%%__LICENSE__%%"
     private const val RESOURCE_ID = "%%__RESOURCE__%%"
 
     fun checkPolymartStatus(): Boolean {
