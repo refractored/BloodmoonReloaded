@@ -32,10 +32,9 @@ class BloodmoonPlugin : LibreforgePlugin() {
     lateinit var lamp: Lamp<BukkitCommandActor>
         private set
 
-    override fun loadConfigCategories(): List<ConfigCategory> =
-        listOf(
-            BloodmoonRegistry
-        )
+    override fun loadConfigCategories(): List<ConfigCategory> = listOf(
+        BloodmoonRegistry
+    )
 
     // Libreforge Plugin Load Order
     // onEnable (Extensions) -> OnEnable (Plugin) -> Reload (See Below)
@@ -69,7 +68,6 @@ class BloodmoonPlugin : LibreforgePlugin() {
     }
 
     override fun handleAfterLoad() {
-
         // Registered after to prevent issues with extensions.
         eventManager.registerListener(OnWorldLoad())
         eventManager.registerListener(OnWorldUnload())
@@ -78,23 +76,6 @@ class BloodmoonPlugin : LibreforgePlugin() {
         eventManager.registerListener(OnPlayerSleep())
         eventManager.registerListener(OnPlayerRespawn())
         eventManager.registerListener(OnPlayerDeath())
-
-        
-        val polymart =
-            object : BukkitRunnable() {
-                override fun run() {
-                    if (!checkPolymartStatus()) return
-                    if (verifyPurchase()) {
-                        if (configYml.getBool("disable-purchase-message")) return
-                        logger.info("Thank you for purchasing the plugin! ^_^")
-                        return
-                    }
-                    logger.warning("Please consider purchasing this plugin on Polymart! :)")
-                    logger.warning("No functionality will be lost, but you might not receive support.")
-                }
-            }
-        scheduler.runAsync(polymart)
-
     }
 
     override fun handleReload() {
@@ -121,7 +102,26 @@ class BloodmoonPlugin : LibreforgePlugin() {
         }
     }
 
+    private var polymarted = false
+
     override fun createTasks() {
+        if (!polymarted) {
+            val polymart =
+                object : BukkitRunnable() {
+                    override fun run() {
+                        if (!checkPolymartStatus()) return
+                        if (verifyPurchase()) {
+                            if (configYml.getBool("disable-purchase-message")) return
+                            logger.info("Thank you for purchasing the plugin! ^_^")
+                            return
+                        }
+                        logger.warning("Please consider purchasing this plugin on Polymart! :)")
+                        logger.warning("No functionality will be lost, but you might not receive support.")
+                    }
+                }
+            polymarted = true
+            scheduler.runAsync(polymart)
+        }
         // All tasks are cancelled on reload, so we don't need to worry about having duplicate tasks.
         val periodicTasks =
             object : BukkitRunnable() {
@@ -131,16 +131,16 @@ class BloodmoonPlugin : LibreforgePlugin() {
                     }
                 }
             }
-        scheduler.runTimer(periodicTasks, 1 , 20)
+        scheduler.runTimer(periodicTasks, 1, 20)
 
         // Checks if a bloodmoon should be activated or deactivated.
         val checkBloodmoons =
             object : BukkitRunnable() {
                 override fun run() {
                     for (registeredWorld in getWorlds()) {
-                        if (registeredWorld.status == BloodmoonWorld.Status.ACTIVE
-                            &&
-                            (System.currentTimeMillis() >= registeredWorld.expiryTime && registeredWorld.expiryTime >= 0)) {
+                        if (registeredWorld.status == BloodmoonWorld.Status.ACTIVE &&
+                            (System.currentTimeMillis() >= registeredWorld.expiryTime && registeredWorld.expiryTime >= 0)
+                        ) {
                             registeredWorld.deactivate(BloodmoonStopEvent.StopCause.TIMER)
                             return
                         }
@@ -151,9 +151,8 @@ class BloodmoonPlugin : LibreforgePlugin() {
                     }
                 }
             }
-        scheduler.runTimer(checkBloodmoons,40, 2)
+        scheduler.runTimer(checkBloodmoons, 40, 2)
     }
-
 
     companion object {
         lateinit var instance: BloodmoonPlugin

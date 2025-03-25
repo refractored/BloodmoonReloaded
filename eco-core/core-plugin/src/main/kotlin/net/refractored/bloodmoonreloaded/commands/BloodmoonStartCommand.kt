@@ -2,10 +2,10 @@ package net.refractored.bloodmoonreloaded.commands
 
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.exceptions.CommandErrorException
-import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
+import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
+import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import org.bukkit.World
 import revxrsal.commands.annotation.Command
 import revxrsal.commands.annotation.Description
@@ -20,8 +20,8 @@ class BloodmoonStartCommand {
     @Suppress("UNUSED")
     fun execute(
         actor: BukkitCommandActor,
-        @Optional world: World = actor.requirePlayer().world,
-        ) {
+        @Optional world: World = actor.requirePlayer().world
+    ) {
         val bloodmoonWorld =
             BloodmoonRegistry.getWorld(world.name) ?: throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
@@ -30,7 +30,7 @@ class BloodmoonStartCommand {
                     .miniToComponent()
             )
         if (bloodmoonWorld.status != BloodmoonWorld.Status.INACTIVE) {
-                throw CommandErrorException(
+            throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
                     .getStringPrefixed("messages.activate.already-active")
                     .miniToComponent()

@@ -1,12 +1,12 @@
-  package net.refractored.bloodmoonreloaded.commands
+package net.refractored.bloodmoonreloaded.commands
 
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.exceptions.CommandErrorException
+import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
+import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.types.DaysBloodmoon
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
-import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
-import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import org.bukkit.World
 import revxrsal.commands.annotation.Command
 import revxrsal.commands.annotation.Description
@@ -16,7 +16,7 @@ import revxrsal.commands.bukkit.actor.BukkitCommandActor
 import revxrsal.commands.bukkit.annotation.CommandPermission
 
 @Command("bloodmoon manage days")
-class  BloodmoonManageDaysCommand {
+class BloodmoonManageDaysCommand {
     @CommandPermission("bloodmoon.admin.manage.days.set")
     @Description("Sets the day count for a bloodmoon.")
     @Subcommand("set")
@@ -62,7 +62,7 @@ class  BloodmoonManageDaysCommand {
     @Suppress("UNUSED")
     fun addDays(
         actor: BukkitCommandActor,
-        world: World ,
+        world: World,
         @Range(min = 1.0) number: Int
     ) {
         val bloodmoonWorld =
@@ -102,7 +102,7 @@ class  BloodmoonManageDaysCommand {
     @Suppress("UNUSED")
     fun removeDays(
         actor: BukkitCommandActor,
-        world: World ,
+        world: World,
         @Range(min = 1.0) number: Int
     ) {
         val bloodmoonWorld =
