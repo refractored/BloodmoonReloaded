@@ -75,6 +75,12 @@ on-activation:
     # Do not add a "/" in front of the command.
     # %world% will be replaced with the world name.
     message: "<red>A bloodmoon is upon us."
+  spawn-rate:
+    monster:
+      # This enables the change of the spawn rate of monsters.
+      # If false, the spawn rate will not be changed, and left as is.
+      enabled: true
+      rate: 25
 
 on-deactivation:
   sound:
@@ -163,13 +169,13 @@ while-active:
 #  These options only apply if activation-method is set to their respective values.   #
 #######################################################################################
 
-
 # If activation-method isn't set to "days", this section will be ignored.
 days:
   # There is no built-in paper method to check if a day has passed.
   # To get around this the plugin checks every 5 ticks if the time jumped from day to night, then it counts based off that.
   # This may not work correctly if you have a plugin that alters the rate of time.
   count: 5
+
 
 # If activation-method isn't set to "timed", this section will be ignored.
 timed:
@@ -200,6 +206,7 @@ mirror:
   # Reminder: THIS DOES NOT MIRROR THE CONFIG FILES OR THE LENGTH OF THE BLOODMOON.
   # Just copy and paste the config above the activation-method line to do that.
   world: "world"
+
 
 # If activation-method isn't to "none", this section will be ignored.
 none:

@@ -25,6 +25,7 @@ import org.bukkit.Bukkit
 import org.bukkit.GameRule
 import org.bukkit.NamespacedKey
 import org.bukkit.World
+import org.bukkit.entity.SpawnCategory
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.scheduler.BukkitRunnable
 import kotlin.random.Random
@@ -139,6 +140,17 @@ abstract class BloodmoonWorld(
             0.0
         )
 
+    private val originalMonsterSpawnrateKey =
+        PersistentDataKey(
+            BloodmoonPlugin.instance.namespacedKeyFactory.create("${world.name}_original_monster_spawnrate"),
+            PersistentDataKeyType.INT,
+            -1
+        )
+
+    private var originalMonsterSpawnrate: Int
+        get() = Bukkit.getServer().profile.read(originalMonsterSpawnrateKey)
+        set(value) = Bukkit.getServer().profile.write(originalMonsterSpawnrateKey, value)
+
     /**
      * The remaining time in milliseconds of the bloodmoon.
      */
@@ -182,11 +194,11 @@ abstract class BloodmoonWorld(
                 1.0f,
                 (
                     BossBar.Color.entries.find { it.name == config.getString("while-active.bossbar.color") }
-                        ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("while-active.bossbar.color")}")
+                        ?: throw IllegalArgumentException("Invalid bossbar color \"${config.getString("while-active.bossbar.color")}\"")
                     ),
                 (
                     BossBar.Overlay.entries.find { it.name == config.getString("while-active.bossbar.style") }
-                        ?: throw IllegalArgumentException("Invalid bossbar color: ${config.getString("while-active.bossbar.style")}")
+                        ?: throw IllegalArgumentException("Invalid bossbar color \"${config.getString("while-active.bossbar.style")}\"")
                     )
             ).apply {
                 config.getStrings("while-active.bossbar.flags").forEach { flag ->
@@ -327,6 +339,11 @@ abstract class BloodmoonWorld(
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false)
         }
 
+        if (config.getBool("on-activation.spawn-rate.monster.enabled")) {
+            originalMonsterSpawnrate = world.getSpawnLimit(SpawnCategory.MONSTER)
+            world.setSpawnLimit(SpawnCategory.MONSTER, config.getInt("on-activation.spawn-rate.monster.rate", 0))
+        }
+
         expiryTime = System.currentTimeMillis() + length
         fullTime = world.fullTime
         savedBloodmoonRemainingMillis = length
@@ -360,6 +377,11 @@ abstract class BloodmoonWorld(
     private fun revertSettings() {
         if (revertDaylightCycle) {
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true)
+        }
+
+        if (config.getBool("on-activation.spawn-rate.monster.enabled") && originalMonsterSpawnrate != -1) {
+            world.setSpawnLimit(SpawnCategory.MONSTER, originalMonsterSpawnrate)
+            originalMonsterSpawnrate = -1
         }
 
         bossbar?.let { bossbar ->
