@@ -14,5 +14,6 @@ include(":eco-core")
 include(":eco-core:core-plugin")
 
 include("extensions")
-include("extensions:hordes")
-include("extensions:drops")
+File(rootDir, "extensions").listFiles()
+    ?.filter { it.isDirectory }
+    ?.forEach { include("extensions:${it.name}") }

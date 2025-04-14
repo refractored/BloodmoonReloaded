@@ -1,0 +1,5 @@
+name: Drops
+main: net.refractored.drops.DropsExtension
+version: ${version}
+author: refractored
+plugin: BloodmoonReloaded
