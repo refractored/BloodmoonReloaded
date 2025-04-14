@@ -155,6 +155,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
     }
 
     companion object {
+        @JvmStatic
         lateinit var instance: BloodmoonPlugin
             private set
     }
