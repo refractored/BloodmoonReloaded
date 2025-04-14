@@ -114,12 +114,11 @@ allprojects {
 
     tasks {
 
-
         if (getCurrentGitTag()?.removePrefix("v") != version) {
-            version = "${version}-${getGitHash()}"
+            version = "$version-${getGitHash()}"
         }
         if (isGitDirty()) {
-            version = "${version}-dirty"
+            version = "$version-dirty"
         }
 
         shadowJar {
