@@ -12,10 +12,6 @@ subprojects {
         compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
         compileOnly(project(":eco-core"))
         compileOnly(project(":eco-core:core-plugin"))
-
-        if (project.name == "drops") {
-            compileOnly(project(":extensions:hordes"))
-        }
     }
 
     tasks {
@@ -24,7 +20,7 @@ subprojects {
             destinationDirectory.set(file("$rootDir/bin"))
 
             // Rename the JAR files
-            archiveFileName.set("$extensionName-$version.jar")
+            archiveFileName.set("$extensionName-v$version.jar")
         }
 
         withType<ShadowJar> {
