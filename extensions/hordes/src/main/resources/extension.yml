@@ -1,0 +1,5 @@
+name: Hordes
+main: net.refractored.hordes.HordesExtension
+version: 0.1
+author: refractored
+plugin: BloodmoonReloaded

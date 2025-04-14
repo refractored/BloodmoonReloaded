@@ -1,0 +1,45 @@
+#
+# BloodmoonReloaded: Hordes
+# By: refractored
+#
+default-preset:
+  # The worlds to apply this preset to
+  worlds:
+    - world
+  # https://plugins.auxilor.io/all-plugins/the-entity-lookup-system
+  mobs:
+    - ZOMBIE
+    - SKELETON
+  max-size: 10
+  min-size: 5
+  spawn-distance: 12
+  # The minimum and maximum ticks between each horde spawn
+  # Hordes randomly spawn whenever a bloodmoon actively.
+  spawn-rate-ticks-min: 800
+  spawn-rate-ticks-max: 1000
+  # Whether to enable the strike lightning effect when a horde spawns
+  strike-lightning: true
+  # Hordes have a limit to the height which can spawn at to prevent some farms.
+  max-y: 256
+  broadcast:
+    enabled: true
+    prefixed: false
+    message: "<red><bold>A horde has descended upon %player%!</bold></red>"
+#pain-preset:
+#  worlds:
+#    - ThisIsAExampleToShowYouCanHaveMultiplePresets
+#  mobs:
+#    - ZOMBIE
+#    - SKELETON
+#    - WARDEN
+#  max-size: 69
+#  min-size: 21
+#  spawn-distance: 12
+#  spawn-rate-ticks-min: 200
+#  spawn-rate-ticks-max: 800
+#  strike-lightning: true
+#  max-y: 256
+#  broadcast:
+#    enabled: true
+#    prefixed: false
+#    message: "<red><bold>A horde has descended upon %player_name%!</bold></red>"

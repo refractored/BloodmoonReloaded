@@ -12,3 +12,7 @@ rootProject.name = "BloodmoonReloaded"
 // Core
 include(":eco-core")
 include(":eco-core:core-plugin")
+
+include("extensions")
+include("extensions:hordes")
+include("extensions:drops")

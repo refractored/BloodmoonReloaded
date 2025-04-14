@@ -1,0 +1,51 @@
+#
+# BloodmoonReloaded: Drops
+# By: refractored
+#
+default-preset:
+  # The worlds to apply this preset to.
+  worlds:
+    - world
+  mob-whitelist:
+    enabled: true
+    mobs:
+      - ZOMBIE
+      - SKELETON
+  # https://plugins.auxilor.io/all-plugins/the-item-lookup-system
+  drops:
+    - weight: 15
+      # This setting only applies if hordes is installed.
+      # Settings for hordes:
+      # true - Hordes are allowed to drop this item.
+      # false - Hordes are not allowed to drop this item.
+      # whitelist - Only allow this item to drop for hordes.
+      hordes: false
+      item: "iron_ingot 5"
+    - weight: 6
+      hordes: true
+      item: "gold_ingot 2"
+    - weight: 5
+      hordes: true
+      item: "gold_ingot 5"
+    - weight: 2
+      hordes: true
+      item: "diamond 1"
+    - weight: 1
+      hordes: true
+      item: "iron_block 1"
+    - weight: 2
+      hordes: true
+      item: "gold_block 1"
+  min-amount: 1
+  max-amount: 4
+  # If vanilla drops for any mob listed here should be disabled.
+  disable-vanilla-drops: false
+  # People have made bloodmoon farms before,
+  # these were some good ways to prevent that.
+  farm-prevention:
+    # If the entity NEEDS to have a line of sight drop custom drops.
+    line-of-sight: true
+    # If the entity NEEDS to be killed by a player to drop custom items.
+    killed-by-player: true
+    # Highest point for the mob to drop items.
+    max-y: 256
