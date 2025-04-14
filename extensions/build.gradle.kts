@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 tasks.named("jar") {
     enabled = true
 }
@@ -19,6 +21,18 @@ subprojects {
     tasks {
         named<Jar>("jar") {
             archiveFileName.set("$extensionName.jar")
+        }
+
+        withType<ShadowJar> {
+            // Exclude libraries from being bundled into the JAR
+            dependencies {
+                exclude(dependency("io.github.revxrsal:lamp.common"))
+                exclude(dependency("io.github.revxrsal:lamp.bukkit"))
+                exclude(dependency("io.github.revxrsal:lamp.brigadier"))
+                exclude(dependency("org.json:json"))
+                exclude(dependency("net.kyori:adventure-platform-bukkit"))
+                exclude(dependency("net.kyori:adventure-text-minimessage"))
+            }
         }
 
         processResources {
