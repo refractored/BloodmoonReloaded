@@ -5,8 +5,8 @@ tasks.named("jar") {
 }
 
 subprojects {
-    val extensionName = findProperty("expansion.name") ?: "invalid"
-    val version = findProperty("expansion.version") ?: "0.1-SNAPSHOT"
+    val extensionName = findProperty("extension.name") ?: "invalid"
+    val version = findProperty("extension.version") ?: "0.1-SNAPSHOT"
 
     dependencies {
         compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
@@ -20,7 +20,11 @@ subprojects {
 
     tasks {
         named<Jar>("jar") {
-            archiveFileName.set("$extensionName.jar")
+            // Set the output folder for the JAR files
+            destinationDirectory.set(file("$rootDir/bin"))
+
+            // Rename the JAR files
+            archiveFileName.set("$extensionName-$version.jar")
         }
 
         withType<ShadowJar> {
