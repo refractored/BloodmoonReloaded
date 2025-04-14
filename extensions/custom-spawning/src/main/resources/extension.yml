@@ -1,5 +1,5 @@
 name: ${name}
-main: net.refractored.hordes.HordesExtension
+main: net.refractored.hordes.customSpawning.CustomSpawningExtension
 version: ${version}
 author: refractored
 plugin: BloodmoonReloaded

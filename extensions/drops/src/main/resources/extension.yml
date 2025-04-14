@@ -1,4 +1,4 @@
-name: Drops
+name: ${name}
 main: net.refractored.drops.DropsExtension
 version: ${version}
 author: refractored

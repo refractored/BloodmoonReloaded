@@ -1,5 +1,5 @@
-name: Drops
-main: net.refractored.drops.DropsExtension
+name: ${name}
+main: net.refractored.bosses.BossesExtension
 version: ${version}
 author: refractored
 plugin: BloodmoonReloaded
