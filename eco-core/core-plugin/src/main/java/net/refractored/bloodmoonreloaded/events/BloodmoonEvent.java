@@ -12,10 +12,16 @@ abstract public class BloodmoonEvent extends Event {
 
     BloodmoonWorld bloodmoonWorld;
 
+    /**
+     * @return The bloodmoon world
+     */
     public BloodmoonWorld getBloodmoonWorld() {
         return bloodmoonWorld;
     }
 
+    /**
+     * @return The bukkit world of the bloodmoon
+     */
     public World getWorld() {
         return bloodmoonWorld.getWorld();
     }

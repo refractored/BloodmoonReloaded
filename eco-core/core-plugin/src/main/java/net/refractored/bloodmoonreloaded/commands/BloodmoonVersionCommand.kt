@@ -3,10 +3,8 @@ package net.refractored.bloodmoonreloaded.commands
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
-import org.bukkit.World
 import revxrsal.commands.annotation.Command
 import revxrsal.commands.annotation.Description
-import revxrsal.commands.annotation.Optional
 import revxrsal.commands.bukkit.actor.BukkitCommandActor
 import revxrsal.commands.bukkit.annotation.CommandPermission
 
@@ -16,8 +14,7 @@ class BloodmoonVersionCommand {
     @Command("bloodmoon version")
     @Suppress("UNUSED")
     fun execute(
-        actor: BukkitCommandActor,
-        @Optional world: World = actor.requirePlayer().world
+        actor: BukkitCommandActor
     ) {
         var info = BloodmoonPlugin.instance.langYml
             .getStringPrefixed("messages.version.success.version")
