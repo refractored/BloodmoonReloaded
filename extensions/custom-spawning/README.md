@@ -1,0 +1,1 @@
+An extension for the BloodmoonReloaded plugin that temporarily replaces mob spawning during the bloodmoon with one from set the config.

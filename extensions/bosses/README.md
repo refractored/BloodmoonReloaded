@@ -1,0 +1,1 @@
+An extension for the BloodmoonReloaded plugin that adds bosses that spawn periodically.
