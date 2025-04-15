@@ -11,7 +11,6 @@ import com.willfp.libreforge.Holder
 import com.willfp.libreforge.ViolationContext
 import com.willfp.libreforge.conditions.Conditions
 import com.willfp.libreforge.effects.Effects
-import com.willfp.libreforge.getStrings
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.ComponentLike
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
@@ -287,9 +286,9 @@ abstract class BloodmoonWorld(
         if (status != Status.INACTIVE) {
             throw IllegalStateException("Bloodmoon is already active.")
         }
-        val event = BloodmoonStartEvent(world, this)
+        val event = BloodmoonStartEvent(this)
         event.callEvent()
-        if (event.isCancelled()) {
+        if (event.isCancelled) {
             return
         }
         status = Status.ACTIVATING
@@ -400,9 +399,9 @@ abstract class BloodmoonWorld(
         announce: Boolean = true
     ) {
         if (status == Status.INACTIVE) throw IllegalStateException("Bloodmoon is not active.")
-        val event = BloodmoonStopEvent(world, this, reason)
+        val event = BloodmoonStopEvent(this, reason)
         event.callEvent()
-        if (event.isCancelled()) {
+        if (event.isCancelled) {
             return
         }
         // Run, if event is not cancelled
