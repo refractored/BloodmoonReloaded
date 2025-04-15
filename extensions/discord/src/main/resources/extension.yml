@@ -1,0 +1,5 @@
+name: ${name}
+main: net.refractored.discord.DiscordExtension
+version: ${version}
+author: refractored
+plugin: BloodmoonReloaded

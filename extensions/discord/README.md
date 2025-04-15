@@ -1,0 +1,1 @@
+An extension to alert players in game that a bloodmoon is starting.

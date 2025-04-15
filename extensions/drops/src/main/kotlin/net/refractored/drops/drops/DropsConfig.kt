@@ -13,7 +13,7 @@ import kotlin.collections.get
 import kotlin.text.get
 
 data class DropsConfig(
-    val configSection: ConfigurationSection,
+    val configSection: ConfigurationSection
 ) {
     val worlds: List<World> = configSection.getStringList("worlds").mapNotNull { Bukkit.getWorld(it) }
 
@@ -66,8 +66,8 @@ data class DropsConfig(
                     Drop(
                         weight = weight,
                         hordes = value,
-                        testableItem = Items.lookup(item),
-                    ),
+                        testableItem = Items.lookup(item)
+                    )
                 )
             }
         }
@@ -82,7 +82,7 @@ data class DropsConfig(
         /**
          * Hordes only
          */
-        WHITELIST,
+        WHITELIST
     }
 
     /**
@@ -112,20 +112,19 @@ data class DropsConfig(
      * Gets a random itemstack from the drops.
      * @return an ItemStack from the drops
      */
-    fun getRandomItemstack(hordes: Boolean): ItemStack =
-        tryRandomItemstack(hordes) ?: drops
-            .filter {
-                when (it.hordes) {
-                    HordeType.BLOCKED -> !hordes
-                    HordeType.WHITELIST -> hordes
-                    HordeType.ALLOWED -> true
-                }
-            }.random()
-            .testableItem.item
+    fun getRandomItemstack(hordes: Boolean): ItemStack = tryRandomItemstack(hordes) ?: drops
+        .filter {
+            when (it.hordes) {
+                HordeType.BLOCKED -> !hordes
+                HordeType.WHITELIST -> hordes
+                HordeType.ALLOWED -> true
+            }
+        }.random()
+        .testableItem.item
 }
 
 data class Drop(
     val weight: Int,
     val hordes: HordeType,
-    val testableItem: TestableItem,
+    val testableItem: TestableItem
 )

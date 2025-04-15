@@ -14,7 +14,7 @@ import java.nio.file.StandardCopyOption
 
 @Suppress("unused")
 class DropsExtension(
-    plugin: EcoPlugin,
+    plugin: EcoPlugin
 ) : Extension(plugin) {
     init {
         instance = this

@@ -1,6 +1,7 @@
 package net.refractored.hordes
 
 import com.sk89q.worldguard.WorldGuard
+import com.sk89q.worldguard.protection.flags.StateFlag
 import com.willfp.eco.core.EcoPlugin
 import com.willfp.eco.core.extensions.Extension
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
@@ -12,7 +13,6 @@ import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
-import com.sk89q.worldguard.protection.flags.StateFlag
 import java.nio.file.StandardCopyOption
 
 @Suppress("unused")
@@ -32,9 +32,9 @@ class HordesExtension(
     lateinit var hordeConfig: YamlConfiguration
         private set
 
-    override fun onLoad() {
-        // No need to load anything here
-    }
+//    override fun onLoad() {
+//        // No need to load anything here
+//    }
 
     override fun onEnable() {
         if (!File(dataFolder, "hordes.yml").exists()) {
@@ -56,7 +56,6 @@ class HordesExtension(
 
             worldguard!!.flagRegistry.register(hordesFlag!!)
         }
-
     }
 
     override fun onAfterLoad() {

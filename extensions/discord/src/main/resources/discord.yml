@@ -1,0 +1,18 @@
+#
+# BloodmoonReloaded: Discord Integration
+# By: refractored
+#
+default-preset:
+  # The worlds to apply this preset to.
+  worlds:
+    - world
+  start-message:
+    enabled: true
+    message: '🌕 **The Bloodmoon is starting!**'
+    channels:
+      - 'DISCORD_ID'
+  stop-message:
+    enabled: true
+    message: '🌑 **The Bloodmoon has stopped**'
+    channels:
+      - 'DISCORD_ID'
