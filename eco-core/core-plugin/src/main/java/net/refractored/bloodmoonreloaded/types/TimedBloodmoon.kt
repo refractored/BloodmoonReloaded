@@ -127,8 +127,4 @@ class TimedBloodmoon(
 
         return true
     }
-
-    companion object : TypeRegistry.BloodmoonWorldFactory {
-        override fun create(world: World, config: Config): BloodmoonWorld = TimedBloodmoon(world, config)
-    }
 }

@@ -22,6 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable
 import revxrsal.commands.Lamp
 import revxrsal.commands.bukkit.BukkitLamp
 import revxrsal.commands.bukkit.actor.BukkitCommandActor
+import java.lang.reflect.Type
 
 class BloodmoonPlugin : LibreforgePlugin() {
 
@@ -53,11 +54,11 @@ class BloodmoonPlugin : LibreforgePlugin() {
         lamp.register(BloodmoonInfoCommand())
         lamp.register(BloodmoonManageDaysCommand())
 
-        TypeRegistry.registerType("chance", ChanceBloodmoon)
-        TypeRegistry.registerType("days", DaysBloodmoon)
-        TypeRegistry.registerType("mirror", MirrorBloodmoon)
-        TypeRegistry.registerType("none", NoneBloodmoon)
-        TypeRegistry.registerType("timed", TimedBloodmoon)
+        TypeRegistry.registerType("chance") { world, config -> ChanceBloodmoon(world, config) }
+        TypeRegistry.registerType("days") { world, config -> DaysBloodmoon(world, config) }
+        TypeRegistry.registerType("mirror") { world, config -> MirrorBloodmoon(world, config) }
+        TypeRegistry.registerType("none") { world, config -> NoneBloodmoon(world, config) }
+        TypeRegistry.registerType("timed") { world, config -> TimedBloodmoon(world, config) }
 
         Conditions.register(IsBloodmoonActive)
 

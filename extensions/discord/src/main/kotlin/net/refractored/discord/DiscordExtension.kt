@@ -1,13 +1,17 @@
 package net.refractored.discord
 
 import com.willfp.eco.core.EcoPlugin
+import com.willfp.eco.core.config.updating.ConfigHandler
 import com.willfp.eco.core.extensions.Extension
 import github.scarsz.discordsrv.DiscordSRV
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
-import net.refractored.discord.discord.DiscordRegistry
+import net.refractored.bloodmoonreloaded.extensions.BloodmoonSectionLoader
+import net.refractored.bloodmoonreloaded.extensions.ConfigSectionLoader
+import net.refractored.discord.discord.DiscordConfig
 import net.refractored.discord.listeners.OnBloodmoonStart
 import net.refractored.discord.listeners.OnBloodmoonStop
 import org.bukkit.Bukkit
+import org.bukkit.configuration.Configuration
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.nio.file.Files
@@ -21,6 +25,8 @@ class DiscordExtension(
     init {
         instance = this
     }
+
+    lateinit var configHandler: ConfigSectionLoader<DiscordConfig>
 
     lateinit var config: YamlConfiguration
         private set
@@ -51,7 +57,8 @@ class DiscordExtension(
     override fun onReload() {
         // No need to re-register listeners in OnBloodmoonStart, as all bloodmoons & tasks are stopped on reload.
         config = YamlConfiguration.loadConfiguration(dataFolder.resolve(CONFIG))
-        DiscordRegistry.refreshConfigs()
+        configHandler = BloodmoonSectionLoader(config) { DiscordConfig(it) }
+        configHandler.refreshConfigs()
     }
 
     companion object {

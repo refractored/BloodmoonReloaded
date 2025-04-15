@@ -74,8 +74,4 @@ class ChanceBloodmoon(
         if (!config.getBool("chance.increment.enabled")) return
         chance += (Random.nextDouble(config.getDouble("chance.increment.min"), config.getDouble("chance.increment.max")))
     }
-
-    companion object : TypeRegistry.BloodmoonWorldFactory {
-        override fun create(world: World, config: Config): BloodmoonWorld = ChanceBloodmoon(world, config)
-    }
 }

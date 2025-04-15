@@ -38,7 +38,4 @@ class NoneBloodmoon(
         expiryTime = -1
     }
 
-    companion object : TypeRegistry.BloodmoonWorldFactory {
-        override fun create(world: World, config: Config): BloodmoonWorld = NoneBloodmoon(world, config)
-    }
 }

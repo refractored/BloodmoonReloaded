@@ -126,8 +126,8 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
         BloodmoonPlugin.instance.logger.info("Loading config for world $id")
 
         try {
-            val bloodmoonFactory = TypeRegistry.getType(config.getString("activation-method").lowercase())
-            addToRegistry(bloodmoonFactory.create(world, config))
+            val bloodmoon = TypeRegistry.getType(config.getString("activation-method").lowercase(), world, config)
+            addToRegistry(bloodmoon)
         } catch (e: Exception) {
             BloodmoonPlugin.instance.logger.severe("Failed to load config for world \"$id\": ${e.message}")
             if (BloodmoonPlugin.instance.configYml.getBool("debug")) e.printStackTrace()

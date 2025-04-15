@@ -65,8 +65,4 @@ class DaysBloodmoon(
     }
 
     override fun checkConditions(): Boolean = (dayCount <= 0)
-
-    companion object : TypeRegistry.BloodmoonWorldFactory {
-        override fun create(world: World, config: Config): BloodmoonWorld = DaysBloodmoon(world, config)
-    }
 }

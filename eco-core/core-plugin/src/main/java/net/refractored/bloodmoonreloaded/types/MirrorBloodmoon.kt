@@ -35,7 +35,4 @@ class MirrorBloodmoon(
         return mirrorWorld.status == Status.ACTIVE
     }
 
-    companion object : TypeRegistry.BloodmoonWorldFactory {
-        override fun create(world: World, config: Config): BloodmoonWorld = MirrorBloodmoon(world, config)
-    }
 }
