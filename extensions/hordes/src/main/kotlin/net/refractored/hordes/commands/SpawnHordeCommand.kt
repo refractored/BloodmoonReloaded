@@ -20,7 +20,7 @@ class SpawnHordeCommand {
     @Command("bloodmoon spawn horde")
     fun execute(
         actor: BukkitCommandActor,
-        @Optional player: Player = actor.asPlayer()?.world?.getEligiblePlayers()?.randomOrNull() ?: throw CommandErrorException(
+        @Optional player: Player = actor.requirePlayer().world.getEligiblePlayers().randomOrNull() ?: throw CommandErrorException(
             BloodmoonPlugin.instance.langYml
                 .getStringPrefixed("messages.spawn.horde.no-players")
                 .miniToComponent(),
