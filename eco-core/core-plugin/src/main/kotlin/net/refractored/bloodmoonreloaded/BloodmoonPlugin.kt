@@ -48,6 +48,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
 
         lamp.register(BloodmoonStartCommand())
         lamp.register(BloodmoonStopCommand())
+        lamp.register(BloodmoonVersionCommand())
         lamp.register(BloodmoonReloadCommand())
         lamp.register(BloodmoonInfoCommand())
         lamp.register(BloodmoonManageDaysCommand())
