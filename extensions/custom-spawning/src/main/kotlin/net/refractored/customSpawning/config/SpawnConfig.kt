@@ -2,6 +2,7 @@ package net.refractored.customSpawning.config
 
 import com.willfp.eco.core.entities.Entities
 import com.willfp.eco.core.entities.TestableEntity
+import net.refractored.bloodmoonreloaded.extensions.Section
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.configuration.ConfigurationSection
@@ -9,8 +10,8 @@ import kotlin.random.Random
 
 class SpawnConfig(
     val configSection: ConfigurationSection
-) {
-    val worlds: List<World> = configSection.getStringList("worlds").mapNotNull { Bukkit.getWorld(it) }
+): Section {
+    private val worlds: List<World> = configSection.getStringList("worlds").mapNotNull { Bukkit.getWorld(it) }
 
     val mobs: List<Pair<Double, TestableEntity>>
 
@@ -34,6 +35,10 @@ class SpawnConfig(
         }
 
         mobs = tempMobs.toList()
+    }
+
+    override fun getWorlds(): List<World> {
+        return worlds
     }
 
     /**

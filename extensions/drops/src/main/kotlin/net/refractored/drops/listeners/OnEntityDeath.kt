@@ -3,8 +3,7 @@ package net.refractored.drops.listeners
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import net.refractored.drops.DropsExtension
-import net.refractored.drops.drops.DropsRegistry
-import net.refractored.hordes.hordes.HordeRegistry
+import net.refractored.hordes.HordesExtension
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -21,7 +20,7 @@ class OnEntityDeath : Listener {
             return
         }
 
-        val dropsConfig = DropsRegistry.getConfig(event.entity.world) ?: return
+        val dropsConfig = DropsExtension.instance.configHandler.getSection(event.entity.world) ?: return
 
         if (dropsConfig.entities != null && dropsConfig.entities.none { it.matches(event.entity) }) {
             return
@@ -60,7 +59,7 @@ class OnEntityDeath : Listener {
 
     private fun getHordeInfo(entity: Entity): Boolean {
         if (DropsExtension.instance.hordes == null) return false
-        val config = HordeRegistry.getHordeConfig(entity.world) ?: return false
+        val config = HordesExtension.instance.configHandler.getSection(entity.world) ?: return false
         return entity.persistentDataContainer.has(config.pdcKey)
     }
 }

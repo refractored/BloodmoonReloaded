@@ -2,7 +2,7 @@ package net.refractored.customSpawning.listeners
 
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld.Status
-import net.refractored.customSpawning.config.SpawnConfigRegistry
+import net.refractored.customSpawning.CustomSpawningExtension
 import org.bukkit.entity.Monster
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -18,7 +18,7 @@ class OnEntitySpawn : Listener {
 
         if (event.spawnReason != CreatureSpawnEvent.SpawnReason.NATURAL) return
 
-        val spawnConfig = SpawnConfigRegistry.getSpawnConfig(event.location.world) ?: return
+        val spawnConfig = CustomSpawningExtension.instance.configHandler.getSection(event.location.world) ?: return
 
         if (event.entity !is Monster && !spawnConfig.replaceAllMobs) return
 

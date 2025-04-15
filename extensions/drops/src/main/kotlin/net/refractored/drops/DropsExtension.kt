@@ -3,7 +3,9 @@ package net.refractored.drops
 import com.willfp.eco.core.EcoPlugin
 import com.willfp.eco.core.extensions.Extension
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
-import net.refractored.drops.drops.DropsRegistry
+import net.refractored.bloodmoonreloaded.extensions.BloodmoonSectionLoader
+import net.refractored.bloodmoonreloaded.extensions.ConfigSectionLoader
+import net.refractored.drops.drops.DropsConfig
 import net.refractored.drops.listeners.OnEntityDeath
 import net.refractored.hordes.HordesExtension
 import org.bukkit.configuration.file.YamlConfiguration
@@ -20,16 +22,18 @@ class DropsExtension(
         instance = this
     }
 
-    lateinit var dropsConfig: YamlConfiguration
+    lateinit var config: YamlConfiguration
         private set
+
+    lateinit var configHandler: ConfigSectionLoader<DropsConfig>
 
     var hordes: HordesExtension? = null
 
     override fun onEnable() {
-        if (!File(dataFolder, "drops.yml").exists()) {
-            val destination = Path.of(dataFolder.absolutePath + "/drops.yml")
+        if (!File(dataFolder, CONFIG).exists()) {
+            val destination = Path.of(dataFolder.absolutePath + "/$CONFIG")
 
-            this.javaClass.getResourceAsStream("/drops.yml")?.use { inputStream ->
+            this.javaClass.getResourceAsStream("/$CONFIG")?.use { inputStream ->
                 Files.copy(inputStream, destination, StandardCopyOption.REPLACE_EXISTING)
             }!!
         }
@@ -49,8 +53,9 @@ class DropsExtension(
     }
 
     override fun onReload() {
-        dropsConfig = YamlConfiguration.loadConfiguration(dataFolder.resolve("drops.yml"))
-        DropsRegistry.refreshConfigs()
+        config = YamlConfiguration.loadConfiguration(dataFolder.resolve(CONFIG))
+        configHandler = BloodmoonSectionLoader(config) { DropsConfig(it) }
+        configHandler.refreshConfigs()
     }
 
     companion object {
@@ -59,5 +64,7 @@ class DropsExtension(
          */
         lateinit var instance: DropsExtension
             private set
+
+        private const val CONFIG: String = "drops.yml"
     }
 }

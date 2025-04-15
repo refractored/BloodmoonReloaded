@@ -4,18 +4,17 @@ import com.willfp.eco.core.entities.Entities
 import com.willfp.eco.core.entities.TestableEntity
 import com.willfp.eco.core.items.Items
 import com.willfp.eco.core.items.TestableItem
+import net.refractored.bloodmoonreloaded.extensions.Section
 import net.refractored.drops.drops.DropsConfig.HordeType
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.inventory.ItemStack
-import kotlin.collections.get
-import kotlin.text.get
 
 data class DropsConfig(
     val configSection: ConfigurationSection
-) {
-    val worlds: List<World> = configSection.getStringList("worlds").mapNotNull { Bukkit.getWorld(it) }
+): Section {
+    private val worlds: List<World> = configSection.getStringList("worlds").mapNotNull { Bukkit.getWorld(it) }
 
     val drops: List<Drop> = getItems()
 
@@ -121,6 +120,10 @@ data class DropsConfig(
             }
         }.random()
         .testableItem.item
+
+    override fun getWorlds(): List<World> {
+        return worlds
+    }
 }
 
 data class Drop(

@@ -3,6 +3,7 @@ package net.refractored.hordes.hordes
 import com.willfp.eco.core.entities.Entities
 import com.willfp.eco.core.entities.TestableEntity
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
+import net.refractored.bloodmoonreloaded.extensions.Section
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -14,10 +15,10 @@ import org.bukkit.persistence.PersistentDataType
 
 data class HordeConfig(
     val configSection: ConfigurationSection
-) {
+): Section {
     val pdcKey = NamespacedKey(BloodmoonPlugin.instance, "horde-${configSection.name}")
 
-    val worlds: List<World> = configSection.getStringList("Worlds").mapNotNull { Bukkit.getWorld(it) }
+    private val worlds: List<World> = configSection.getStringList("Worlds").mapNotNull { Bukkit.getWorld(it) }
 
     val mobs: List<TestableEntity>
 
@@ -98,5 +99,9 @@ data class HordeConfig(
                     .miniToComponent()
             )
         }
+    }
+
+    override fun getWorlds(): List<World?>? {
+        return worlds
     }
 }

@@ -3,16 +3,15 @@
 # By: refractored
 #
 # This extension replaces the vanilla mob spawning mechanics with ours ONLY during a bloodmoon.
-presets:
-  default-preset:
+default-preset:
     # Whether to strike lightning at the spawn location
-    lightning: false
+  lightning: false
     # If true, the plugin will replace all mobs that spawned.
     # If false, it will just replace hostile mobs.
-    replace-all: false
+  replace-all: false
     # Format for mobs: <weight>, <mob>
-    mobs:
-      - 10, ZOMBIE
+  mobs:
+    - 10, ZOMBIE
     # Worlds to apply this preset to
-    worlds:
-      - world
+  worlds:
+    - world

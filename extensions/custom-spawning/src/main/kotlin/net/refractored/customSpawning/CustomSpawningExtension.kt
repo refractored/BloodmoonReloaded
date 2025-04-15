@@ -3,7 +3,9 @@ package net.refractored.customSpawning
 import com.willfp.eco.core.EcoPlugin
 import com.willfp.eco.core.extensions.Extension
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
-import net.refractored.customSpawning.config.SpawnConfigRegistry
+import net.refractored.bloodmoonreloaded.extensions.BloodmoonSectionLoader
+import net.refractored.bloodmoonreloaded.extensions.ConfigSectionLoader
+import net.refractored.customSpawning.config.SpawnConfig
 import net.refractored.customSpawning.listeners.OnEntitySpawn
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
@@ -18,8 +20,10 @@ class CustomSpawningExtension(
     /**
      * The raw YamlConfiguration of the spawn config.
      */
-    lateinit var spawnConfigYml: YamlConfiguration
+    lateinit var config: YamlConfiguration
         private set
+
+    lateinit var configHandler: ConfigSectionLoader<SpawnConfig>
 
     init {
         instance = this
@@ -29,22 +33,23 @@ class CustomSpawningExtension(
     }
 
     override fun onAfterLoad() {
-        if (!File(dataFolder, "mobs.yml").exists()) {
-            val destination = Path.of(dataFolder.absolutePath + "/mobs.yml")
+        if (!File(dataFolder, CONFIG).exists()) {
+            val destination = Path.of(dataFolder.absolutePath + "/$CONFIG")
 
-            this.javaClass.getResourceAsStream("/mobs.yml")?.use { inputStream ->
+            this.javaClass.getResourceAsStream("/$CONFIG")?.use { inputStream ->
                 Files.copy(inputStream, destination, StandardCopyOption.REPLACE_EXISTING)
             } ?: throw IllegalArgumentException("Resource not found.")
         }
-
-        spawnConfigYml = YamlConfiguration.loadConfiguration(dataFolder.resolve("mobs.yml"))
-
-        SpawnConfigRegistry.refreshSpawnConfigs()
-
         BloodmoonPlugin.instance.eventManager.registerListener(OnEntitySpawn())
     }
 
     override fun onDisable() {
+    }
+
+    override fun onReload() {
+        config = YamlConfiguration.loadConfiguration(dataFolder.resolve(CONFIG))
+        configHandler = BloodmoonSectionLoader(config) { SpawnConfig(it) }
+        configHandler.refreshConfigs()
     }
 
     companion object {
@@ -53,5 +58,7 @@ class CustomSpawningExtension(
          */
         lateinit var instance: CustomSpawningExtension
             private set
+
+        private const val CONFIG: String = "mobs.yml"
     }
 }

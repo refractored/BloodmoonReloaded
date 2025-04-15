@@ -5,7 +5,7 @@ import net.refractored.bloodmoonreloaded.exceptions.CommandErrorException
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import net.refractored.bloodmoonreloaded.messages.Messages.replace
-import net.refractored.hordes.hordes.HordeRegistry
+import net.refractored.hordes.HordesExtension
 import net.refractored.hordes.util.EligibleUtil.getEligiblePlayers
 import org.bukkit.entity.Player
 import revxrsal.commands.annotation.Command
@@ -28,7 +28,7 @@ class SpawnHordeCommand {
         ,
         @Optional announce: Boolean = true,
     ) {
-        HordeRegistry.getHordeConfig(player.world)?.spawnHorde(player, announce) ?: throw CommandErrorException(
+        HordesExtension.instance.configHandler.getSection(player.world)?.spawnHorde(player, announce) ?: throw CommandErrorException(
             BloodmoonPlugin.instance.langYml
                 .getStringPrefixed("messages.general.invalid-horde")
                 .miniToComponent(),

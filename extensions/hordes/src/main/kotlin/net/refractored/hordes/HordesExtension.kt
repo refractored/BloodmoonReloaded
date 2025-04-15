@@ -5,8 +5,10 @@ import com.sk89q.worldguard.protection.flags.StateFlag
 import com.willfp.eco.core.EcoPlugin
 import com.willfp.eco.core.extensions.Extension
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
+import net.refractored.bloodmoonreloaded.extensions.BloodmoonSectionLoader
+import net.refractored.bloodmoonreloaded.extensions.ConfigSectionLoader
 import net.refractored.hordes.commands.SpawnHordeCommand
-import net.refractored.hordes.hordes.HordeRegistry
+import net.refractored.hordes.hordes.HordeConfig
 import net.refractored.hordes.listeners.OnBloodmoonStart
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
@@ -28,30 +30,19 @@ class HordesExtension(
     var hordesFlag: StateFlag? = null
         private set
 
-    lateinit var hordeConfig: YamlConfiguration
+    lateinit var config: YamlConfiguration
         private set
 
-//    override fun onLoad() {
-//        if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
-//            worldguard = WorldGuard.getInstance()
-//
-//            hordesFlag = StateFlag("hordes", true)
-//
-//            worldguard!!.flagRegistry.register(hordesFlag!!)
-//        }
-//    }
+    lateinit var configHandler: ConfigSectionLoader<HordeConfig>
 
     override fun onEnable() {
-        if (!File(dataFolder, "hordes.yml").exists()) {
-            val destination = Path.of(dataFolder.absolutePath + "/hordes.yml")
+        if (!File(dataFolder, CONFIG).exists()) {
+            val destination = Path.of(dataFolder.absolutePath + "/$CONFIG")
 
-            this.javaClass.getResourceAsStream("/hordes.yml")?.use { inputStream ->
+            this.javaClass.getResourceAsStream("/$CONFIG")?.use { inputStream ->
                 Files.copy(inputStream, destination, StandardCopyOption.REPLACE_EXISTING)
             }!!
         }
-
-        hordeConfig = YamlConfiguration.loadConfiguration(dataFolder.resolve("hordes.yml"))
-
         BloodmoonPlugin.instance.eventManager.registerListener(OnBloodmoonStart())
     }
 
@@ -64,9 +55,9 @@ class HordesExtension(
 
     override fun onReload() {
         // No need to re-register listeners in OnBloodmoonStart, as all bloodmoons & tasks are stopped on reload.
-        hordeConfig = YamlConfiguration.loadConfiguration(dataFolder.resolve("hordes.yml"))
-
-        HordeRegistry.refreshHordeConfigs()
+        config = YamlConfiguration.loadConfiguration(dataFolder.resolve(CONFIG))
+        configHandler = BloodmoonSectionLoader(config) { HordeConfig(it) }
+        configHandler.refreshConfigs()
     }
 
     companion object {
@@ -75,5 +66,7 @@ class HordesExtension(
          */
         lateinit var instance: HordesExtension
             private set
+
+        private const val CONFIG: String = "hordes.yml"
     }
 }

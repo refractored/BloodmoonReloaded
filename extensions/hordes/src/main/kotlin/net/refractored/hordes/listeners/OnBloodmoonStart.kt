@@ -4,8 +4,8 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStartEvent
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
+import net.refractored.hordes.HordesExtension
 import net.refractored.hordes.hordes.HordeConfig
-import net.refractored.hordes.hordes.HordeRegistry
 import net.refractored.hordes.util.EligibleUtil.getEligiblePlayers
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -13,7 +13,7 @@ import org.bukkit.event.Listener
 class OnBloodmoonStart : Listener {
     @EventHandler
     fun qonBloodmoonStart(event: BloodmoonStartEvent) {
-        val hordeConfig = HordeRegistry.getHordeConfig(event.world) ?: return
+        val hordeConfig = HordesExtension.instance.configHandler.getSection(event.world) ?: return
         scheduleBloodmoonTask(event, hordeConfig)
     }
 
