@@ -3,7 +3,6 @@ package net.refractored.hordes.hordes
 import com.willfp.eco.core.entities.Entities
 import com.willfp.eco.core.entities.TestableEntity
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
-import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -14,7 +13,7 @@ import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataType
 
 data class HordeConfig(
-    val configSection: ConfigurationSection,
+    val configSection: ConfigurationSection
 ) {
     val pdcKey = NamespacedKey(BloodmoonPlugin.instance, "horde-${configSection.name}")
 
@@ -43,9 +42,6 @@ data class HordeConfig(
     val spawnDistance
         get() = configSection.getInt("spawn-distance")
 
-    val hordeBroadcastPrefixed
-        get() = configSection.getBoolean("broadcast.prefixed")
-
     init {
 
         if (worlds.isEmpty()) {
@@ -64,7 +60,7 @@ data class HordeConfig(
      */
     fun spawnHorde(
         player: Player,
-        announce: Boolean = true,
+        announce: Boolean = true
     ) {
         val spawnAmount = (minMobs..maxMobs).random()
 
@@ -82,7 +78,7 @@ data class HordeConfig(
                     mobLocation.world
                         .getHighestBlockAt(mobLocation)
                         .location.y + 1
-                ).coerceAtMost(maxY)
+                    ).coerceAtMost(maxY)
 
             val entity = mob.spawn(mobLocation)
 
@@ -95,23 +91,11 @@ data class HordeConfig(
 
         if (!announce) return
 
-        if (hordeBroadcastPrefixed) {
-            player.world.players.forEach {
-                it.sendMessage(
-                    (BloodmoonPlugin.instance.langYml.getString("messages.prefix") +
-                    (configSection.getString("broadcast.message") ?: ""))
-                        .replace("%player%", player.name)
-                        .miniToComponent()
-                )
-            }
-            return
-        }
-
         player.world.players.forEach {
             it.sendMessage(
                 (configSection.getString("broadcast.message") ?: "")
-            .replace("%player%", player.name)
-            .miniToComponent()
+                    .replace("%player%", player.name)
+                    .miniToComponent()
             )
         }
     }
