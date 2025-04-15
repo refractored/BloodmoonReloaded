@@ -8,7 +8,7 @@ default-preset:
     - world
   start-message:
     enabled: true
-    message: '🌕 **The Bloodmoon is starting!**'
+    message: '🌕 **The Bloodmoon has started!**'
     channels:
       - 'DISCORD_ID'
   stop-message:

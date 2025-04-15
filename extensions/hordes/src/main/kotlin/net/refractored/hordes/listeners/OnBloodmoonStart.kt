@@ -12,17 +12,17 @@ import org.bukkit.event.Listener
 
 class OnBloodmoonStart : Listener {
     @EventHandler
-    fun onBloodmoonStart(event: BloodmoonStartEvent) {
+    fun qonBloodmoonStart(event: BloodmoonStartEvent) {
         val hordeConfig = HordeRegistry.getHordeConfig(event.world) ?: return
         scheduleBloodmoonTask(event, hordeConfig)
     }
 
     private fun scheduleBloodmoonTask(
         event: BloodmoonStartEvent,
-        hordeConfig: HordeConfig,
+        hordeConfig: HordeConfig
     ) {
         BloodmoonPlugin.instance.scheduler.runLater(
-            (hordeConfig.minTickTime..hordeConfig.maxTickTime).random(),
+            (hordeConfig.minTickTime..hordeConfig.maxTickTime).random()
         ) {
             bloodmoonTask(event, hordeConfig)
         }
@@ -30,7 +30,7 @@ class OnBloodmoonStart : Listener {
 
     private fun bloodmoonTask(
         event: BloodmoonStartEvent,
-        hordeConfig: HordeConfig,
+        hordeConfig: HordeConfig
     ) {
         val bloodmoonWorld = BloodmoonRegistry.getWorld(event.world.name) ?: return
 
