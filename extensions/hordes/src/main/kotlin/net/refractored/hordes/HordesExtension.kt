@@ -8,7 +8,6 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.hordes.commands.SpawnHordeCommand
 import net.refractored.hordes.hordes.HordeRegistry
 import net.refractored.hordes.listeners.OnBloodmoonStart
-import org.bukkit.Bukkit
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.nio.file.Files
@@ -33,7 +32,13 @@ class HordesExtension(
         private set
 
 //    override fun onLoad() {
-//        // No need to load anything here
+//        if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
+//            worldguard = WorldGuard.getInstance()
+//
+//            hordesFlag = StateFlag("hordes", true)
+//
+//            worldguard!!.flagRegistry.register(hordesFlag!!)
+//        }
 //    }
 
     override fun onEnable() {
@@ -48,14 +53,6 @@ class HordesExtension(
         hordeConfig = YamlConfiguration.loadConfiguration(dataFolder.resolve("hordes.yml"))
 
         BloodmoonPlugin.instance.eventManager.registerListener(OnBloodmoonStart())
-
-        if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
-            worldguard = WorldGuard.getInstance()
-
-            hordesFlag = StateFlag("hordes", true)
-
-            worldguard!!.flagRegistry.register(hordesFlag!!)
-        }
     }
 
     override fun onAfterLoad() {

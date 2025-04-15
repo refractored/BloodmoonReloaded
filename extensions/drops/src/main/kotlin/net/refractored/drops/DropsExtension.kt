@@ -26,9 +26,6 @@ class DropsExtension(
     var hordes: HordesExtension? = null
 
     override fun onEnable() {
-    }
-
-    override fun onAfterLoad() {
         if (!File(dataFolder, "drops.yml").exists()) {
             val destination = Path.of(dataFolder.absolutePath + "/drops.yml")
 
@@ -37,27 +34,23 @@ class DropsExtension(
             }!!
         }
 
-        dropsConfig = YamlConfiguration.loadConfiguration(dataFolder.resolve("drops.yml"))
-
-        DropsRegistry.refreshConfigs()
-
         plugin.extensionLoader.loadedExtensions.find { it.name == "Hordes" }?.let {
             hordes = it as HordesExtension
             logger.info("Drops extension successfully hooked into Hordes.")
         }
 
         BloodmoonPlugin.instance.eventManager.registerListener(OnEntityDeath())
-//        BloodmoonPlugin.instance.eventManager.registerListener(OnBloodmoonStart())
+    }
 
-//        BloodmoonPlugin.instance.lamp.register(SpawnHordeCommand())
+    override fun onAfterLoad() {
     }
 
     override fun onDisable() {
     }
 
     override fun onReload() {
-        // No need to re-register listeners in OnBloodmoonStart, as all bloodmoons & tasks are stopped on reload.
         dropsConfig = YamlConfiguration.loadConfiguration(dataFolder.resolve("drops.yml"))
+        DropsRegistry.refreshConfigs()
     }
 
     companion object {
