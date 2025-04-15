@@ -17,6 +17,10 @@ dependencies:
     required: false
     bootstrap: false
 
+  - name: DiscordSRV
+    required: false
+    bootstrap: false
+
 load-after:
   - name: eco
     bootstrap: false

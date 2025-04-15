@@ -72,9 +72,9 @@ messages:
       mirror: "<reset>The bloodmoon is currently inactive in <yellow>%world%</yellow>. it will activate when %mirror_world% activates."
   version:
     success:
-      version: "<green>Bloodmoon version <yellow>%version%</yellow> by <yellow>%author%</yellow>."
+      version: "<green><yellow>Bloodmoon</yellow> version <yellow>%version%</yellow> by <yellow>%author%</yellow>."
       no-extensions: "<green> No extensions are loaded.<green>"
-      extension: "<green>%name% version <yellow>%version%</yellow> by <yellow>%author%</yellow>."
+      extension: "<green><yellow>%name%</yellow> version <yellow>%version%</yellow> by <yellow>%author%</yellow>."
   # Used by extensions.
   spawn:
     # Used by the Hordes extension.
