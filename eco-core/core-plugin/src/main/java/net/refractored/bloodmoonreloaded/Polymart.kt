@@ -32,7 +32,7 @@ object Polymart {
                 BloodmoonPlugin.instance.logger.info("Polymart API is not reachable. (1)")
                 false
             }
-        } catch (e: SocketTimeoutException) {
+        } catch (_: SocketTimeoutException) {
             if (BloodmoonPlugin.instance.configYml.getBool("disable-purchase-message")) return false
             BloodmoonPlugin.instance.logger.info("Polymart API is not reachable. (1)")
             false

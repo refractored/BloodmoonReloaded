@@ -18,6 +18,7 @@ class BossesExtension(
 //    var hordes: HordesExtension? = null
 
     override fun onEnable() {
+        TODO()
     }
 
     override fun onAfterLoad() {

@@ -19,6 +19,10 @@ default-preset:
       # true - Hordes are allowed to drop this item.
       # false - Hordes are not allowed to drop this item.
       # whitelist - Only allow this item to drop for hordes.
+      #
+      # HORDES SUPPORT DOES NOT WORK YET!
+      # This option will not do anything for now.
+      # Use discord to get notified when this is implemented.
       hordes: false
       item: "iron_ingot 5"
     - weight: 6

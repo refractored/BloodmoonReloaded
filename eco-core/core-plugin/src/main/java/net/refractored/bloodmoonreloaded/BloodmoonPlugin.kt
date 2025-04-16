@@ -18,6 +18,7 @@ import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getWorlds
 import net.refractored.bloodmoonreloaded.registry.TypeRegistry
 import net.refractored.bloodmoonreloaded.types.*
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
+import org.bukkit.Bukkit
 import org.bukkit.scheduler.BukkitRunnable
 import revxrsal.commands.Lamp
 import revxrsal.commands.bukkit.BukkitLamp
@@ -66,6 +67,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
             getActiveWorlds().map { SimpleProvidedHolder(it) }
         }
 
+        // For some reason this isn't called by eco?
         afterLoad()
     }
 
@@ -145,6 +147,12 @@ class BloodmoonPlugin : LibreforgePlugin() {
                         ) {
                             registeredWorld.deactivate(BloodmoonStopEvent.StopCause.TIMER)
                             return
+                        }
+                        if (registeredWorld.config.getBool("require-players-server") && Bukkit.getOnlinePlayers().count() < 1) {
+                            continue
+                        }
+                        if (registeredWorld.config.getBool("require-players-world") && registeredWorld.world.playerCount < 1) {
+                            continue
                         }
                         // If either the bloodmoon shouldn't activate, or the status isn't active, return.
                         // (Written here cause my dyslexic-ass has messed with me trying to read this for some reason)

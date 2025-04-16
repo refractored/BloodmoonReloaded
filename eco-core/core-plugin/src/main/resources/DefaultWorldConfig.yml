@@ -50,6 +50,12 @@ length: 360
 # The configuration for each method is at the bottom of this file.
 activation-method: Days
 
+# If the bloodmoon can only activate when players are in that world.
+require-players-world: false
+
+# If the bloodmoon can only activate when players are in the server.
+require-players-online: false
+
 on-activation:
   sound:
     enabled: true

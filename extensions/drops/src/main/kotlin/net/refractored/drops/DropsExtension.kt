@@ -38,10 +38,11 @@ class DropsExtension(
             }!!
         }
 
-        plugin.extensionLoader.loadedExtensions.find { it.name == "Hordes" }?.let {
-            hordes = it as HordesExtension
-            logger.info("Drops extension successfully hooked into Hordes.")
-        }
+        // TODO: eco does not support loading before other extensions. I will need to PR a fix before I can support hordes.
+//        plugin.extensionLoader.loadedExtensions.find { it.name == "Hordes" }?.let {
+//            hordes = it as HordesExtension
+//            logger.info("Drops extension successfully hooked into Hordes.")
+//        }
 
         BloodmoonPlugin.instance.eventManager.registerListener(OnEntityDeath())
     }
