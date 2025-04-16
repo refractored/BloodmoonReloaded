@@ -12,7 +12,7 @@ import org.bukkit.event.Listener
 
 class OnBloodmoonStart : Listener {
     @EventHandler
-    fun qonBloodmoonStart(event: BloodmoonStartEvent) {
+    fun onBloodmoonStart(event: BloodmoonStartEvent) {
         val hordeConfig = HordesExtension.instance.configHandler.getSection(event.world) ?: return
         scheduleBloodmoonTask(event, hordeConfig)
     }

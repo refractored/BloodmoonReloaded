@@ -9,19 +9,19 @@ import org.bukkit.entity.Player
 
 object EligibleUtil {
     fun World.getEligiblePlayers(): List<Player> = this.players.filter {
-        it.gameMode == GameMode.SURVIVAL && !it.isVanished() && !it.regionValid()
+        it.gameMode == GameMode.SURVIVAL && !it.isVanished() /* && !it.regionValid() */
     }
 
     private fun Player.isVanished(): Boolean = this.getMetadata("vanished").any { it.asBoolean() }
 
-    private fun Player.regionValid(): Boolean {
-        HordesExtension.instance.worldguard ?: return false
-        val player = WorldGuardPlugin.inst().wrapPlayer(this)
-        val status = HordesExtension.instance.worldguard?.platform?.regionContainer?.createQuery()?.queryState(
-            player.location,
-            player,
-            HordesExtension.instance.hordesFlag
-        ) ?: return false
-        return status == StateFlag.State.ALLOW
-    }
+//    private fun Player.regionValid(): Boolean {
+//        HordesExtension.instance.worldguard ?: return false
+//        val player = WorldGuardPlugin.inst().wrapPlayer(this)
+//        val status = HordesExtension.instance.worldguard?.platform?.regionContainer?.createQuery()?.queryState(
+//            player.location,
+//            player,
+//            HordesExtension.instance.hordesFlag
+//        ) ?: return false
+//        return status == StateFlag.State.ALLOW
+//    }
 }

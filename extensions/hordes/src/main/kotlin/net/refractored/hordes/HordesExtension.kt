@@ -24,11 +24,11 @@ class HordesExtension(
         instance = this
     }
 
-    var worldguard: WorldGuard? = null
-        private set
-
-    var hordesFlag: StateFlag? = null
-        private set
+//    var worldguard: WorldGuard? = null
+//        private set
+//
+//    var hordesFlag: StateFlag? = null
+//        private set
 
     lateinit var config: YamlConfiguration
         private set

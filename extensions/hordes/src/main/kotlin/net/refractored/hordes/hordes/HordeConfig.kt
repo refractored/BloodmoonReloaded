@@ -61,6 +61,10 @@ data class HordeConfig(
      */
     fun spawnHorde(
         player: Player,
+        /**
+         * Whether to announce the horde spawn to all players in the world
+         * This wil be disabled either way if the config is set to false.
+         */
         announce: Boolean = true
     ) {
         val spawnAmount = (minMobs..maxMobs).random()
@@ -90,7 +94,7 @@ data class HordeConfig(
             }
         }
 
-        if (!announce) return
+        if (!configSection.getBoolean("broadcast.enabled") || !announce) return
 
         player.world.players.forEach {
             it.sendMessage(
