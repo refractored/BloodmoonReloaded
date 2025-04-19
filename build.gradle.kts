@@ -82,9 +82,11 @@ allprojects {
     dependencies {
         compileOnly(fileTree("lib"))
 
-        implementation("io.github.revxrsal:lamp.common:4.0.0-rc.9")
-        implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.9")
-        implementation("io.github.revxrsal:lamp.brigadier:4.0.0-rc.9")
+        implementation("io.github.revxrsal:lamp.common:4.0.0-rc.11")
+        implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.11")
+        implementation("io.github.revxrsal:lamp.brigadier:4.0.0-rc.11")
+
+        implementation("org.bstats:bstats-bukkit:3.0.2")
 
         compileOnly("net.kyori:adventure-platform-bukkit:4.1.2")
         compileOnly("net.kyori:adventure-text-minimessage:4.16.0")
@@ -124,6 +126,7 @@ allprojects {
         shadowJar {
             relocate("org.json", "net.refractored.libs.json")
             relocate("revxrsal.commands", "net.refractored.libs.lamp")
+            relocate("org.bstats", "net.refractored.libs.bstats")
             relocate("com.willfp.libreforge.loader", "net.refractored.bloodmoonreloaded.libreforge.loader")
         }
 

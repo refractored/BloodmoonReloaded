@@ -26,7 +26,7 @@ data class DiscordConfig(
             null
         }
 
-    override fun getWorlds(): List<World?>? {
+    override fun getWorlds(): List<World> {
         return worlds
     }
 

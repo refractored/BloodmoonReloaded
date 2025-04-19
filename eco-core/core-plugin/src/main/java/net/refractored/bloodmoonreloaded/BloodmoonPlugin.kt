@@ -18,12 +18,14 @@ import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getWorlds
 import net.refractored.bloodmoonreloaded.registry.TypeRegistry
 import net.refractored.bloodmoonreloaded.types.*
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
+import org.bstats.bukkit.Metrics
+import org.bstats.charts.AdvancedPie
 import org.bukkit.Bukkit
 import org.bukkit.scheduler.BukkitRunnable
 import revxrsal.commands.Lamp
 import revxrsal.commands.bukkit.BukkitLamp
 import revxrsal.commands.bukkit.actor.BukkitCommandActor
-import java.lang.reflect.Type
+
 
 class BloodmoonPlugin : LibreforgePlugin() {
 
@@ -60,6 +62,22 @@ class BloodmoonPlugin : LibreforgePlugin() {
         TypeRegistry.registerType("mirror") { world, config -> MirrorBloodmoon(world, config) }
         TypeRegistry.registerType("none") { world, config -> NoneBloodmoon(world, config) }
         TypeRegistry.registerType("timed") { world, config -> TimedBloodmoon(world, config) }
+
+        val metrics = Metrics(this, 24355)
+
+        metrics.addCustomChart(AdvancedPie("extensions") {
+            val values = HashMap<String, Int>()
+
+            for (extension in extensionLoader.loadedExtensions) {
+                values[extension.name] = 1
+            }
+
+            if (values.isEmpty()){
+                values["None"] = 1
+            }
+
+            values
+        })
 
         Conditions.register(IsBloodmoonActive)
 

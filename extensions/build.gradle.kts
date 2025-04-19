@@ -30,8 +30,10 @@ subprojects {
                 exclude(dependency("io.github.revxrsal:lamp.bukkit"))
                 exclude(dependency("io.github.revxrsal:lamp.brigadier"))
                 exclude(dependency("org.json:json"))
+                exclude(dependency("org.bstats:bstats-bukkit"))
                 exclude(dependency("net.kyori:adventure-platform-bukkit"))
                 exclude(dependency("net.kyori:adventure-text-minimessage"))
+
             }
         }
 
