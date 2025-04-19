@@ -15,10 +15,10 @@ import org.bukkit.persistence.PersistentDataType
 
 data class HordeConfig(
     val configSection: ConfigurationSection
-): Section {
+) : Section {
     val pdcKey = NamespacedKey(BloodmoonPlugin.instance, "horde-${configSection.name}")
 
-    private val worlds: List<World> = configSection.getStringList("Worlds").mapNotNull { Bukkit.getWorld(it) }
+    private val worlds: List<World> = configSection.getStringList("worlds").mapNotNull { Bukkit.getWorld(it) }
 
     val mobs: List<TestableEntity>
 
@@ -49,7 +49,7 @@ data class HordeConfig(
             throw IllegalArgumentException("No valid worlds found in ${configSection.name}")
         }
 
-        mobs = configSection.getStringList("Mobs").map { Entities.lookup(it) }
+        mobs = configSection.getStringList("mobs").map { Entities.lookup(it) }
 
         if (mobs.isEmpty()) {
             throw IllegalArgumentException("No valid mobs found in ${configSection.name}")
@@ -105,7 +105,5 @@ data class HordeConfig(
         }
     }
 
-    override fun getWorlds(): List<World?>? {
-        return worlds
-    }
+    override fun getWorlds(): List<World?>? = worlds
 }
