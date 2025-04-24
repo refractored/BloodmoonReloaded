@@ -127,6 +127,7 @@ allprojects {
             relocate("org.json", "net.refractored.libs.json")
             relocate("revxrsal.commands", "net.refractored.libs.lamp")
             relocate("org.bstats", "net.refractored.libs.bstats")
+            relocate("io.papermc.papertrail", "net.refractored.libs.papertrail")
             relocate("com.willfp.libreforge.loader", "net.refractored.bloodmoonreloaded.libreforge.loader")
         }
 
