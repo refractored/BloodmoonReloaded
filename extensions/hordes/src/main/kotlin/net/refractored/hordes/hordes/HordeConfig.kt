@@ -105,5 +105,7 @@ data class HordeConfig(
         }
     }
 
-    override fun getWorlds(): List<World?>? = worlds
+    override fun getWorlds(): List<World> {
+        return worlds
+    }
 }

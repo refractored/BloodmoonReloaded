@@ -1,7 +1,7 @@
 options:
   color: "&#A50000"
   supports-extensions: true
-  bstats-id: 24355
+#  bstats-id: 24355
   uses-reflective-reload: false
 environment:
   - name: libreforge version

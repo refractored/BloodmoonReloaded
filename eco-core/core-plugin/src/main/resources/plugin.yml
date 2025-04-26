@@ -1,0 +1,6 @@
+name: ${pluginName}
+version: ${version}
+main: net.refractored.libs.papertrail.RequiresPaperPlugins
+description: A bloodmoon plugin for Minecraft.
+author: refractored
+api-version: '1.21'
