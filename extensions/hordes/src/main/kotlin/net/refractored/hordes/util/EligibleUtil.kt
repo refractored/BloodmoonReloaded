@@ -1,8 +1,5 @@
 package net.refractored.hordes.util
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin
-import com.sk89q.worldguard.protection.flags.StateFlag
-import net.refractored.hordes.HordesExtension
 import org.bukkit.GameMode
 import org.bukkit.World
 import org.bukkit.entity.Player

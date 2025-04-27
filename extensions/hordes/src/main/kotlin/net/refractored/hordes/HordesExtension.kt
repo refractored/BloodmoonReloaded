@@ -1,7 +1,5 @@
 package net.refractored.hordes
 
-import com.sk89q.worldguard.WorldGuard
-import com.sk89q.worldguard.protection.flags.StateFlag
 import com.willfp.eco.core.EcoPlugin
 import com.willfp.eco.core.extensions.Extension
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
