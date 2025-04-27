@@ -1,5 +1,6 @@
 package net.refractored.bloodmoonreloaded
 
+import org.bstats.charts.SimplePie
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.SocketTimeoutException
@@ -30,6 +31,7 @@ object Polymart {
             } else {
                 if (BloodmoonPlugin.instance.configYml.getBool("disable-purchase-message")) return false
                 BloodmoonPlugin.instance.logger.info("Polymart API is not reachable. (1)")
+                setPurchaseBstats(null)
                 false
             }
         } catch (_: SocketTimeoutException) {
@@ -59,14 +61,30 @@ object Polymart {
             } else {
                 if (BloodmoonPlugin.instance.configYml.getBool("disable-purchase-message")) return false
                 BloodmoonPlugin.instance.logger.info("Polymart API is not reachable. (2)")
+                setPurchaseBstats(null)
                 false
             }
-        } catch (e: SocketTimeoutException) {
+        } catch (_: SocketTimeoutException) {
             if (BloodmoonPlugin.instance.configYml.getBool("disable-purchase-message")) return false
             BloodmoonPlugin.instance.logger.info("Polymart API is not reachable. (2)")
             false
         } finally {
             connection.disconnect()
         }
+    }
+
+    // If you "crack" the plugin can u atleast make it show up as not purchased in bstats lol
+    fun setPurchaseBstats(boolean: Boolean?) {
+        BloodmoonPlugin.instance.metrics.addCustomChart(
+            SimplePie("purchased") {
+                return@SimplePie if (boolean == null) {
+                    "Unknown"
+                } else if (boolean) {
+                    "Purchased"
+                } else {
+                    "Not Purchased"
+                }
+            }
+        )
     }
 }

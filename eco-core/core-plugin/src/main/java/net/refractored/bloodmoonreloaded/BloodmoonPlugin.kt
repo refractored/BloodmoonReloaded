@@ -6,6 +6,7 @@ import com.willfp.libreforge.loader.LibreforgePlugin
 import com.willfp.libreforge.loader.configs.ConfigCategory
 import com.willfp.libreforge.registerGenericHolderProvider
 import net.refractored.bloodmoonreloaded.Polymart.checkPolymartStatus
+import net.refractored.bloodmoonreloaded.Polymart.setPurchaseBstats
 import net.refractored.bloodmoonreloaded.Polymart.verifyPurchase
 import net.refractored.bloodmoonreloaded.commands.*
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
@@ -26,7 +27,6 @@ import revxrsal.commands.Lamp
 import revxrsal.commands.bukkit.BukkitLamp
 import revxrsal.commands.bukkit.actor.BukkitCommandActor
 
-
 class BloodmoonPlugin : LibreforgePlugin() {
 
     init {
@@ -34,6 +34,9 @@ class BloodmoonPlugin : LibreforgePlugin() {
     }
 
     lateinit var lamp: Lamp<BukkitCommandActor>
+        private set
+
+    lateinit var metrics: Metrics
         private set
 
     override fun loadConfigCategories(): List<ConfigCategory> = listOf(
@@ -63,21 +66,23 @@ class BloodmoonPlugin : LibreforgePlugin() {
         TypeRegistry.registerType("none") { world, config -> NoneBloodmoon(world, config) }
         TypeRegistry.registerType("timed") { world, config -> TimedBloodmoon(world, config) }
 
-        val metrics = Metrics(this, 24355)
+        metrics = Metrics(this, 24355)
 
-        metrics.addCustomChart(AdvancedPie("extensions") {
-            val values = HashMap<String, Int>()
+        metrics.addCustomChart(
+            AdvancedPie("extensions") {
+                val values = HashMap<String, Int>()
 
-            for (extension in extensionLoader.loadedExtensions) {
-                values[extension.name] = 1
+                for (extension in extensionLoader.loadedExtensions) {
+                    values[extension.name] = 1
+                }
+
+                if (values.isEmpty()) {
+                    values["None"] = 1
+                }
+
+                values
             }
-
-            if (values.isEmpty()){
-                values["None"] = 1
-            }
-
-            values
-        })
+        )
 
         Conditions.register(IsBloodmoonActive)
 
@@ -135,10 +140,12 @@ class BloodmoonPlugin : LibreforgePlugin() {
                         if (verifyPurchase()) {
                             if (configYml.getBool("disable-purchase-message")) return
                             logger.info("Thank you for purchasing the plugin! ^_^")
+                            setPurchaseBstats(true)
                             return
                         }
                         logger.warning("Please consider purchasing this plugin on Polymart! :)")
                         logger.warning("No functionality will be lost, but you might not receive support.")
+                        setPurchaseBstats(false)
                     }
                 }
             polymarted = true
