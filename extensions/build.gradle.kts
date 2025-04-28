@@ -19,13 +19,8 @@ subprojects {
     }
 
     tasks {
-
-        build {
-            dependsOn(shadowJar)
-        }
-
         withType<ShadowJar> {
-            destinationDirectory.set(file("$rootDir/bin"))
+            destinationDirectory.set(file("$rootDir/bin/extensions"))
 
             archiveFileName.set("$extensionName-v$version.jar")
         }

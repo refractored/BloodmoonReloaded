@@ -18,7 +18,7 @@ class BossesExtension(
 //    var hordes: HordesExtension? = null
 
     override fun onEnable() {
-        TODO()
+        TODO("Not yet implemented")
     }
 
     override fun onAfterLoad() {

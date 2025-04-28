@@ -30,6 +30,7 @@ class CustomSpawningExtension(
     }
 
     override fun onEnable() {
+        TODO("Not yet implemented")
     }
 
     override fun onAfterLoad() {
