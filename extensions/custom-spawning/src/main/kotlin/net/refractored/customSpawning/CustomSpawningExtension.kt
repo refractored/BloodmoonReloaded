@@ -49,7 +49,7 @@ class CustomSpawningExtension(
 
     override fun onReload() {
         config = YamlConfiguration.loadConfiguration(dataFolder.resolve(CONFIG))
-        configHandler = BloodmoonSectionLoader(config) { SpawnConfig(it) }
+        configHandler = BloodmoonSectionLoader(config, this) { SpawnConfig(it) }
         configHandler.refreshConfigs()
     }
 

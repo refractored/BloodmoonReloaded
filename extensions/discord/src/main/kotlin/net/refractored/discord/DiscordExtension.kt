@@ -57,7 +57,7 @@ class DiscordExtension(
     override fun onReload() {
         // No need to re-register listeners in OnBloodmoonStart, as all bloodmoons & tasks are stopped on reload.
         config = YamlConfiguration.loadConfiguration(dataFolder.resolve(CONFIG))
-        configHandler = BloodmoonSectionLoader(config) { DiscordConfig(it) }
+        configHandler = BloodmoonSectionLoader(config, this) { DiscordConfig(it) }
         configHandler.refreshConfigs()
     }
 

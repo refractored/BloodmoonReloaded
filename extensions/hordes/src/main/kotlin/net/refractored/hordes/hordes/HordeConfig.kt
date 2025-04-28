@@ -46,13 +46,13 @@ data class HordeConfig(
     init {
 
         if (worlds.isEmpty()) {
-            throw IllegalArgumentException("No valid worlds found in ${configSection.name}")
+            throw IllegalArgumentException("No valid worlds found")
         }
 
         mobs = configSection.getStringList("mobs").map { Entities.lookup(it) }
 
         if (mobs.isEmpty()) {
-            throw IllegalArgumentException("No valid mobs found in ${configSection.name}")
+            throw IllegalArgumentException("No valid mobs found")
         }
     }
 

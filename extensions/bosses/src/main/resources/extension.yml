@@ -1,5 +1,6 @@
 name: ${name}
 main: net.refractored.bosses.BossesExtension
 version: ${version}
+plugin-version: ${minVersion}
 author: refractored
 plugin: BloodmoonReloaded

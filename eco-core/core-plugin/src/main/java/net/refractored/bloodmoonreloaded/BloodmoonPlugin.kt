@@ -1,5 +1,6 @@
 package net.refractored.bloodmoonreloaded
 
+import com.willfp.eco.core.extensions.Extension
 import com.willfp.libreforge.SimpleProvidedHolder
 import com.willfp.libreforge.conditions.Conditions
 import com.willfp.libreforge.loader.LibreforgePlugin
@@ -190,6 +191,31 @@ class BloodmoonPlugin : LibreforgePlugin() {
     }
 
     companion object {
+        /**
+         * Logs info for an extension, backed by its extension name.
+         * Helpful for debugging issues.
+         */
+        fun Extension.logInfo(msg: String) {
+           this.logger.info("[${this.name}] " + msg)
+        }
+
+        /**
+         * Logs a warning for an extension, backed by its extension name.
+         * Helpful for debugging issues.
+         */
+        fun Extension.logWarn(msg: String) {
+            this.logger.warning("[${this.name}] " + msg)
+        }
+
+        /**
+         * Logs a severe warning for an extension, backed by its extension name.
+         * Helpful for debugging issues.
+         */
+        fun Extension.logSevere(msg: String) {
+            this.logger.severe("[${this.name}] " + msg)
+        }
+
+
         @JvmStatic
         lateinit var instance: BloodmoonPlugin
             private set

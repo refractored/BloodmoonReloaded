@@ -54,7 +54,7 @@ class HordesExtension(
     override fun onReload() {
         // No need to re-register listeners in OnBloodmoonStart, as all bloodmoons & tasks are stopped on reload.
         config = YamlConfiguration.loadConfiguration(dataFolder.resolve(CONFIG))
-        configHandler = BloodmoonSectionLoader(config) { HordeConfig(it) }
+        configHandler = BloodmoonSectionLoader(config, this) { HordeConfig(it) }
         configHandler.refreshConfigs()
     }
 

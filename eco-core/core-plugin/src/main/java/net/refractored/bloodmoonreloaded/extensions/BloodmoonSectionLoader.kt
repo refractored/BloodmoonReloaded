@@ -1,6 +1,8 @@
 package net.refractored.bloodmoonreloaded.extensions
 
+import com.willfp.eco.core.extensions.Extension
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
+import net.refractored.bloodmoonreloaded.BloodmoonPlugin.Companion.logSevere
 import org.bukkit.World
 import org.bukkit.configuration.Configuration
 import org.bukkit.configuration.ConfigurationSection
@@ -8,7 +10,8 @@ import org.bukkit.configuration.ConfigurationSection
 class BloodmoonSectionLoader
 <T : Section>(
     private val configuration: Configuration,
-    private val sectionFactory: (ConfigurationSection) -> T
+    private val extension: Extension,
+    private val sectionFactory: (ConfigurationSection) -> T,
 ) : ConfigSectionLoader<T>{
 
     private val registeredConfigs = mutableListOf<T>()
@@ -40,7 +43,7 @@ class BloodmoonSectionLoader
                     createConfig(sectionFactory(sectionKey))
                 } ?: continue
             } catch (e: Exception) {
-                BloodmoonPlugin.instance.logger.severe("Failed to load config section \"$key\": ${e.message}")
+                extension.logSevere("Failed to load config section \"$key\": ${e.message}")
                 if (BloodmoonPlugin.instance.configYml.getBool("debug")) e.printStackTrace()
                 continue
             }

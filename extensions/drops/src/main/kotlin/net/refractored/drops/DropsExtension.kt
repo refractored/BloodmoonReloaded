@@ -55,7 +55,7 @@ class DropsExtension(
 
     override fun onReload() {
         config = YamlConfiguration.loadConfiguration(dataFolder.resolve(CONFIG))
-        configHandler = BloodmoonSectionLoader(config) { DropsConfig(it) }
+        configHandler = BloodmoonSectionLoader(config, this) { DropsConfig(it) }
         configHandler.refreshConfigs()
     }
 

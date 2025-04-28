@@ -24,7 +24,7 @@ class SpawnConfig(
     init {
 
         if (worlds.isEmpty()) {
-            throw IllegalArgumentException("No valid worlds found in ${configSection.name}")
+            throw IllegalArgumentException("No valid worlds found")
         }
 
         val tempMobs: MutableList<Pair<Double, TestableEntity>> = mutableListOf()
