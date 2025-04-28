@@ -24,10 +24,6 @@ subprojects {
             dependsOn(shadowJar)
         }
 
-        withType<JavaCompile> {
-            options.compilerArgs.add("-parameters")
-        }
-
         withType<ShadowJar> {
             destinationDirectory.set(file("$rootDir/bin"))
 
