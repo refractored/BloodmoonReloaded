@@ -10,31 +10,31 @@ subprojects {
 
     dependencies {
         compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
-        compileOnly(project(":eco-core"))
-        compileOnly(project(":eco-core:core-plugin"))
+        compileOnly(project(":eco-core")){
+            isTransitive = false
+        }
+        compileOnly(project(":eco-core:core-plugin")){
+            isTransitive = false
+        }
     }
 
     tasks {
-        named<Jar>("jar") {
-            // Set the output folder for the JAR files
-            destinationDirectory.set(file("$rootDir/bin"))
 
-            // Rename the JAR files
-            archiveFileName.set("$extensionName-v$version.jar")
+        build {
+            dependsOn(shadowJar)
         }
 
-        withType<ShadowJar> {
-            // Exclude libraries from being bundled into the JAR
-            dependencies {
-                exclude(dependency("io.github.revxrsal:lamp.common"))
-                exclude(dependency("io.github.revxrsal:lamp.bukkit"))
-                exclude(dependency("io.github.revxrsal:lamp.brigadier"))
-                exclude(dependency("org.json:json"))
-                exclude(dependency("org.bstats:bstats-bukkit"))
-                exclude(dependency("net.kyori:adventure-platform-bukkit"))
-                exclude(dependency("net.kyori:adventure-text-minimessage"))
+        jar {
+            dependsOn(shadowJar)
+        }
 
-            }
+        withType<JavaCompile> {
+            options.compilerArgs.add("-parameters")
+        }
+        withType<ShadowJar> {
+            destinationDirectory.set(file("$rootDir/bin"))
+
+            archiveFileName.set("$extensionName-v$version.jar")
         }
 
         processResources {

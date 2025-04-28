@@ -24,7 +24,7 @@ fun getGitHash(): String {
         if (process.exitValue() == 0) {
             gitCommitHash = process.inputStream.bufferedReader().readText().trim()
         }
-    } catch (e: Exception) {
+    } catch (_: Exception) {
     }
     return gitCommitHash
 }
@@ -36,7 +36,7 @@ fun isGitDirty(): Boolean = try {
         .start()
     process.waitFor()
     process.exitValue() != 0
-} catch (e: Exception) {
+} catch (_: Exception) {
     false
 }
 
@@ -51,7 +51,7 @@ fun getCurrentGitTag(): String? {
         if (process.exitValue() == 0) {
             gitTag = process.inputStream.bufferedReader().readText().trim()
         }
-    } catch (e: Exception) {
+    } catch (_: Exception) {
     }
     return gitTag
 }
