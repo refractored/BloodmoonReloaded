@@ -79,19 +79,31 @@ allprojects {
         maven("https://jitpack.io")
     }
 
+    /**
+     * Adds a dependency to the project, using `compileOnly` for extensions and `implementation` for the main project.
+     */
+    fun DependencyHandler.implementationPlugin(dependencyNotation: Any) {
+        val isExtension = project.path.startsWith(":extensions")
+        if (isExtension) {
+            add("compileOnly", dependencyNotation)
+        } else {
+            add("implementation", dependencyNotation)
+        }
+    }
+
     dependencies {
         compileOnly(fileTree("lib"))
 
-        implementation("io.github.revxrsal:lamp.common:4.0.0-rc.11")
-        implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.11")
-        implementation("io.github.revxrsal:lamp.brigadier:4.0.0-rc.11")
+        implementationPlugin("io.github.revxrsal:lamp.common:4.0.0-rc.11")
+        implementationPlugin("io.github.revxrsal:lamp.bukkit:4.0.0-rc.11")
+        implementationPlugin("io.github.revxrsal:lamp.brigadier:4.0.0-rc.11")
 
-        implementation("org.bstats:bstats-bukkit:3.0.2")
+        implementationPlugin("org.bstats:bstats-bukkit:3.0.2")
 
         compileOnly("net.kyori:adventure-platform-bukkit:4.1.2")
         compileOnly("net.kyori:adventure-text-minimessage:4.16.0")
 
-        implementation("org.json:json:20250107")
+        implementationPlugin("org.json:json:20250107")
 
         compileOnly("com.willfp:eco:6.75.2")
         compileOnly("org.jetbrains:annotations:23.0.0")
