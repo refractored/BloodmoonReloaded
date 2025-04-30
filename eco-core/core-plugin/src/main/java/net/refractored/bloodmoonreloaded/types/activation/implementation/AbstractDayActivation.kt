@@ -1,24 +1,23 @@
-package net.refractored.bloodmoonreloaded.types.implementation
+package net.refractored.bloodmoonreloaded.types.activation.implementation
 
-import com.willfp.eco.core.config.interfaces.Config
 import com.willfp.eco.core.data.keys.PersistentDataKey
 import com.willfp.eco.core.data.keys.PersistentDataKeyType
 import com.willfp.eco.core.data.profile
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
+import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import org.bukkit.Bukkit
 import org.bukkit.World
 
 /**
  * This abstract class adds support for checking a world once a day if conditions are met.
  */
-abstract class AbstractDaysWorld(
-    world: World,
-    config: Config
-) : BloodmoonWorld(world, config) {
+abstract class AbstractDayActivation(
+    bloodmoonWorld: BloodmoonWorld,
+) : ActivationMethod(bloodmoonWorld) {
 
     private val lastDaytimeKey =
         PersistentDataKey(
-            BloodmoonPlugin.instance.namespacedKeyFactory.create("${world.name}_last_daytime"),
+            BloodmoonPlugin.instance.namespacedKeyFactory.create("${bloodmoonWorld.world.name}_last_daytime"),
             PersistentDataKeyType.BOOLEAN,
             true
         )
@@ -35,9 +34,9 @@ abstract class AbstractDaysWorld(
      * @return true if the bloodmoon should activate.
      */
     final override fun shouldActivate(): Boolean {
-        if (status != Status.INACTIVE) return false
+        if (bloodmoonWorld.status != BloodmoonWorld.Status.INACTIVE) return false
 
-        if (world.isDayTime) {
+        if (bloodmoonWorld.world.isDayTime) {
             handleDaytime()
             return false
         }

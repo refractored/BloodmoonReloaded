@@ -17,8 +17,12 @@ import net.refractored.bloodmoonreloaded.listeners.*
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getActiveWorlds
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry.getWorlds
-import net.refractored.bloodmoonreloaded.registry.TypeRegistry
-import net.refractored.bloodmoonreloaded.types.*
+import net.refractored.bloodmoonreloaded.registry.ActivationRegistry
+import net.refractored.bloodmoonreloaded.types.activation.ChanceActivation
+import net.refractored.bloodmoonreloaded.types.activation.DaysActivation
+import net.refractored.bloodmoonreloaded.types.activation.MirrorActivation
+import net.refractored.bloodmoonreloaded.types.activation.NoActivation
+import net.refractored.bloodmoonreloaded.types.activation.TimedActivation
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import org.bstats.bukkit.Metrics
 import org.bstats.charts.AdvancedPie
@@ -61,11 +65,11 @@ class BloodmoonPlugin : LibreforgePlugin() {
         lamp.register(BloodmoonInfoCommand())
         lamp.register(BloodmoonManageDaysCommand())
 
-        TypeRegistry.registerType("chance") { world, config -> ChanceBloodmoon(world, config) }
-        TypeRegistry.registerType("days") { world, config -> DaysBloodmoon(world, config) }
-        TypeRegistry.registerType("mirror") { world, config -> MirrorBloodmoon(world, config) }
-        TypeRegistry.registerType("none") { world, config -> NoneBloodmoon(world, config) }
-        TypeRegistry.registerType("timed") { world, config -> TimedBloodmoon(world, config) }
+        ActivationRegistry.registerType("chance") { bloodmoonWorld -> ChanceActivation(bloodmoonWorld) }
+        ActivationRegistry.registerType("days") { bloodmoonWorld -> DaysActivation(bloodmoonWorld) }
+        ActivationRegistry.registerType("mirror") { bloodmoonWorld -> MirrorActivation(bloodmoonWorld) }
+        ActivationRegistry.registerType("none") { bloodmoonWorld -> NoActivation(bloodmoonWorld) }
+        ActivationRegistry.registerType("timed") { bloodmoonWorld -> TimedActivation(bloodmoonWorld) }
 
         metrics = Metrics(this, 24355)
 
@@ -182,7 +186,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
                         }
                         // If either the bloodmoon shouldn't activate, or the status isn't active, return.
                         // (Written here cause my dyslexic-ass has messed with me trying to read this for some reason)
-                        if (!registeredWorld.shouldActivate() || registeredWorld.status != BloodmoonWorld.Status.INACTIVE) continue
+                        if (!registeredWorld.activationMethod.shouldActivate() || registeredWorld.status != BloodmoonWorld.Status.INACTIVE) continue
                         registeredWorld.activate()
                     }
                 }

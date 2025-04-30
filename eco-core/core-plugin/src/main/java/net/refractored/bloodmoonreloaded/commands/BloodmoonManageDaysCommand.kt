@@ -5,7 +5,7 @@ import net.refractored.bloodmoonreloaded.exceptions.CommandErrorException
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.types.DaysBloodmoon
+import net.refractored.bloodmoonreloaded.types.activation.DaysActivation
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import org.bukkit.World
 import revxrsal.commands.annotation.Command
@@ -39,14 +39,14 @@ class BloodmoonManageDaysCommand {
                     .miniToComponent()
             )
         }
-        if (bloodmoonWorld !is DaysBloodmoon) {
+        if (bloodmoonWorld.activationMethod !is DaysActivation) {
             throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
                     .getStringPrefixed("messages.manage-days.not-days")
                     .miniToComponent()
             )
         }
-        bloodmoonWorld.dayCount = number
+        bloodmoonWorld.activationMethod.dayCount = number
         actor.reply(
             BloodmoonPlugin.instance.langYml
                 .getStringPrefixed("messages.manage-days.success")
@@ -78,15 +78,15 @@ class BloodmoonManageDaysCommand {
                     .miniToComponent()
             )
         }
-        if (bloodmoonWorld !is DaysBloodmoon) {
+        if (bloodmoonWorld.activationMethod !is DaysActivation) {
             throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
                     .getStringPrefixed("messages.manage-days.not-days")
                     .miniToComponent()
             )
         }
-        val result = bloodmoonWorld.dayCount + number
-        bloodmoonWorld.dayCount = result
+        val result = bloodmoonWorld.activationMethod.dayCount + number
+        bloodmoonWorld.activationMethod.dayCount = result
         actor.reply(
             BloodmoonPlugin.instance.langYml
                 .getStringPrefixed("messages.manage-days.success")
@@ -119,15 +119,15 @@ class BloodmoonManageDaysCommand {
                     .miniToComponent()
             )
         }
-        if (bloodmoonWorld !is DaysBloodmoon) {
+        if (bloodmoonWorld.activationMethod !is DaysActivation) {
             throw CommandErrorException(
                 BloodmoonPlugin.instance.langYml
                     .getStringPrefixed("messages.manage-days.not-days")
                     .miniToComponent()
             )
         }
-        val result = bloodmoonWorld.dayCount - number
-        bloodmoonWorld.dayCount -= result
+        val result = bloodmoonWorld.activationMethod.dayCount - number
+        bloodmoonWorld.activationMethod.dayCount -= result
         actor.reply(
             BloodmoonPlugin.instance.langYml
                 .getStringPrefixed("messages.manage-days.success")

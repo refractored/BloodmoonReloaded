@@ -1,4 +1,4 @@
-package net.refractored.bloodmoonreloaded.types
+package net.refractored.bloodmoonreloaded.types.activation
 
 import com.willfp.eco.core.config.interfaces.Config
 import com.willfp.eco.core.data.keys.PersistentDataKey
@@ -10,7 +10,7 @@ import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
-import net.refractored.bloodmoonreloaded.registry.TypeRegistry
+import net.refractored.bloodmoonreloaded.types.activation.implementation.ActivationMethod
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import org.bukkit.Bukkit
 import org.bukkit.World
@@ -19,16 +19,15 @@ import java.time.Duration
 /**
  * Represents a bloodmoon that is activated after a certain amount of time.
  */
-class TimedBloodmoon(
-    world: World,
-    config: Config
-) : BloodmoonWorld(world, config) {
+class TimedActivation(
+    bloodmoonWorld: BloodmoonWorld
+) : ActivationMethod(bloodmoonWorld) {
 
-    val configTime: Long = config.getString("timed.duration").toLong() * 1000
+    val configTime: Long = bloodmoonWorld.config.getString("timed.duration").toLong() * 1000
 
     private val timeKey =
         PersistentDataKey(
-            BloodmoonPlugin.instance.namespacedKeyFactory.create("${world.name}_timed_remaining"),
+            BloodmoonPlugin.instance.namespacedKeyFactory.create("${bloodmoonWorld.world.name}_timed_remaining"),
             PersistentDataKeyType.DOUBLE,
             // For anyone wondering why I did this.
             // Eco doesnt have support for Longs for some reason :c
@@ -43,7 +42,7 @@ class TimedBloodmoon(
         PlaceholderManager.registerPlaceholder(
             PlayerlessPlaceholder(
                 BloodmoonPlugin.instance,
-                "${world.name}_timed_remaining_hours"
+                "${bloodmoonWorld.world.name}_timed_remaining_hours"
             ) {
                 getHoursMinutesSeconds(getTimedRemaining()).first.toString()
             }
@@ -51,7 +50,7 @@ class TimedBloodmoon(
         PlaceholderManager.registerPlaceholder(
             PlayerlessPlaceholder(
                 BloodmoonPlugin.instance,
-                "${world.name}_timed_remaining_minutes"
+                "${bloodmoonWorld.world.name}_timed_remaining_minutes"
             ) {
                 getHoursMinutesSeconds(getTimedRemaining()).second.toString()
             }
@@ -59,7 +58,7 @@ class TimedBloodmoon(
         PlaceholderManager.registerPlaceholder(
             PlayerlessPlaceholder(
                 BloodmoonPlugin.instance,
-                "${world.name}_timed_remaining_seconds"
+                "${bloodmoonWorld.world.name}_timed_remaining_seconds"
             ) {
                 getHoursMinutesSeconds(getTimedRemaining()).third.toString()
             }
@@ -67,7 +66,7 @@ class TimedBloodmoon(
         PlaceholderManager.registerPlaceholder(
             PlayerlessPlaceholder(
                 BloodmoonPlugin.instance,
-                "${world.name}_timed_remaining"
+                "${bloodmoonWorld.world.name}_timed_remaining"
             ) {
                 val time = getHoursMinutesSeconds(getTimedRemaining())
                 "${time.first}h ${time.second}m ${time.third}s"
@@ -81,8 +80,8 @@ class TimedBloodmoon(
         val timeframe: Duration = Duration.ofMillis(getTimedRemaining())
         return BloodmoonPlugin.instance.langYml
             .getStringPrefixed("messages.info.success.timed")
-            .replace("%world%", world.name)
-            .replace("%status%", this.status.miniMessage())
+            .replace("%world%", bloodmoonWorld.world.name)
+            .replace("%status%", this.bloodmoonWorld.status.miniMessage())
             .replace("%hours%", timeframe.toHours().toString())
             .replace("%minutes%", timeframe.toMinutesPart().toString())
             .replace("%seconds%", timeframe.toSecondsPart().toString())
@@ -113,16 +112,16 @@ class TimedBloodmoon(
     }
 
     override fun periodicTasks() {
-        if (status != Status.INACTIVE) return
+        if (bloodmoonWorld.status != BloodmoonWorld.Status.INACTIVE) return
         saveRemainingTime()
     }
 
     override fun shouldActivate(): Boolean {
-        if (status != Status.INACTIVE) return false
+        if (bloodmoonWorld.status != BloodmoonWorld.Status.INACTIVE) return false
         if (startTime > System.currentTimeMillis()) return false
 
-        if (config.getBool("timed.night-only")) {
-            return !world.isDayTime
+        if (bloodmoonWorld.config.getBool("timed.night-only")) {
+            return !bloodmoonWorld.world.isDayTime
         }
 
         return true

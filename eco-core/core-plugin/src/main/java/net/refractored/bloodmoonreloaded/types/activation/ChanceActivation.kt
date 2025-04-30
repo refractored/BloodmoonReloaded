@@ -1,6 +1,5 @@
-package net.refractored.bloodmoonreloaded.types
+package net.refractored.bloodmoonreloaded.types.activation
 
-import com.willfp.eco.core.config.interfaces.Config
 import com.willfp.eco.core.data.keys.PersistentDataKey
 import com.willfp.eco.core.data.keys.PersistentDataKeyType
 import com.willfp.eco.core.data.profile
@@ -10,26 +9,23 @@ import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
-import net.refractored.bloodmoonreloaded.registry.TypeRegistry
-import net.refractored.bloodmoonreloaded.types.implementation.AbstractDaysWorld
+import net.refractored.bloodmoonreloaded.types.activation.implementation.AbstractDayActivation
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import org.bukkit.Bukkit
-import org.bukkit.World
 import kotlin.random.Random
 
 /**
  * Represents a world that will have a chance of a bloodmoon every night.
  */
-class ChanceBloodmoon(
-    world: World,
-    config: Config
-) : AbstractDaysWorld(world, config) {
+class ChanceActivation(
+    bloodmoonWorld: BloodmoonWorld,
+) : AbstractDayActivation(bloodmoonWorld) {
 
     private val chanceKey =
         PersistentDataKey(
-            BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_chance"),
+            BloodmoonPlugin.instance.namespacedKeyFactory.create("${bloodmoonWorld.id.key}_chance"),
             PersistentDataKeyType.DOUBLE,
-            config.getDouble("Chance").coerceAtMost(1.0)
+            bloodmoonWorld.config.getDouble("chance.initial-percentage").coerceAtMost(1.0)
         )
 
     var chance: Double
@@ -38,8 +34,8 @@ class ChanceBloodmoon(
 
     override fun getInfo(): ComponentLike = BloodmoonPlugin.instance.langYml
         .getStringPrefixed("messages.info.success.chance")
-        .replace("%world%", world.name)
-        .replace("%status%", this.status.miniMessage())
+        .replace("%world%", bloodmoonWorld.world.name)
+        .replace("%status%", bloodmoonWorld.status.miniMessage())
         .replace("%chance%", this.fancyChance)
         .miniToComponent()
 
@@ -53,7 +49,7 @@ class ChanceBloodmoon(
         PlaceholderManager.registerPlaceholder(
             PlayerlessPlaceholder(
                 BloodmoonPlugin.instance,
-                "${world.name}_chance"
+                "${bloodmoonWorld.world.name}_chance"
             ) {
                 fancyChance
             }
@@ -61,7 +57,7 @@ class ChanceBloodmoon(
     }
 
     override fun onActivation() {
-        chance = config.getDouble("chance.initial-percentage").coerceAtMost(1.0)
+        chance = bloodmoonWorld.config.getDouble("chance.initial-percentage").coerceAtMost(1.0)
     }
 
     override fun onDaytime() {
@@ -71,7 +67,7 @@ class ChanceBloodmoon(
     override fun checkConditions(): Boolean = Random.nextDouble(1.0) < chance
 
     override fun onConditionFail() {
-        if (!config.getBool("chance.increment.enabled")) return
-        chance += (Random.nextDouble(config.getDouble("chance.increment.min"), config.getDouble("chance.increment.max")))
+        if (!bloodmoonWorld.config.getBool("chance.increment.enabled")) return
+        chance += (Random.nextDouble(bloodmoonWorld.config.getDouble("chance.increment.min"), bloodmoonWorld.config.getDouble("chance.increment.max")))
     }
 }

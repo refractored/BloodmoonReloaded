@@ -50,6 +50,12 @@ length: 360
 # The configuration for each method is at the bottom of this file.
 activation-method: Days
 
+# The method of deactivating the bloodmoon.
+# If "time" is selected, the bloodmoon will deactivate after a specific time.
+# If "mirror" is selected, the bloodmoon will deactivate when the mirrored world deactivates.
+# If "none" is selected, the bloodmoon will not deactivate on its own, and must be deactivated manually.
+deactivation-method: Time
+
 # If the bloodmoon can only activate when players are in that world.
 require-players-world: false
 

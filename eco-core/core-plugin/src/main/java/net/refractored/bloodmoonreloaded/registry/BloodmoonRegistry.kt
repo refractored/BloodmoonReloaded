@@ -42,7 +42,7 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
     fun getWorlds() = registry.toList()
 
     // Get all worlds with the status of active
-    fun getActiveWorlds() = registry.filter { it.status == BloodmoonWorld.Status.ACTIVE && it !is NoneBloodmoon }
+    fun getActiveWorlds() = registry.filter { it.status == BloodmoonWorld.Status.ACTIVE /* && it !is NoneBloodmoon */}
 
     fun getWorld(id: String) = registry.get(id)
 
@@ -126,8 +126,7 @@ object BloodmoonRegistry : ConfigCategory("worlds", "worlds") {
         BloodmoonPlugin.instance.logger.info("Loading config for world $id")
 
         try {
-            val bloodmoon = TypeRegistry.getType(config.getString("activation-method").lowercase(), world, config)
-            addToRegistry(bloodmoon)
+            addToRegistry(BloodmoonWorld(world,config))
         } catch (e: Exception) {
             BloodmoonPlugin.instance.logger.severe("Failed to load config for world \"$id\": ${e.message}")
             if (BloodmoonPlugin.instance.configYml.getBool("debug")) e.printStackTrace()

@@ -4,7 +4,6 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent.StopCause
 import net.refractored.bloodmoonreloaded.exceptions.CommandErrorException
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.types.NoneBloodmoon
 import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
@@ -38,13 +37,13 @@ class BloodmoonStopCommand {
                     .miniToComponent()
             )
         }
-        if (bloodmoonWorld is NoneBloodmoon && bloodmoonWorld.permanentBloodmoon) {
-            throw CommandErrorException(
-                BloodmoonPlugin.instance.langYml
-                    .getStringPrefixed("messages.deactivate.permanent")
-                    .miniToComponent()
-            )
-        }
+//        if (bloodmoonWorld is NoneBloodmoon && bloodmoonWorld.permanentBloodmoon) {
+//            throw CommandErrorException(
+//                BloodmoonPlugin.instance.langYml
+//                    .getStringPrefixed("messages.deactivate.permanent")
+//                    .miniToComponent()
+//            )
+//        }
         bloodmoonWorld.deactivate(StopCause.COMMAND)
         actor.reply(
             BloodmoonPlugin.instance.langYml

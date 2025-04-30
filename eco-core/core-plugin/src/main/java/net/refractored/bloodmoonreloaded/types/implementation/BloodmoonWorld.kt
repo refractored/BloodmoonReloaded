@@ -20,6 +20,10 @@ import net.refractored.bloodmoonreloaded.events.BloodmoonStartEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent.StopCause
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
+import net.refractored.bloodmoonreloaded.registry.ActivationRegistry
+import net.refractored.bloodmoonreloaded.registry.DeactivationRegistry
+import net.refractored.bloodmoonreloaded.types.activation.implementation.ActivationMethod
+import net.refractored.bloodmoonreloaded.types.deactivation.DeactivationMethod
 import org.bukkit.Bukkit
 import org.bukkit.GameRule
 import org.bukkit.NamespacedKey
@@ -40,11 +44,17 @@ import kotlin.random.Random
  * @property config The configuration settings for the bloodmoon event.
  */
 
-abstract class BloodmoonWorld(
+class BloodmoonWorld(
     var world: World,
     var config: Config
 ) : Holder,
     Registrable {
+
+
+
+    val activationMethod: ActivationMethod = ActivationRegistry.getType(config.getString("activation-method").lowercase(), this)
+
+    val deactivationMethod: DeactivationMethod = DeactivationRegistry.getType(config.getString("deactivation-method").lowercase(), this)
 
     /**
      * Represents the status of the bloodmoon event.
@@ -93,11 +103,9 @@ abstract class BloodmoonWorld(
         )
     }
 
-    final override val id: NamespacedKey = NamespacedKey("bloodmoonreloaded", world.name)
+    override val id: NamespacedKey = NamespacedKey("bloodmoonreloaded", world.name)
 
     var status = Status.INACTIVE
-
-    abstract fun getInfo(): ComponentLike
 
     override val effects =
         Effects.compile(
@@ -263,13 +271,6 @@ abstract class BloodmoonWorld(
         }
         this.periodicTasks()
     }
-
-    /**
-     * This function should check all conditions and return whether the bloodmoon should activate.
-     *
-     * This function is ran every two ticks.
-     */
-    abstract fun shouldActivate(): Boolean
 
     fun activate(
         /**
