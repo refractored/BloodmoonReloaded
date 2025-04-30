@@ -1,4 +1,4 @@
-package net.refractored.bloodmoonreloaded.types.implementation
+package net.refractored.bloodmoonreloaded.bloodmoon
 
 import com.willfp.eco.core.config.interfaces.Config
 import com.willfp.eco.core.data.keys.PersistentDataKey
@@ -12,18 +12,16 @@ import com.willfp.libreforge.ViolationContext
 import com.willfp.libreforge.conditions.Conditions
 import com.willfp.libreforge.effects.Effects
 import net.kyori.adventure.bossbar.BossBar
-import net.kyori.adventure.text.ComponentLike
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStartEvent
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
-import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent.StopCause
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import net.refractored.bloodmoonreloaded.registry.ActivationRegistry
 import net.refractored.bloodmoonreloaded.registry.DeactivationRegistry
-import net.refractored.bloodmoonreloaded.types.activation.implementation.ActivationMethod
-import net.refractored.bloodmoonreloaded.types.deactivation.DeactivationMethod
+import net.refractored.bloodmoonreloaded.bloodmoon.activation.implementation.ActivationMethod
+import net.refractored.bloodmoonreloaded.bloodmoon.deactivation.DeactivationMethod
 import org.bukkit.Bukkit
 import org.bukkit.GameRule
 import org.bukkit.NamespacedKey
@@ -70,7 +68,7 @@ class BloodmoonWorld(
          */
         ACTIVATING;
 
-        fun miniMessage() = BloodmoonPlugin.instance.langYml.getString("bloodmoon-status.${name.lowercase()}")
+        fun miniMessage() = BloodmoonPlugin.Companion.instance.langYml.getString("bloodmoon-status.${name.lowercase()}")
 
         /**
          * @return The minimessage converted to a component.
@@ -86,7 +84,7 @@ class BloodmoonWorld(
     init {
         PlaceholderManager.registerPlaceholder(
             PlayerlessPlaceholder(
-                BloodmoonPlugin.instance,
+                BloodmoonPlugin.Companion.instance,
                 "${world.name}_status_plain"
             ) {
                 status.plaintext()
@@ -95,7 +93,7 @@ class BloodmoonWorld(
 
         PlaceholderManager.registerPlaceholder(
             PlayerlessPlaceholder(
-                BloodmoonPlugin.instance,
+                BloodmoonPlugin.Companion.instance,
                 "${world.name}_status"
             ) {
                 LegacyComponentSerializer.legacySection().serialize(status.component())
@@ -110,13 +108,13 @@ class BloodmoonWorld(
     override val effects =
         Effects.compile(
             config.getSubsections("effects"),
-            ViolationContext(BloodmoonPlugin.instance, "World ${world.name}")
+            ViolationContext(BloodmoonPlugin.Companion.instance, "World ${world.name}")
         )
 
     override val conditions =
         Conditions.compile(
             config.getSubsections("conditions"),
-            ViolationContext(BloodmoonPlugin.instance, "World ${world.name}")
+            ViolationContext(BloodmoonPlugin.Companion.instance, "World ${world.name}")
         )
 
     /**
@@ -128,13 +126,13 @@ class BloodmoonWorld(
     var revertDaylightCycle: Boolean
         get() {
             return world.persistentDataContainer.get(
-                BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_daylightcycle"),
+                BloodmoonPlugin.Companion.instance.namespacedKeyFactory.create("${id.key}_daylightcycle"),
                 PersistentDataType.BOOLEAN
             ) ?: false
         }
         set(value) {
             world.persistentDataContainer.set(
-                BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_daylightcycle"),
+                BloodmoonPlugin.Companion.instance.namespacedKeyFactory.create("${id.key}_daylightcycle"),
                 PersistentDataType.BOOLEAN,
                 value
             )
@@ -142,14 +140,14 @@ class BloodmoonWorld(
 
     private val bloodmoonRemainingMillis =
         PersistentDataKey(
-            BloodmoonPlugin.instance.namespacedKeyFactory.create("${id.key}_bloodmoon_remaining_millis"),
+            BloodmoonPlugin.Companion.instance.namespacedKeyFactory.create("${id.key}_bloodmoon_remaining_millis"),
             PersistentDataKeyType.DOUBLE,
             0.0
         )
 
     private val originalMonsterSpawnrateKey =
         PersistentDataKey(
-            BloodmoonPlugin.instance.namespacedKeyFactory.create("${world.name}_original_monster_spawnrate"),
+            BloodmoonPlugin.Companion.instance.namespacedKeyFactory.create("${world.name}_original_monster_spawnrate"),
             PersistentDataKeyType.INT,
             -1
         )
@@ -254,7 +252,7 @@ class BloodmoonWorld(
      */
     fun runPeriodicTasks() {
         if (status == Status.ACTIVE) {
-            if (config.getBool("while-active.periodic-sounds.enabled") && (Random.nextDouble(1.0) < config.getDouble("while-active.periodic-sounds.chance"))) {
+            if (config.getBool("while-active.periodic-sounds.enabled") && (Random.Default.nextDouble(1.0) < config.getDouble("while-active.periodic-sounds.chance"))) {
                 for (player in world.players) {
                     player.playSound(player.location, config.getStrings("while-active.periodic-sounds.sounds").random(), 1.0f, 1.0f)
                 }
@@ -327,7 +325,7 @@ class BloodmoonWorld(
                     world.time += if (timeDifference < 0) 70 else -70
                 }
             }
-        nightTimeTransition.runTaskTimer(BloodmoonPlugin.instance, 0, 1)
+        nightTimeTransition.runTaskTimer(BloodmoonPlugin.Companion.instance, 0, 1)
     }
 
     /**
@@ -370,7 +368,7 @@ class BloodmoonWorld(
                         return
                     }
                 }
-            }.runTaskTimer(BloodmoonPlugin.instance, 1, 1)
+            }.runTaskTimer(BloodmoonPlugin.Companion.instance, 1, 1)
         }
     }
 
@@ -396,7 +394,7 @@ class BloodmoonWorld(
      * @throws IllegalStateException if the bloodmoon is not active.
      */
     fun deactivate(
-        reason: StopCause = StopCause.PLUGIN,
+        reason: BloodmoonStopEvent.StopCause = BloodmoonStopEvent.StopCause.PLUGIN,
         announce: Boolean = true
     ) {
         if (status == Status.INACTIVE) throw IllegalStateException("Bloodmoon is not active.")
@@ -424,7 +422,7 @@ class BloodmoonWorld(
             world.setStorm(config.getBool("on-deactivation.weather.rain"))
             world.isThundering = config.getBool("on-deactivation.weather.thunder")
         }
-        if (reason == StopCause.RESTART || reason == StopCause.UNLOAD) return
+        if (reason == BloodmoonStopEvent.StopCause.RESTART || reason == BloodmoonStopEvent.StopCause.UNLOAD) return
         savedBloodmoonRemainingMillis = 0L
         playDeactivationSounds()
         this.onDeactivation()
@@ -448,7 +446,7 @@ class BloodmoonWorld(
 
     override fun onRemove() {
         if (status == Status.ACTIVE) {
-            deactivate(StopCause.UNLOAD, false)
+            deactivate(BloodmoonStopEvent.StopCause.UNLOAD, false)
         }
     }
 }

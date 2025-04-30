@@ -5,7 +5,7 @@ import net.refractored.bloodmoonreloaded.exceptions.CommandErrorException
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld
 import org.bukkit.World
 import revxrsal.commands.annotation.Command
 import revxrsal.commands.annotation.Description

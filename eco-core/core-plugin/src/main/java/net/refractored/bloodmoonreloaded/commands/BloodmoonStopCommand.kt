@@ -4,7 +4,7 @@ import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent.StopCause
 import net.refractored.bloodmoonreloaded.exceptions.CommandErrorException
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import org.bukkit.World

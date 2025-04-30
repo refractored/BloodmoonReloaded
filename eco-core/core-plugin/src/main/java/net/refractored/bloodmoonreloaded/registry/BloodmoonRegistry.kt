@@ -10,8 +10,7 @@ import com.willfp.libreforge.loader.configs.ConfigCategory
 import com.willfp.libreforge.loader.internal.configs.RegistrableConfig
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStopEvent
-import net.refractored.bloodmoonreloaded.types.*
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld
 import org.bukkit.Bukkit
 import java.nio.file.Files
 

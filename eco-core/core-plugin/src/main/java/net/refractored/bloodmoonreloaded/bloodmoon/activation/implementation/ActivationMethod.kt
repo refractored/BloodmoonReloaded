@@ -1,7 +1,7 @@
-package net.refractored.bloodmoonreloaded.types.activation.implementation
+package net.refractored.bloodmoonreloaded.bloodmoon.activation.implementation
 
 import net.kyori.adventure.text.ComponentLike
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld
 
 abstract class ActivationMethod(val bloodmoonWorld: BloodmoonWorld) {
 

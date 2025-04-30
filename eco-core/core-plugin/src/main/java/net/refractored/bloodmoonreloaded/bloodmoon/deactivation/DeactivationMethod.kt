@@ -1,7 +1,7 @@
-package net.refractored.bloodmoonreloaded.types.deactivation
+package net.refractored.bloodmoonreloaded.bloodmoon.deactivation
 
 import net.kyori.adventure.text.ComponentLike
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld
 
 abstract class DeactivationMethod(val bloodmoonWorld: BloodmoonWorld) {
 

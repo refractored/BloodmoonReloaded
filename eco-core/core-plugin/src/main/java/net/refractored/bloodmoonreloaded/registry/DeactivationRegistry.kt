@@ -1,10 +1,7 @@
 package net.refractored.bloodmoonreloaded.registry
 
-import com.willfp.eco.core.config.interfaces.Config
-import net.refractored.bloodmoonreloaded.types.activation.implementation.ActivationMethod
-import net.refractored.bloodmoonreloaded.types.deactivation.DeactivationMethod
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
-import org.bukkit.World
+import net.refractored.bloodmoonreloaded.bloodmoon.deactivation.DeactivationMethod
+import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld
 
 /**
  * Registry for Bloodmoon worlds.

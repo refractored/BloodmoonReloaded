@@ -1,10 +1,10 @@
-package net.refractored.bloodmoonreloaded.types.activation.implementation
+package net.refractored.bloodmoonreloaded.bloodmoon.activation.implementation
 
 import com.willfp.eco.core.data.keys.PersistentDataKey
 import com.willfp.eco.core.data.keys.PersistentDataKeyType
 import com.willfp.eco.core.data.profile
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld
 import org.bukkit.Bukkit
 import org.bukkit.World
 

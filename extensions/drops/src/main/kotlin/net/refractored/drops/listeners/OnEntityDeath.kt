@@ -1,7 +1,7 @@
 package net.refractored.drops.listeners
 
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld
 import net.refractored.drops.DropsExtension
 import net.refractored.hordes.HordesExtension
 import org.bukkit.entity.Entity

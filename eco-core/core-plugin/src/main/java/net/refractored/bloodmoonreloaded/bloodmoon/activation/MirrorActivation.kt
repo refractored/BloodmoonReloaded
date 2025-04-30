@@ -1,12 +1,12 @@
-package net.refractored.bloodmoonreloaded.types.activation
+package net.refractored.bloodmoonreloaded.bloodmoon.activation
 
 import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.types.activation.implementation.ActivationMethod
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.bloodmoon.activation.implementation.ActivationMethod
+import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld
 
 /**
  * Represents a world that will start after another bloodmoon starts.

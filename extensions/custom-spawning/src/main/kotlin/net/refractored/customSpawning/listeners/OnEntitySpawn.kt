@@ -1,7 +1,7 @@
 package net.refractored.customSpawning.listeners
 
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld.Status
+import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld.Status
 import net.refractored.customSpawning.CustomSpawningExtension
 import org.bukkit.entity.Monster
 import org.bukkit.event.EventHandler

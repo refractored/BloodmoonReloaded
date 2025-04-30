@@ -1,6 +1,6 @@
 package net.refractored.bloodmoonreloaded.events;
 
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld;
+import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;

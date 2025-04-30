@@ -1,6 +1,5 @@
-package net.refractored.bloodmoonreloaded.types.activation
+package net.refractored.bloodmoonreloaded.bloodmoon.activation
 
-import com.willfp.eco.core.config.interfaces.Config
 import com.willfp.eco.core.data.keys.PersistentDataKey
 import com.willfp.eco.core.data.keys.PersistentDataKeyType
 import com.willfp.eco.core.data.profile
@@ -10,10 +9,9 @@ import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
-import net.refractored.bloodmoonreloaded.types.activation.implementation.ActivationMethod
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.bloodmoon.activation.implementation.ActivationMethod
+import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld
 import org.bukkit.Bukkit
-import org.bukkit.World
 import java.time.Duration
 
 /**

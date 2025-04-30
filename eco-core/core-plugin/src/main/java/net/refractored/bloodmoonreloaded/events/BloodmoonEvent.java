@@ -1,6 +1,6 @@
 package net.refractored.bloodmoonreloaded.events;
 
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld;
+import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld;
 import org.bukkit.World;
 import org.bukkit.event.Event;
 

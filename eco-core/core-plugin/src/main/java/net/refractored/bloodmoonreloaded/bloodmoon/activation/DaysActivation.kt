@@ -1,4 +1,4 @@
-package net.refractored.bloodmoonreloaded.types.activation
+package net.refractored.bloodmoonreloaded.bloodmoon.activation
 
 import com.willfp.eco.core.data.keys.PersistentDataKey
 import com.willfp.eco.core.data.keys.PersistentDataKeyType
@@ -9,8 +9,8 @@ import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.messages.Messages.getStringPrefixed
 import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
-import net.refractored.bloodmoonreloaded.types.activation.implementation.AbstractDayActivation
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.bloodmoon.activation.implementation.AbstractDayActivation
+import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld
 import org.bukkit.Bukkit
 
 /**

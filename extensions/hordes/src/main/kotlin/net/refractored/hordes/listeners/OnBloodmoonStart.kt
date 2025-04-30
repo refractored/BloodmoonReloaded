@@ -3,7 +3,7 @@ package net.refractored.hordes.listeners
 import net.refractored.bloodmoonreloaded.BloodmoonPlugin
 import net.refractored.bloodmoonreloaded.events.BloodmoonStartEvent
 import net.refractored.bloodmoonreloaded.registry.BloodmoonRegistry
-import net.refractored.bloodmoonreloaded.types.implementation.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld
 import net.refractored.hordes.HordesExtension
 import net.refractored.hordes.hordes.HordeConfig
 import net.refractored.hordes.util.EligibleUtil.getEligiblePlayers
