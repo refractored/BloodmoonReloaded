@@ -2,16 +2,7 @@ package net.refractored.bloodmoonreloaded.bloodmoon.activation.implementation
 
 import net.kyori.adventure.text.ComponentLike
 import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld
+import net.refractored.bloodmoonreloaded.bloodmoon.LifecycleMethod
 
-abstract class ActivationMethod(val bloodmoonWorld: BloodmoonWorld) {
-
-    abstract fun shouldActivate(): Boolean
-
-    abstract fun getInfo(): ComponentLike
-
-    open fun onActivation() {}
-
-    open fun onDeactivation() {}
-
-    open fun periodicTasks() {}
+abstract class ActivationMethod(override val bloodmoonWorld: BloodmoonWorld): LifecycleMethod {
 }

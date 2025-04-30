@@ -25,7 +25,7 @@ class MirrorActivation(
 
     val mirrorWorld = BloodmoonRegistry.getWorld(bloodmoonWorld.config.getString("mirror.world")) ?: throw IllegalArgumentException("Config does not contain a valid bloodmoon world.")
 
-    override fun shouldActivate(): Boolean {
+    override fun checkStatus(): Boolean {
         if (bloodmoonWorld.status != BloodmoonWorld.Status.INACTIVE) {
             return false
         }

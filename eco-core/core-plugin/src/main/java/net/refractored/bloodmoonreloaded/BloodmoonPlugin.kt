@@ -115,13 +115,14 @@ class BloodmoonPlugin : LibreforgePlugin() {
         // Eco might already cancel all bloodmoons on reload.
         for (activeWorld in getActiveWorlds()) {
             activeWorld.deactivate(BloodmoonStopEvent.StopCause.RELOAD, false)
-            activeWorld.saveBloodmoonTime()
+            activeWorld.deactivationMethod.saveData()
         }
-        for (world in getWorlds()) {
-            if (world.status != BloodmoonWorld.Status.INACTIVE) continue
-            if (world.savedBloodmoonRemainingMillis <= 0) continue
-            world.activate(world.savedBloodmoonRemainingMillis, false)
-        }
+        // TODO
+//        for (world in getWorlds()) {
+//            if (world.status != BloodmoonWorld.Status.INACTIVE) continue
+//            if (world.savedBloodmoonRemainingMillis <= 0) continue
+//            world.activate(world.savedBloodmoonRemainingMillis, false)
+//        }
     }
 
     override fun handleDisable() {
@@ -130,7 +131,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
         }
         for (activeWorld in getActiveWorlds()) {
             activeWorld.deactivate(BloodmoonStopEvent.StopCause.RESTART, false)
-            activeWorld.saveBloodmoonTime()
+            activeWorld.deactivationMethod.saveData()
         }
     }
 
@@ -172,11 +173,9 @@ class BloodmoonPlugin : LibreforgePlugin() {
             object : BukkitRunnable() {
                 override fun run() {
                     for (registeredWorld in getWorlds()) {
-                        if (registeredWorld.status == BloodmoonWorld.Status.ACTIVE &&
-                            (System.currentTimeMillis() >= registeredWorld.expiryTime && registeredWorld.expiryTime >= 0)
-                        ) {
-                            registeredWorld.deactivate(BloodmoonStopEvent.StopCause.TIMER)
-                            return
+                        if (registeredWorld.deactivationMethod.checkStatus()){
+                            registeredWorld.deactivate(BloodmoonStopEvent.StopCause.METHOD)
+                            continue
                         }
                         if (registeredWorld.config.getBool("require-players-server") && Bukkit.getOnlinePlayers().count() < 1) {
                             continue
@@ -186,7 +185,7 @@ class BloodmoonPlugin : LibreforgePlugin() {
                         }
                         // If either the bloodmoon shouldn't activate, or the status isn't active, return.
                         // (Written here cause my dyslexic-ass has messed with me trying to read this for some reason)
-                        if (!registeredWorld.activationMethod.shouldActivate() || registeredWorld.status != BloodmoonWorld.Status.INACTIVE) continue
+                        if (!registeredWorld.activationMethod.checkStatus() || registeredWorld.status != BloodmoonWorld.Status.INACTIVE) continue
                         registeredWorld.activate()
                     }
                 }

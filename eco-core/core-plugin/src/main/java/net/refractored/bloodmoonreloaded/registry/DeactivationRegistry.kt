@@ -1,6 +1,6 @@
 package net.refractored.bloodmoonreloaded.registry
 
-import net.refractored.bloodmoonreloaded.bloodmoon.deactivation.DeactivationMethod
+import net.refractored.bloodmoonreloaded.bloodmoon.deactivation.implementation.DeactivationMethod
 import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld
 
 /**

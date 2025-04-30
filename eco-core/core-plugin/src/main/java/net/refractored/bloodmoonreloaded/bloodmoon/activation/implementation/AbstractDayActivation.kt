@@ -33,7 +33,7 @@ abstract class AbstractDayActivation(
      * Should not be overridden.
      * @return true if the bloodmoon should activate.
      */
-    final override fun shouldActivate(): Boolean {
+    final override fun checkStatus(): Boolean {
         if (bloodmoonWorld.status != BloodmoonWorld.Status.INACTIVE) return false
 
         if (bloodmoonWorld.world.isDayTime) {

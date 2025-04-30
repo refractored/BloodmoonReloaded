@@ -21,7 +21,8 @@ import net.refractored.bloodmoonreloaded.messages.Messages.miniToComponent
 import net.refractored.bloodmoonreloaded.registry.ActivationRegistry
 import net.refractored.bloodmoonreloaded.registry.DeactivationRegistry
 import net.refractored.bloodmoonreloaded.bloodmoon.activation.implementation.ActivationMethod
-import net.refractored.bloodmoonreloaded.bloodmoon.deactivation.DeactivationMethod
+import net.refractored.bloodmoonreloaded.bloodmoon.deactivation.implementation.DeactivationMethod
+import org.apache.maven.model.Activation
 import org.bukkit.Bukkit
 import org.bukkit.GameRule
 import org.bukkit.NamespacedKey
@@ -138,13 +139,6 @@ class BloodmoonWorld(
             )
         }
 
-    private val bloodmoonRemainingMillis =
-        PersistentDataKey(
-            BloodmoonPlugin.Companion.instance.namespacedKeyFactory.create("${id.key}_bloodmoon_remaining_millis"),
-            PersistentDataKeyType.DOUBLE,
-            0.0
-        )
-
     private val originalMonsterSpawnrateKey =
         PersistentDataKey(
             BloodmoonPlugin.Companion.instance.namespacedKeyFactory.create("${world.name}_original_monster_spawnrate"),
@@ -155,13 +149,6 @@ class BloodmoonWorld(
     private var originalMonsterSpawnrate: Int
         get() = Bukkit.getServer().profile.read(originalMonsterSpawnrateKey)
         set(value) = Bukkit.getServer().profile.write(originalMonsterSpawnrateKey, value)
-
-    /**
-     * The remaining time in milliseconds of the bloodmoon.
-     */
-    var savedBloodmoonRemainingMillis: Long
-        get() = Bukkit.getServer().profile.read(bloodmoonRemainingMillis).toLong()
-        set(value) = Bukkit.getServer().profile.write(bloodmoonRemainingMillis, value.toDouble())
 
     private var fullTime: Long = 0L
 
@@ -232,19 +219,16 @@ class BloodmoonWorld(
             return expiryTime - time
         }
 
-    open fun onActivation() {}
-
-    open fun onDeactivation() {}
-
-    /**
-     * Run periodic tasks.
-     * This is run every 20 ticks.
-     */
-    open fun periodicTasks() {}
-
-    fun saveBloodmoonTime() {
-        savedBloodmoonRemainingMillis = (expiryTime - System.currentTimeMillis())
+    fun onActivation() {
+        activationMethod.onActivation()
+        deactivationMethod.onActivation()
     }
+
+    fun onDeactivation() {
+        activationMethod.onDeactivation()
+        deactivationMethod.onDeactivation()
+    }
+
 
     /**
      * Run periodic tasks.
@@ -258,7 +242,7 @@ class BloodmoonWorld(
                 }
             }
 
-            saveBloodmoonTime()
+            deactivationMethod.periodicTasks()
 
             if (config.getBool("while-active.weather.enabled")) {
                 world.setStorm(config.getBool("while-active.weather.rain"))
@@ -267,7 +251,7 @@ class BloodmoonWorld(
 
             world.fullTime = fullTime
         }
-        this.periodicTasks()
+        activationMethod.periodicTasks()
     }
 
     fun activate(
@@ -344,7 +328,6 @@ class BloodmoonWorld(
 
         expiryTime = System.currentTimeMillis() + length
         fullTime = world.fullTime
-        savedBloodmoonRemainingMillis = length
 
         bossbar?.let { bossbar ->
             world.players.forEach {
@@ -423,7 +406,6 @@ class BloodmoonWorld(
             world.isThundering = config.getBool("on-deactivation.weather.thunder")
         }
         if (reason == BloodmoonStopEvent.StopCause.RESTART || reason == BloodmoonStopEvent.StopCause.UNLOAD) return
-        savedBloodmoonRemainingMillis = 0L
         playDeactivationSounds()
         this.onDeactivation()
     }

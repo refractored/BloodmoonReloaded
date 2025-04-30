@@ -1,6 +1,7 @@
 package net.refractored.bloodmoonreloaded.events;
 
 import net.refractored.bloodmoonreloaded.bloodmoon.BloodmoonWorld;
+import net.refractored.bloodmoonreloaded.bloodmoon.deactivation.implementation.DeactivationMethod;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
@@ -53,9 +54,11 @@ public class BloodmoonStopEvent extends BloodmoonEvent implements Cancellable {
         COMMAND,
 
         /**
-         * The bloodmoon was stopped because the timer was over.
+         * The bloodmoon was stopped because the deactivation method conditions were met.
+         *
+         * @see DeactivationMethod
          */
-        TIMER,
+        METHOD,
 
         /**
          * The bloodmoon was stopped because the world was unloaded.

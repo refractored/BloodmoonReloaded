@@ -22,7 +22,7 @@ class NoActivation(
 
     val permanentBloodmoon: Boolean = bloodmoonWorld.config.getBool("none.always-active")
 
-    override fun shouldActivate(): Boolean {
+    override fun checkStatus(): Boolean {
         if (bloodmoonWorld.status != BloodmoonWorld.Status.INACTIVE) {
             return false
         }
