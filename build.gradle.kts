@@ -94,9 +94,9 @@ allprojects {
     dependencies {
         compileOnly(fileTree("lib"))
 
-        implementationPlugin("io.github.revxrsal:lamp.common:4.0.0-rc.11")
-        implementationPlugin("io.github.revxrsal:lamp.bukkit:4.0.0-rc.11")
-        implementationPlugin("io.github.revxrsal:lamp.brigadier:4.0.0-rc.11")
+        implementationPlugin("io.github.revxrsal:lamp.common:4.0.0-rc.17")
+        implementationPlugin("io.github.revxrsal:lamp.bukkit:4.0.0-rc.17")
+        implementationPlugin("io.github.revxrsal:lamp.brigadier:4.0.0-rc.17")
 
         implementationPlugin("org.bstats:bstats-bukkit:3.0.2")
 
